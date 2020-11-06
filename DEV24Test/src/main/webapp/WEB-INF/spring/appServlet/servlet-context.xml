@@ -56,5 +56,8 @@
 		<beans:property name="order" value="2" />
 	</beans:bean>
 	
+	<!-- 첨부 파일을 위한 -->
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver"></beans:bean>
+	
 	
 </beans:beans>
