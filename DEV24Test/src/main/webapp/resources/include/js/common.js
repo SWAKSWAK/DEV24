@@ -1,17 +1,34 @@
 
-/** *****************************************
- * chkSubmit 함수 : 유효성 검사(공백 확인)
- * @param item 유효성체크대상
- * @param msg 메시지내용
- * @return 공백이거나 빈칸이면 false
- */
-function chkSubmit(item, msg){
-	if($(item).val().replace(/\s/g,"")==""){
+/** 함수명: chkSubmit(유효성 체크 대상, 메시지 내용)
+ * 출력영역: alert으로.
+ * 예시 :  if(!chkData("#keyword","검색어를")) return;
+ * common.js를 만들 때는 주석을 잘 달아 놓으면 다른 개발자가 사용시 편리하다.
+ ********************************************************/
+ function chkSubmit(item, msg) {
+	if(item.val().replace(/\s/g,"")=="") {
+		alert(msg+" 입력해주세요.");
+		item.val("");
+		item.focus();
+		return false; //값이 비어있을 경우 false를 반환
+	} else {
+		return true;
+	}
+}
+
+
+/** 함수명: chkData(유효성 체크 대상, 메시지 내용)
+ * 출력영역: alert으로.
+ * 예시 : if(!chkData("#keyword","검색어를")) return;
+ * // chkSubmit과의 차이는 함수내에서 객체화를 시킨다.
+ * common.js를 만들 때는 주석을 잘 달아 놓으면 다른 개발자가 사용시 편리하다.
+ ********************************************************/
+function chkData(item, msg) {
+	if($(item).val().replace(/\s/g,"")=="") {
 		alert(msg+" 입력해주세요.");
 		$(item).val("");
 		$(item).focus();
-		return false;
-	}else{
+		return false; //값이 비어있을 경우 false를 반환
+	} else {
 		return true;
 	}
 }
@@ -31,27 +48,29 @@ function chkTextFormat(item, msg, format){
 }
 
 
-/***************************
-경고창이 아니라 placeholder로 유효성검사하기
-checkForm(체크대상, 메시지 내용) */
-function checkForm(item, msg){
+/** 함수명: chkForm(유효성 체크 대상, 메시지 내용)
+ * 출력영역: placeholder 속성을 이용.
+ * 예시 : if(!chkForm("#keyword","검색어를")) return;
+ ********************************************************/
+function checkForm(item,msg) {
 	var message = "";
-	if($(item).val().replace(/\s/g,"")==""){
-		message = msg+" 입력해주세요.";
-		$(item).attr("placeholder", message);
-		$(item).val("");
+	if($(item).val().replace(/\s/g,"")=="") {
+		message = msg + "입력해 주세요.";
+		$(item).attr("placeholder",message);
 		return false;
-	}else{
-		return true;
+	} else {
+	return true;
 	}
 }
 
-/************************
- * formCheck(유효성 체크대상, 출력영역, 메시지 내용)
- * *******/
+
+/** 함수명: formCheck(유효성 체크 대상, 출력 영역, 메시지 내용)
+ * 출력영역: 매개변수 두번째 출력 영역에,
+ * 예시 : if(!formCheck($('#keyword'),$('#msg'),"검색어를")) return;
+ ********************************************************/
 function formCheck(main, item, msg){
 	if(main.val().replace(/\s/g,"")==""){
-		item.css("color","#000099").html(msg+'입력해주세요.');
+		item.css("color","#000099").html(msg+"입력해 주세요");
 		main.val("");
 		return false;
 	}else{
