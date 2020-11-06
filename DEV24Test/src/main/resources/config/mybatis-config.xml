@@ -2,6 +2,7 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	<typeAliases>
-		<!-- <typeAlias type="com.dev24.xxxx.xxxxx" alias="사용할이름" /> -->
+		<typeAlias type="com.dev24.client.cart.vo.CartVO" alias="cart" />
+		<typeAlias type="com.dev24.client.purchase.vo.PurchaseVO" alias="purchase" />
 	</typeAliases>
 </configuration>
