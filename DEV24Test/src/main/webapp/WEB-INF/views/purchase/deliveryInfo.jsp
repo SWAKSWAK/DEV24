@@ -25,9 +25,7 @@
     	</style>
     	<script type="text/javascript">
     		$(function(){
-    			var s = ${c_num};
-    			console.log(s);
-    			//getSenderInfo(s);
+    			getSenderInfo(2); // 임의의 회원번호 입력
     			
     			
     			/* 주문자와동일 체크했을 때 */
@@ -53,20 +51,24 @@
     			
     		}); // 최상위 종료
     		
-    		/* 배송정보 주문자 정보 보여주는 함수 	
+    		/* 배송정보 주문자 정보 보여주는 함수 */
     		function getSenderInfo(c_num){
-				var url = "purchase/sender/"+c_num; //+".json"
+				var url = "/purchase/"+c_num; //+".json"
 				
 				// getJSON(요청url, 파라미터값, success fn, fail fn)
 				$.getJSON(url, function(data){ // success
-					$("#p_sender").val("${senderInfo.c_name}");
-					console.log("${senderInfo.c_name}");
-					$("#c_email").val("${senderInfo.c_email}");
+					$("#p_sender").val(data.c_name);
+					$("#c_email").val(data.c_email);
+					
+					var phoneNumber = data.c_phone.split("-");
+					$("#p_senderphone1").val(phoneNumber[0]);
+					$("#p_senderphone2").val(phoneNumber[1]);
+					$("#p_senderphone3").val(phoneNumber[2]);
 				
 				}).fail(function(){ // error
 					alert("주문자 정보를 불러오지 못했습니다. 다시 로그인해주세요.");
 				});
-			}*/
+			}
 			
 			/* 우편번호 찾기 버튼 시 실행하는 함수 */
 			function getPostCode(){
