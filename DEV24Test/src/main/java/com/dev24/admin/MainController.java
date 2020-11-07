@@ -15,5 +15,10 @@ public class MainController {
 		return "index";
 	}
 	
+	@RequestMapping(value="/admin", method=RequestMethod.GET)
+	public String adminIndex() {
+		return "/admin/adminIndex";
+	}
+	
 	
 }
