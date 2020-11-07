@@ -60,7 +60,19 @@
 	    		  location.href="../jsp/adminPage.jsp";
 	    	  });
 	    	  
-	    	  	    	      	  
+	    	  	    	      
+	    	  // 재고 확인용 함수 chkStock 
+	    	  
+	    	 function chkStock(item, msg) {
+				if($(item).val().replace(/\s/g,"")=="" || parseInt($(item).val()) <0 ) {
+					alert(msg+" 입력해주세요.");
+					item.val("");
+					item.focus();
+					return false; //값이 비어있을 경우 false를 반환
+				} else {
+					return true;
+				}
+			}
 	    	  
 	    	  //재고 등록 값 전달하는 ajax
 	    	  
@@ -92,6 +104,10 @@
 	    		 }
 	    	  });
 	    	  
+	    	  //도서 상세 정보 버튼을 클릭시 도서코드를 전달해주는 구문
+	    	  $("#stockDetail").click(function(){
+	    		  console.log($("#stk_incp").val());
+	    	  });
 	    	  
 	      });
       	
@@ -105,6 +121,18 @@
 			#b_num, #b_name, #catetwo_num, #stk_regdate {height:33px;}
 			.searchCategory{padding:15px; float:left;}
 			#table{ padding:10px;}
+			
+			.bookStockImg{
+				display: block;
+				margin-left: auto;
+				margin-right: auto;
+				width: 30%;
+				height:30%;
+			}
+			
+			#title{
+				text-align: center;
+			}
 			  
       </style>
       
@@ -114,7 +142,7 @@
    <body>
    		
 		<!-- model form -->
-		<h1> 재고등록 페이지</h1>
+		<h1 id="title"> 재고등록 페이지</h1>
 		
 		<div class="row">
 			<div class="col-sm-5">
@@ -126,7 +154,8 @@
 				    <!-- model form settings-->
 				
 				    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
-				        <div class="modal-dialog">
+				        <%-- <div class="modal-dialog"> --%>
+				        <div class="modal-dialog modal-lg">
 				            <div class="modal-content">
 				                <div class="modal-header">
 				                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
@@ -135,25 +164,27 @@
 				                <div class="modal-body">
 				
 				    <!-- actual form  -->
-				    				<%-- jstl 호황 테스팅을 위한 표현식 변수 선언 --%>
+				    				<%-- jstl 호황 테스팅을 위한 표현식 변수 선언 
 				    				<c:set var="b_title" scope="session" value="강자바의 자바 조지기"/>
 				    				<c:set var="b_author" scope="session" value="강자바"/>
 				    				<c:set var="b_pub" scope="session" value="강자바 컴퍼니"/>
 				    				<c:set var="b_num" scope="session" value="411"/>
 				    				<c:set var="adm_name" scope="session" value="강자바"/>
 				    				<c:set var="adm_num" scope="session" value="2"/>
+				    				--%>
 				    				
 				    				
 				                    <form role="form">
 				                        <div class="form-group">
 				                            <label>상품코드</label>
-				                            <select class="form-control" name="b_num" id="b_num">
-				                            <c:forEach begin="0" end="5" varStatus="loop">
-				                            	<option value="${b_num}"> ${b_title} / ${b_author} / ${b_pub} </option>
-				                            	<option value="412">김서버의 서버를 내 노예만들기 / 김서버 / 김서버컴퍼니</option>
-				                            	<option value="711">강디비의 디비하고 디비자기 / 강디비 / 강디비컴퍼니</option>
-				                            	<option value="712">1.5조의 줄타기 외전 / 1.5조 / 1.5조 코퍼레이션</option>
-				                            </c:forEach>
+				                           	<select class="form-control" name="b_num" id="b_num">
+					                            <c:choose>
+						                           	<c:when test="${not empty bookstockList}">
+														<c:forEach var="bookinfo" items="${bookstockList}">
+					                            			<option value="${bookinfo.b_num}"> ${bookinfo.b_name} / ${bookinfo.b_author} / ${bookinfo.b_pub} </option>
+														</c:forEach>
+						                            </c:when>
+					                            </c:choose>
 				                            </select>
 				                        </div>
 				                        <div class="form-group">
@@ -216,10 +247,10 @@
 						<label for="catetwo_num">도서 카테고리</label>
 						<select name="catetwo_num" id="catetwo_num">
 							<option value="1">프로그래밍 언어</option>
-							<option value="2">네트워크/해킹/보안</option>
-							<option value="3">웹사이트</option>
+							<option value="2">OS/데이터베이스</option>
+							<option value="3">웹프로그래밍</option>
 							<option value="4">컴퓨터 입문/활용</option>
-							<option value="5">OS/데이터베이스</option>
+							<option value="5">네크워크/해킹/데이터베이스</option>
 							<option value="6">IT 전문서</option>
 							<option value="7">컴퓨터 수험서</option>
 							<option value="8">웹/컴퓨터/입문 활용</option>
@@ -334,16 +365,16 @@
 				<table class="table table-striped">
 					<thead>
 					    <tr>
+					    	<th></th> <!-- input type hidden 을 숨기기 위한 코드  -->
 					    	<th>도서코드</th>
 					    	<th>제목</th>
 					    	<th>작가</th>
 					    	<th>재고수량</th>
-					    	<th>판매가격</th>
+					    	<th>입고가격</th>
 					    	<th>분류</th>
 					    	<th>카테고리</th>
 					    	<th>등록자(관리자)명</th>
 					    	<th>등록일자</th>
-					    	<th>관리</th>
 					 	</tr>
 				    </thead>
 				    
@@ -352,7 +383,8 @@
 				    		<c:when test="${not empty stockList }">
 						     	<c:forEach var="book" items="${stockList}" varStatus="status" >
 							    	<tr>
-							    		<td>${book.stk_incp}</td>
+							    		<td><input type="hidden" id="stk_incp" value="${book.stk_incp}"/></td>
+							    		<td> ${book.stk_incp}</td>
 							    		<td>${book.b_name}</td>
 							    		<td>${book.b_author }</td>
 							    		<td>${book.stk_qty} 권</td>
@@ -361,7 +393,8 @@
 							    		<td>${book.catetwo_num }</td>
 							    		<td>${book.adm_num}</td>
 							    		<td>${book.stk_regdate}</td>
-							    		<td><input type="button" value="도서상세보기"/></td>
+							    		<%--><td><input type="button" id="stkDetail" name="stkDetail" value="도서상세보기"/></td>  --%>
+							    		<td><button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">도서 상세정보</button></td>
 							    	</tr>
 							    	</c:forEach>
 							   </c:when> 	
@@ -372,6 +405,46 @@
 	 	</div>
 	</div>
 	<hr>	
+	
+	
+	<!-- 도서 상세보기 Modal 부분 -->
+	
+	<!-- Large modal -->
+
+	
+	<%--
+		--------------------재고 도서 상세 정보를 위한 쿼리문----------------------------------------------------------
+		
+		----stock_book_info view 생성 -------------------------------------------------------------------------
+		create view stock_book_info as 
+		select book.b_num, book.b_name, book.b_date, 
+		book.b_author, book.b_pub, book.b_price, book.cateone_num, book.catetwo_num, bookimg.listcover_imgurl 
+		from book 
+		inner join 
+		bookimg 
+		on book.b_num=bookimg.b_num;
+		-----------------------------------------------------------------------------------------------------
+		
+		------------도서 코드로 상세정보를 보여줄 모달을 위한 쿼리---------------------------------------------------------
+		select b_num, b_name, b_date, b_author, b_pub, b_price, cateone_num, listcover_imgurl 
+		from stock_book_info where b_num=3; 
+		-----------------------------------------------------------------------------------------------------
+		
+	 --%>
+		
+	
+		<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-header" id="exampleModalLongTitle">도서 정보</h1>
+					</div>
+					<img src="/resources/bookimg/1/2/122-listcover.jpg" class="bookStockImg"/>
+				</div>
+			</div>
+		</div>
+
+	
    </body>
 </html>
     

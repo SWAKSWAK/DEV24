@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.dev24.admin.stock.dao.StockDAO;
 import com.dev24.admin.stock.vo.StockVO;
+import com.dev24.client.book.vo.BookVO;
 
 import lombok.Setter;
 
@@ -21,6 +22,13 @@ public class StockServiceImpl implements StockService {
 		
 		List<StockVO> list = null;
 		list = stockdao.stockList(svo);
+		return list;
+	}
+
+	@Override
+	public List<BookVO> stockBInfoList(BookVO bvo) {
+		List<BookVO> list =null;
+		list = stockdao.stockBInfoList(bvo);
 		return list;
 	}
 

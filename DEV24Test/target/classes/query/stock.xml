@@ -9,5 +9,9 @@
 		inner join stock
 		on book.b_num=stock.stk_incp
 	</select>
+	
+	<select id="stockBInfoList" parameterType="book" resultType="book">
+		select b_num, b_name, b_author, b_pub from book order by b_num
+	</select>
 
 </mapper>
