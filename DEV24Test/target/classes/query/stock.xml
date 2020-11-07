@@ -4,7 +4,8 @@
 
 	<select id="stockList" parameterType="stock" resultType="stock">
 		select stock.stk_incp, book.b_name, book.b_author, stock.stk_qty, 
-		stock.stk_salp, book.cateone_num, book.catetwo_num,stock.adm_num, to_char(stock.stk_regdate) as stk_regdate
+		stock.stk_salp, book.cateone_num, book.catetwo_num,stock.adm_num, 
+        to_char (stock.stk_regdate, 'YYYY-MM-DD HH24:mm:ss') as stk_regdate
 		from book
 		inner join stock
 		on book.b_num=stock.stk_incp

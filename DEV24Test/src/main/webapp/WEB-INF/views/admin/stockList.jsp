@@ -57,7 +57,7 @@
 	    	  //$("#date").text(d);
 	    	  
 	    	  $("#goHome").click(function(){
-	    		  location.href="../jsp/adminPage.jsp";
+	    		  location.href="/admin/adminIndex";
 	    	  });
 	    	  
 	    	  	    	      
@@ -104,9 +104,13 @@
 	    		 }
 	    	  });
 	    	  
+	    	 
+	    	  
 	    	  //도서 상세 정보 버튼을 클릭시 도서코드를 전달해주는 구문
-	    	  $("#stockDetail").click(function(){
-	    		  console.log($("#stk_incp").val());
+	    	  $(".stkDetail").click(function(){
+	    		 var stockcode= $(this).parents("tr").attr("data-num");
+	    		 $("#stk_incp").val(stockcode);
+	    		 console.log("도서 코드= "+ stockcode);
 	    	  });
 	    	  
 	      });
@@ -140,6 +144,10 @@
       
    </head>
    <body>
+   		
+   		<form id="detailForm" name="detailForm">
+			<input type="hidden" id="stk_incp" name="stk_incp"/>
+		</form>
    		
 		<!-- model form -->
 		<h1 id="title"> 재고등록 페이지</h1>
@@ -267,10 +275,13 @@
 			
 			-----관리자명 제외 불러오는 쿼리---------------------
 			select stock.stk_incp, book.b_name, book.b_author, stock.stk_qty, 
-			stock.stk_salp, book.cateone_num, book.catetwo_num,stock.adm_num, stock.stk_regdate
+			stock.stk_salp, book.cateone_num, book.catetwo_num,stock.adm_num, 
+            to_char (stock.stk_regdate, 'YYYY-MM-DD HH24:mm:ss') as stk_regdate
 			from book
 			inner join stock
 			on book.b_num=stock.stk_incp;
+            
+
 			------------------------------------------------------------------
 			
 			-------------관리자 테이블에서 관리자명을 불러오는 쿼리-----------------------
@@ -365,7 +376,6 @@
 				<table class="table table-striped">
 					<thead>
 					    <tr>
-					    	<th></th> <!-- input type hidden 을 숨기기 위한 코드  -->
 					    	<th>도서코드</th>
 					    	<th>제목</th>
 					    	<th>작가</th>
@@ -382,10 +392,9 @@
 				    	<c:choose>
 				    		<c:when test="${not empty stockList }">
 						     	<c:forEach var="book" items="${stockList}" varStatus="status" >
-							    	<tr>
-							    		<td><input type="hidden" id="stk_incp" value="${book.stk_incp}"/></td>
+							    	<tr data-num="${book.stk_incp}">
 							    		<td> ${book.stk_incp}</td>
-							    		<td>${book.b_name}</td>
+							    		<td class="stkDetail">${book.b_name}</td>
 							    		<td>${book.b_author }</td>
 							    		<td>${book.stk_qty} 권</td>
 							    		<td>${book.stk_salp}</td>
@@ -394,7 +403,7 @@
 							    		<td>${book.adm_num}</td>
 							    		<td>${book.stk_regdate}</td>
 							    		<%--><td><input type="button" id="stkDetail" name="stkDetail" value="도서상세보기"/></td>  --%>
-							    		<td><button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">도서 상세정보</button></td>
+							    		<td><button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg" >도서 상세정보</button></td>
 							    	</tr>
 							    	</c:forEach>
 							   </c:when> 	
