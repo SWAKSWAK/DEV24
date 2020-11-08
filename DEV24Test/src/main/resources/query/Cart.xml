@@ -25,11 +25,17 @@
 	</delete>
 	
 	<!-- 장바구니 삽입 (해당 b_num이 존재하면 update로 처리) -->
-	<insert id="addToCart" parameterType="cart">
+	<!-- open: 쿼리문이 시작하기 전 추가될 문자 -->
+	<!-- close: 쿼리문이 끝난 후 추가될 문자 -->
+	<insert id="addToCart" parameterType="java.util.List">
 		insert into cart (
-			crt_num, crt_price, crt_qty, b_num, c_num
-		) values (
-			crt_num_seq.nextval, #{crt_price}, #{crt_qty}, #{b_num}, #{c_num})
+			crt_num, crt_price, crt_qty, b_num, c_num) 
+		select crt_num_seq.nextval, c.* from (
+		<foreach collection="list" item="cvo" separator="union all"> 
+		select
+			#{cvo.crt_price} crt_price, #{cvo.crt_qty} crt_qty, #{cvo.b_num} b_num, #{cvo.c_num} c_num
+		from dual
+		</foreach>) c
 	</insert>
 
 </mapper>

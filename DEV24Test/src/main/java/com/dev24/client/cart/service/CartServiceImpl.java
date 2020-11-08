@@ -42,8 +42,8 @@ public class CartServiceImpl implements CartService {
 	
 	//장바구니 추가
 	@Override
-	public int addToCart(CartVO cvo) {
-		int result = cartDAO.addToCart(cvo);
+	public int addToCart(List<CartVO> cvoList) {
+		int result = cartDAO.addToCart(cvoList);
 		return result;
 	}
 
