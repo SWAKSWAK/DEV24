@@ -25,5 +25,11 @@
 	</delete>
 	
 	<!-- 장바구니 삽입 (해당 b_num이 존재하면 update로 처리) -->
+	<insert id="addToCart" parameterType="cart">
+		insert into cart (
+			crt_num, crt_price, crt_qty, b_num, c_num
+		) values (
+			crt_num_seq.nextval, #{crt_price}, #{crt_qty}, #{b_num}, #{c_num})
+	</insert>
 
 </mapper>

@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
@@ -98,9 +99,9 @@
        			font-size: 14px;
        			padding-top: 5px;
        		}
-       		.price {
-       			font-size: 20px;
+       		.priceWrap {
        			padding: 3px 0 10px;
+       			font-size: 20px;
        			font-weight: bold;
        		}
        		.won {
@@ -108,11 +109,11 @@
        			font-size: 14px;
        			padding-top: 3px;
        		}
-       		.authorPub, .price {
+       		.authorPub, .priceWrap {
        			color: #959595;
     			padding-top: 10px;
        		}
-       		.rating *{
+       		.b_rating *{
        			font-size: 22px;
       			padding-top: 15px;
        		}
@@ -136,7 +137,7 @@
        		.cntWrap {
        			margin-top: 22px;
        		}
- 			.cntNum {
+ 			.crt_qty {
  				width: 100px;
  				height: 22px;
  				font-size: 16px;
@@ -236,31 +237,34 @@
     		$(function() {
     			
     			//수량 실시간 갑지 (1~99)
-    			$(".cntNum").on("propertychange change keyup paste input", function(){
-    				cntNumRange(this);
+    			$(".crt_qty").on("propertychange change keyup paste input", function(){
+    				crt_qtyRange(this);
     			});
     			
     			$(".cartBtn").click(function(){
     				var index = $(".cartBtn").index(this);
-    				if(!cntNumRange(".cntNum:eq("+index+")")) return;
-    				/* if ($(".cntNum:eq("+index+")").val("", 0) == 0){
+    				if(!crt_qtyRange(".crt_qty:eq("+index+")")) return;
+    				/* if ($(".crt_qty:eq("+index+")").val("", 0) == 0){
     					alert("수량을 입력해 주세요.");
-    					$(".cntNum:eq("+index+")").val(0);
+    					$(".crt_qty:eq("+index+")").val(0);
     					return;
     				} */
-    				if ($(".cntNum:eq("+index+")").val() == 0){
+    				if ($(".crt_qty:eq("+index+")").val() == 0){
     					alert("수량을 입력해 주세요.");
-    					$(".cntNum:eq("+index+")").val(0);
+    					$(".crt_qty:eq("+index+")").val(0);
     					return;
     				}
     				
     				var dataNum = $(this).parents(".bookWrap").attr("data-num");
-    				var cntNum = $(this).parents(".cntNum").val();
+    				var crt_qty = $(".crt_qty:eq("+index+")").val();
+    				var b_price = $(".b_price:eq("+index+")").html();
     				var data = JSON.stringify({
-    					b_num : dataNum
+    					"b_num" : dataNum,
+    					"crt_qty" : crt_qty,
+    					"crt_price" : b_price * crt_qty
     				});
     				$.ajax({
-    					url : "/cart/addtoCart",
+    					url : "/cart/addToCart",
     					type : "POST",
     					data : data,
     					headers : {
@@ -269,7 +273,7 @@
     					},
     					dataType : "text",
     					success: function (result) {
-    						if (result == 1){
+    						if (result == 'SUCCESS'){
 	    						$(".cartMsg:eq("+index+")").css("display", "block");
     						}
 						},
@@ -294,16 +298,16 @@
     			$(".upBtn").click(function(){
     				console.log("upBtn");
     				var n = $(".upBtn").index(this);
-    				var cntNum = $(".cntNum:eq("+n+")");
-    				$(".cntNum:eq("+n+")").val(cntNum.val()*1 + 1);
-    				if (!cntNumRange(cntNum)) return;
+    				var crt_qty = $(".crt_qty:eq("+n+")");
+    				$(".crt_qty:eq("+n+")").val(crt_qty.val()*1 + 1);
+    				if (!crt_qtyRange(crt_qty)) return;
     			});
 
     			$(".downBtn").click(function(){
     				var n = $(".downBtn").index(this);
-    				var cntNum = $(".cntNum:eq("+n+")");
-    				$(".cntNum:eq("+n+")").val(cntNum.val()*1 - 1);
-    				if (!cntNumRange(cntNum)) return;
+    				var crt_qty = $(".crt_qty:eq("+n+")");
+    				$(".crt_qty:eq("+n+")").val(crt_qty.val()*1 - 1);
+    				if (!crt_qtyRange(crt_qty)) return;
     			});
     			
     			
@@ -322,7 +326,7 @@
     		})
     		
     		//false : range에서 벗어남
-    		function cntNumRange(selector) {
+    		function crt_qtyRange(selector) {
 
 				if ($(selector).val() < 0) {
 					alert("수량은 1개부터 99개 까지 입력 가능합니다."); 
@@ -369,8 +373,12 @@
 											<span class="b_nameText" >${ bl.b_name }</span>
 										</h1>
 										<span class="authorPub">${ bl.b_author } 저 | ${ bl.b_pub }</span>
-										<p class="price"> <fmt:formatNumber value="${ bl.b_price }"/><span class="won">원</span></p>
-										<p class="rating">
+										<p class="priceWrap">
+											<span class="b_price" style="display: none" >${ bl.b_price }</span>
+												<fmt:formatNumber value="${ bl.b_price }"/>
+											<span class="won">원</span>
+										</p>
+										<p class="b_rating">
 											<c:set var="avg" value="${(bl.ra_sum/bl.ra_count)}" />
 											<c:set var="devided" value="${(bl.ra_sum/bl.ra_count)/2}" />
 											<c:choose>
@@ -407,7 +415,7 @@
 									</div>
 									<div class="btnWrap">
 										<div class="cntWrap">
-											<input type="number" value="0" class="cntNum" min="0" max="99"/>
+											<input type="number" value="0" class="crt_qty" min="0" max="99"/>
 											<button type="button" class="upBtn" ><i class="fas fa-caret-up"></i></button>
 											<button type="button" class="downBtn" ><i class="fas fa-caret-down"></i></button>
 										</div>
