@@ -113,6 +113,12 @@
 	    		 console.log("도서 코드= "+ stockcode);
 	    	  });
 	    	  
+	    	  $(".stkbInfo").click(function(){
+	    		  var stockcode= $(this).parents("tr").attr("data-num");
+		    		 $("#stk_incp").val(stockcode);
+		    		 console.log("도서 코드= "+ stockcode);
+	    	  });
+	    	  
 	      });
       	
 	      
@@ -137,7 +143,17 @@
 			#title{
 				text-align: center;
 			}
+			
+			.stkDetail {
+            cursor: pointer;
+         	}
 			  
+			#searchArea{
+			marign:30px;
+			float:right; 
+			} 
+			
+			td{ text-align: left;}
       </style>
       
       
@@ -230,57 +246,67 @@
 		<div>
 			
 			<div>
-				<form name="searchForm" id="searchForm">
-					
-										
-					<div class="searchCategory">				
-						<label for="b_num">도서코드: </label>
-						<input type="text" name="b_num" id="b_num" placeholder="도서 코드를 입력하세요 "/>
-						<input type="button" name="searchBNum" id="searchBNum" value="검색" class="btn btn-info" />
-					</div>	
-					
-					<div class="searchCategory">
-						<label for="b_name">도서명: </label>
-						<input type="text" name="b_name" id="b_name" placeholder="도서제목을 입력하세요"/>
-						<input type="button" name="searchBName" id="searchBName" value="검색" class="btn btn-info"/>
-					</div>
-					
-					<div class="searchCategory">
-						<label for="stk_regdate">등록일자</label>
-						<input type="date" name="stk_regdate" id="stk_regdate" />
-						<input type="button" name="searchStkRegdate" id="searchStkRegdate" value="검색" class="btn btn-info"/>
-					</div>
-					
-					<div class="searchCategory">
-						<label for="catetwo_num">도서 카테고리</label>
-						<select name="catetwo_num" id="catetwo_num">
-							<option value="1">프로그래밍 언어</option>
-							<option value="2">OS/데이터베이스</option>
-							<option value="3">웹프로그래밍</option>
-							<option value="4">컴퓨터 입문/활용</option>
-							<option value="5">네크워크/해킹/데이터베이스</option>
-							<option value="6">IT 전문서</option>
-							<option value="7">컴퓨터 수험서</option>
-							<option value="8">웹/컴퓨터/입문 활용</option>
-						</select>
-						<input type="button" name="searchStkCate" id="searchStkCate" value="검색" class="btn btn-info"/>
-					</div>
-					
-				</form>
-				
+				<div id="searchArea">
+					<form name="searchForm" id="searchForm">
+						<div class="searchCategory">				
+							<label for="b_num">도서코드: </label>
+							<input type="text" name="b_num" id="b_num" placeholder="도서 코드를 입력하세요 "/>
+							<input type="button" name="searchBNum" id="searchBNum" value="검색" class="btn btn-info" />
+						</div>	
+						
+						<div class="searchCategory">
+							<label for="b_name">도서명: </label>
+							<input type="text" name="b_name" id="b_name" placeholder="도서제목을 입력하세요"/>
+							<input type="button" name="searchBName" id="searchBName" value="검색" class="btn btn-info"/>
+						</div>
+						
+						<div class="searchCategory">
+							<label for="stk_regdate">등록일자</label>
+							<input type="date" name="stk_regdate" id="stk_regdate" />
+							<input type="button" name="searchStkRegdate" id="searchStkRegdate" value="검색" class="btn btn-info"/>
+						</div>
+						
+						<div class="searchCategory">
+							<label for="catetwo_num">도서 카테고리</label>
+							<select name="catetwo_num" id="catetwo_num">
+								<option value="1">프로그래밍 언어</option>
+								<option value="2">OS/데이터베이스</option>
+								<option value="3">웹프로그래밍</option>
+								<option value="4">컴퓨터 입문/활용</option>
+								<option value="5">네크워크/해킹/데이터베이스</option>
+								<option value="6">IT 전문서</option>
+								<option value="7">컴퓨터 수험서</option>
+								<option value="8">웹/컴퓨터/입문 활용</option>
+							</select>
+							<input type="button" name="searchStkCate" id="searchStkCate" value="검색" class="btn btn-info"/>
+						</div>
+					</form>
+				</div>
 			<%--
 			=================================================================
 			
 			-----------책 목록 화면의 테이블을 위한 쿼리문------------------------------
 			
-			-----관리자명 제외 불러오는 쿼리---------------------
+			----------------stock_list view 생성------------------------------
+			create view stock_list as 
 			select stock.stk_incp, book.b_name, book.b_author, stock.stk_qty, 
 			stock.stk_salp, book.cateone_num, book.catetwo_num,stock.adm_num, 
             to_char (stock.stk_regdate, 'YYYY-MM-DD HH24:mm:ss') as stk_regdate
 			from book
 			inner join stock
 			on book.b_num=stock.stk_incp;
-            
+			------------------------------------------------------------------
+			
+			
+			-----도서재고 현황 테이블을 위한 정보를 불러오는 쿼리--------------------------------------------------
+			select stock_list.stk_incp, stock_list.b_name, stock_list.b_author, 
+			stock_list.stk_qty, stock_list.stk_salp, stock_list.cateone_num, stock_list.catetwo_num,
+			stock_list.stk_regdate, admin.adm_name
+			from stock_list
+			inner join admin
+			on 
+			admin.adm_num=stock_list.adm_num order by stk_incp;
+            -----------------------------------------------------------------------------------------
 
 			------------------------------------------------------------------
 			
@@ -298,12 +324,13 @@
 			---------검색기능을 위한 쿼리문 ----------------------------------------
 			
 			----도서번호 검색----------------------------------------------------
-			select stock.stk_incp, book.b_name, book.b_author, stock.stk_qty, 
-			stock.stk_salp, book.catetwo_num,  book.cateone_num, stock.adm_num, 
-			stock.stk_regdate 
-			from book
-			inner join stock
-			on book.b_num=stock.stk_incp where stock.stk_incp like ?;
+			select stock_list.stk_incp, stock_list.b_name, stock_list.b_author, 
+			stock_list.stk_qty, stock_list.stk_salp, stock_list.cateone_num, stock_list.catetwo_num,
+			stock_list.stk_regdate, admin.adm_name
+			from stock_list
+			inner join admin
+			on 
+			admin.adm_num=stock_list.adm_num where stk_incp like ? order by stk_incp;
 			------------------------------------------------------------------
 			
 			
@@ -381,45 +408,86 @@
 					    	<th>작가</th>
 					    	<th>재고수량</th>
 					    	<th>입고가격</th>
-					    	<th>분류</th>
-					    	<th>카테고리</th>
+					    	<th>대분류</th>
+					    	<th>소분류</th>
 					    	<th>등록자(관리자)명</th>
 					    	<th>등록일자</th>
 					 	</tr>
 				    </thead>
 				    
+				    
+				    
 				    <tbody>
 				    	<c:choose>
 				    		<c:when test="${not empty stockList }">
 						     	<c:forEach var="book" items="${stockList}" varStatus="status" >
+						     	
+						     	<%-- 도서 대분류 및 소분류명을 변환해주는 jstl 함수 --%>							    		
+							    		<c:choose>
+							    			<c:when test="${book.cateone_num == 1}">
+							    				<c:set var="cateOne" scope="session" value="일반도서"/>		
+							    			</c:when>
+							    			<c:otherwise>
+							    				<c:set var="cateOne" scope="session" value="ebook"/>
+							    			</c:otherwise>
+							    		</c:choose>
+						     	
+						     <%-- 도서 소분류코드 번호를 변환해주는 jstl 함수  --%>
+							    		<c:choose>
+							    			<c:when test="${book.catetwo_num == 1}">
+							    				<c:set var="cateTwo" scope="session" value="프로그래밍 언어"/>
+							    			</c:when>
+							    			<c:when test="${book.catetwo_num == 2}">
+							    				<c:set var="cateTwo" scope="session" value="OS/데이터베이스"/>
+							    			</c:when>
+							    			<c:when test="${book.catetwo_num == 3}">
+							    				<c:set var="cateTwo" scope="session" value="웹프로그래밍"/>
+							    			</c:when>
+							    			<c:when test="${book.catetwo_num == 4}">
+							    				<c:set var="cateTwo" scope="session" value="컴퓨터 입문/활용"/>
+							    			</c:when>
+							    			<c:when test="${book.catetwo_num == 5}">
+							    				<c:set var="cateTwo" scope="session" value="네트워크/해킹/데이터베이스"/>
+							    			</c:when>
+							    			<c:when test="${book.catetwo_num == 6}">
+							    				<c:set var="cateTwo" scope="session" value="IT 전문서"/>
+							    			</c:when>
+							    			<c:when test="${book.catetwo_num == 7}">
+							    				<c:set var="cateTwo" scope="session" value="컴퓨터 수험서"/>
+							    			</c:when>
+							    			<c:otherwise>
+							    				<c:set var="cateTwo" scope="session" value="웹/컴퓨터/입문 활용"/>
+							    			</c:otherwise>
+							    		</c:choose>	
+						     
 							    	<tr data-num="${book.stk_incp}">
 							    		<td> ${book.stk_incp}</td>
 							    		<td class="stkDetail">${book.b_name}</td>
 							    		<td>${book.b_author }</td>
 							    		<td>${book.stk_qty} 권</td>
 							    		<td>${book.stk_salp}</td>
-							    		<td>${book.cateone_num }</td>
-							    		<td>${book.catetwo_num }</td>
-							    		<td>${book.adm_num}</td>
+							    		
+							    		<%-- <td>${book.cateone_num }</td> --%>
+							    		<td>${cateOne}</td>
+							    		
+							    		
+							    		
+							    		<%-- <td>${book.catetwo_num }</td> --%>
+							    		<td>${cateTwo}</td>
+							    		<td>${book.adm_name}</td>
 							    		<td>${book.stk_regdate}</td>
 							    		<%--><td><input type="button" id="stkDetail" name="stkDetail" value="도서상세보기"/></td>  --%>
-							    		<td><button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg" >도서 상세정보</button></td>
 							    	</tr>
 							    	</c:forEach>
 							   </c:when> 	
 				    	</c:choose>
 				    </tbody>
 				  </table>
-		</div>
+			</div>
 	 	</div>
 	</div>
 	<hr>	
 	
-	
-	<!-- 도서 상세보기 Modal 부분 -->
-	
-	<!-- Large modal -->
-
 	
 	<%--
 		--------------------재고 도서 상세 정보를 위한 쿼리문----------------------------------------------------------
@@ -441,18 +509,6 @@
 		
 	 --%>
 		
-	
-		<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-lg">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h1 class="modal-header" id="exampleModalLongTitle">도서 정보</h1>
-					</div>
-					<img src="/resources/bookimg/1/2/122-listcover.jpg" class="bookStockImg"/>
-				</div>
-			</div>
-		</div>
-
 	
    </body>
 </html>

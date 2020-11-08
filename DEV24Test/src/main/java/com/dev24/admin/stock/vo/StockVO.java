@@ -13,4 +13,5 @@ public class StockVO {
 	private int cateone_num=0;
 	private int adm_num=0;
 	private String stk_regdate="";
+	private String adm_name="";
 }
