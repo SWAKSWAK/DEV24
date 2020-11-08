@@ -358,8 +358,7 @@
 				<button type="button" class="btn text-right selectedBuyBtn" name="buyBtn" >구매</button>
 			</div>
 		</div>
-			<h1 id="listTitle"></h1>
-			<div class="listWrap">
+			<h1 id="listTitle"></h1> 
 					<c:choose>
 						<c:when test="${ not empty bookList }">
 							<c:forEach var="bl" items="${ bookList }">
