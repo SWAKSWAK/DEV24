@@ -21,21 +21,42 @@
 		on 
 		admin.adm_num=stock_list.adm_num 
 		
-		<!-- 검색기능 추가
+		<!-- 검색기능 추가  -->
 		
 		<where>
-			<if test="catetwo_num=='1'">
-				<![CDATA[ ]]
+			<if test="search=='b_name'">
+				<![CDATA[ upper(b_name) LIKE '%' || upper(#{keyword}) || '%' ]]>
 			</if>
+			<if test="search=='b_author'">
+				<![CDATA[ upper(b_author) LIKE '%' || upper(#{keyword}) || '%']]>
+			</if>
+			<if test="search=='stk_incp'">
+				<![CDATA[ stk_incp LIKE '%' || #{keyword} || '%']]>
+			</if>
+			
+			<if test="category=='pl'"> catetwo_num=1</if>
+			<if test="category=='osdb'"> catetwo_num=2</if>
+			<if test="category=='webp'"> catetwo_num=3</if>
+			<if test="category=='com'"> catetwo_num=4</if>
+			<if test="category=='net'"> catetwo_num=5</if>
+			<if test="category=='it'"> catetwo_num=6</if>
+			<if test="category=='compt'"> catetwo_num=7</if>
+			<if test="category=='webc'"> catetwo_num=8</if>
+			
 		</where>
-		 -->
-		 
 		order by stk_incp
 	</select> 
 	
 	
 	<select id="stockBInfoList" parameterType="book" resultType="book">
 		select b_num, b_name, b_author, b_pub from book order by b_num
+	</select>
+	
+	
+	<select id="getStockDetail" parameterType="stockdetail" resultType="stockdetail">
+		select b_num as stk_incp, b_name, b_date, b_author, b_pub, b_price, cateone_num, catetwo_num, listcover_imgurl
+		from stock_book_info 
+		where b_num= #{stk_incp}
 	</select>
 
 </mapper>

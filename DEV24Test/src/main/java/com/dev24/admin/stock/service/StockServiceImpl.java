@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dev24.admin.stock.dao.StockDAO;
+import com.dev24.admin.stock.vo.StockDetailVO;
 import com.dev24.admin.stock.vo.StockVO;
 import com.dev24.client.book.vo.BookVO;
 
@@ -30,6 +31,13 @@ public class StockServiceImpl implements StockService {
 		List<BookVO> list =null;
 		list = stockdao.stockBInfoList(bvo);
 		return list;
+	}
+
+	@Override
+	public StockDetailVO getStockDetail(StockDetailVO sdvo) {
+		StockDetailVO detail = null;
+		detail = stockdao.getStockDetail(sdvo);
+		return detail;
 	}
 
 }

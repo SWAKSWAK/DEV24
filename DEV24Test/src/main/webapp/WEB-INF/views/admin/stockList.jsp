@@ -88,7 +88,7 @@
 	    			 
 	    		 else{
 	    			 $.ajax({
-	    				url:"../jsp/stockAdmin.jsp", 
+	    				url: "/admin/stockAdmin.jsp", 
 	    				type: "post",
 	    				data: {
 	    					b_num : $("#b_bum").val(), 
@@ -105,12 +105,45 @@
 	    	  });
 	    	  
 	    	 
+
+				/*검색 대상이 변경될 때마다 처리 이번트*/
+				$("#searchData").change(function(){
+					if($("#search").val() == "all"){
+						$("#keyword").val("전체 데이터 조회 합니다.");
+					}else if ($("#search").val()!="all"){
+						$("keyword").val();
+						$("#keyword").focus();
+					}
+				});
 	    	  
-	    	  //도서 상세 정보 버튼을 클릭시 도서코드를 전달해주는 구문
+	    	  /*검색 버튼 클릭시 처리 이번트*/
+	    	  
+	    	  	//도서명, 작가, 도서코드 검색버튼
+				$("#searchData").click(function(){
+					if($("#search").val()!="all"){
+						if(!chkSubmit("#keyword", "검색어를")) return;
+					}
+					goPage();
+				});
+	    	  
+	    	  //도서 카테고리 검색 버튼
+	    	  $("#searchStkCate").click(function(){
+	    		 goCate(); 
+	    	  });
+	    	  
+	    	  
+	    	  
+	    	  //도서 제목을 클릭시 도서코드를 전달해주는 구문
 	    	  $(".stkDetail").click(function(){
 	    		 var stockcode= $(this).parents("tr").attr("data-num");
 	    		 $("#stk_incp").val(stockcode);
-	    		 console.log("도서 코드= "+ stockcode);
+	    		 console.log("도서 코드= "+ $("#stk_incp").val());
+	    		 
+	    		 $("#detailForm").attr({
+						"method":"get", 
+						"action":"/admin/stockDetail"
+					});
+					$("#detailForm").submit()
 	    	  });
 	    	  
 	    	  $(".stkbInfo").click(function(){
@@ -120,6 +153,24 @@
 	    	  });
 	    	  
 	      });
+	      
+	      /*검색 버튼을 위한 함수*/
+	      function goPage(){
+				$("#searchForm").attr({
+					"method":"get", 
+					"action":"/admin/stockList"
+				});
+				$("#searchForm").submit();
+			}
+			
+	      /*책 소분류별 검색버튼을 위한 함수*/
+	      function goCate(){
+	    	  $("#categorySearch").attr({
+					"method":"get", 
+					"action":"/admin/stockList"
+				});
+				$("#categorySearch").submit();
+	      }
       	
 	      
 	     
@@ -128,8 +179,10 @@
       
       <style type="text/css">
 			.panel-body{background-color: white;}     
-			#b_num, #b_name, #catetwo_num, #stk_regdate {height:33px;}
+			#keyword, #search, #searchTerm, #searchData, #searchTerm, #category, #stk_regdate {height:33px;}
+			
 			.searchCategory{padding:15px; float:left;}
+			
 			#table{ padding:10px;}
 			
 			.bookStockImg{
@@ -149,8 +202,8 @@
          	}
 			  
 			#searchArea{
-			marign:30px;
-			float:right; 
+			margin:10px;
+			/*float:right;*/ 
 			} 
 			
 			td{ text-align: left;}
@@ -166,7 +219,7 @@
 		</form>
    		
 		<!-- model form -->
-		<h1 id="title"> 재고등록 페이지</h1>
+		<h1 id="title"> 재고관리 페이지</h1>
 		
 		<div class="row">
 			<div class="col-sm-5">
@@ -244,44 +297,66 @@
 		
 		 <!-- 여기서부터가 우리가 입력할 body 부분 시작. 재고 리스트를 여기에 출력 -->
 		<div>
-			
 			<div>
+			<%-- 검색기능 시작 --%>
 				<div id="searchArea">
 					<form name="searchForm" id="searchForm">
-						<div class="searchCategory">				
-							<label for="b_num">도서코드: </label>
+						<div class="searchCategory">
+						<label>검색조건</label>
+						<select id="search" name="search">
+							<option value="all">전체</option>
+							<option value="b_name">도서명</option>
+							<option value="b_author">작가</option>
+							<option value="stk_incp">도서코드</option>
+						</select>
+						<input type="text" id="keyword" name="keyword" placeholder="검색어/코드 를 입력해주세요"/>
+						<button type="button" class="btn btn-primary btn-sm" id="searchData">검색</button>
+						
+										
+						<%-- 	<label for="b_num">도서코드: </label>
 							<input type="text" name="b_num" id="b_num" placeholder="도서 코드를 입력하세요 "/>
 							<input type="button" name="searchBNum" id="searchBNum" value="검색" class="btn btn-info" />
-						</div>	
-						
-						<div class="searchCategory">
+							
+							
 							<label for="b_name">도서명: </label>
 							<input type="text" name="b_name" id="b_name" placeholder="도서제목을 입력하세요"/>
-							<input type="button" name="searchBName" id="searchBName" value="검색" class="btn btn-info"/>
+							<input type="button" name="searchBName" id="searchBName" value="검색" class="btn btn-info"/> --%>
 						</div>
 						
+						
+						</form>
+					
+						<form id="categorySearch" name="categorySearch">
+							<div class="searchCategory">
+								<label for="category">도서 카테고리</label>
+								<select name="category" id="category">
+									<option value="pl">프로그래밍 언어</option>
+									<option value="osdb">OS/데이터베이스</option>
+									<option value="webp">웹프로그래밍</option>
+									<option value="com">컴퓨터 입문/활용</option>
+									<option value="net">네크워크/해킹/데이터베이스</option>
+									<option value="it">IT 전문서</option>
+									<option value="compt">컴퓨터 수험서</option>
+									<option value="webc">웹/컴퓨터/입문 활용</option>
+								</select>
+							<%-- 	<input type="hidden" name="categorynumber" id="categorynumber"/> --%>
+								<input type="button" name="searchStkCate" id="searchStkCate" value="검색" class="btn btn-info"/>
+							</div>
+						</form>
+						
+					<form id="dateSearch" name="dateSearch">
 						<div class="searchCategory">
 							<label for="stk_regdate">등록일자</label>
 							<input type="date" name="stk_regdate" id="stk_regdate" />
 							<input type="button" name="searchStkRegdate" id="searchStkRegdate" value="검색" class="btn btn-info"/>
 						</div>
-						
-						<div class="searchCategory">
-							<label for="catetwo_num">도서 카테고리</label>
-							<select name="catetwo_num" id="catetwo_num">
-								<option value="1">프로그래밍 언어</option>
-								<option value="2">OS/데이터베이스</option>
-								<option value="3">웹프로그래밍</option>
-								<option value="4">컴퓨터 입문/활용</option>
-								<option value="5">네크워크/해킹/데이터베이스</option>
-								<option value="6">IT 전문서</option>
-								<option value="7">컴퓨터 수험서</option>
-								<option value="8">웹/컴퓨터/입문 활용</option>
-							</select>
-							<input type="button" name="searchStkCate" id="searchStkCate" value="검색" class="btn btn-info"/>
-						</div>
 					</form>
+					
 				</div>
+				<%-- 검색기능 끝 --%>
+				
+				
+				
 			<%--
 			=================================================================
 			
@@ -310,11 +385,6 @@
 
 			------------------------------------------------------------------
 			
-			-------------관리자 테이블에서 관리자명을 불러오는 쿼리-----------------------
-			select adm_name from admin
-			inner join stock 
-			on stock.adm_num=admin.adm_num;
-			------------------------------------------------------------------
 			
 			==================================================================
 			
@@ -398,6 +468,7 @@
 			<%-- 도서 재고 현황 테이블 시작 --%>
 			<br/>
 			<br/>
+			<br/>
 		<div id="table">			 			 
 			<h1>도서재고 현황</h1>
 				<table class="table table-striped">
@@ -479,7 +550,10 @@
 							    		<%--><td><input type="button" id="stkDetail" name="stkDetail" value="도서상세보기"/></td>  --%>
 							    	</tr>
 							    	</c:forEach>
-							   </c:when> 	
+							   </c:when>
+							   <c:otherwise>
+							   		<td colspan="9" class="text-center">현재 재고가 없는 책입니다.</td>
+							   </c:otherwise> 	
 				    	</c:choose>
 				    </tbody>
 				  </table>

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.dev24.admin.stock.vo.StockDetailVO;
 import com.dev24.admin.stock.vo.StockVO;
 
 import lombok.Setter;
@@ -21,12 +22,20 @@ public class StockMapperTest {
 	@Setter(onMethod_=@Autowired)
 	private StockDAO stockDAO;
 	
-	@Test
+	/*@Test
 	public void testStockList() {
 		StockVO svo = new StockVO();
 		List <StockVO> list = stockDAO.stockList(svo);
 		for(StockVO vo : list) {
 			log.info(vo);
 		}
+	}*/
+	
+	@Test
+	public void testStockDetail() {
+		StockDetailVO sdvo = new StockDetailVO();
+		sdvo.setStk_incp(3);
+		StockDetailVO stock = stockDAO.getStockDetail(sdvo);
+		log.info(stock.toString());
 	}
 }

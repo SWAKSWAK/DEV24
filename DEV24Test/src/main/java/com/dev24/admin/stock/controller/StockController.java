@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.dev24.admin.stock.service.StockService;
+import com.dev24.admin.stock.vo.StockDetailVO;
 import com.dev24.admin.stock.vo.StockVO;
 import com.dev24.client.book.vo.BookVO;
 
@@ -31,5 +32,15 @@ public class StockController {
 		model.addAttribute("stockList", stockList);
 		model.addAttribute("bookstockList", bookstockList);
 		return "admin/stockList";
+	}
+	
+	@RequestMapping(value="/stockDetail", method=RequestMethod.GET)
+	public String getStockDetail(@ModelAttribute("data") StockDetailVO sdvo, Model model) {
+		log.info("stockDetail 호출 성공!");
+		
+		StockDetailVO stockDetail = stockService.getStockDetail(sdvo);
+		model.addAttribute("stockDetail", stockDetail);
+		
+		return "admin/stockDetail";
 	}
 }

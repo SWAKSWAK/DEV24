@@ -5,10 +5,10 @@
  * common.js를 만들 때는 주석을 잘 달아 놓으면 다른 개발자가 사용시 편리하다.
  ********************************************************/
  function chkSubmit(item, msg) {
-	if(item.val().replace(/\s/g,"")=="") {
+	if($(item).val().replace(/\s/g,"")=="") {
 		alert(msg+" 입력해주세요.");
-		item.val("");
-		item.focus();
+		$(item).val("");
+		$(item).focus();
 		return false; //값이 비어있을 경우 false를 반환
 	} else {
 		return true;
