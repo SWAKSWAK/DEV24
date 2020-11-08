@@ -39,5 +39,12 @@ public class CartServiceImpl implements CartService {
 		result = cartDAO.cartDelete(crt_num);
 		return result;
 	}
+	
+	//장바구니 추가
+	@Override
+	public int addToCart(CartVO cvo) {
+		int result = cartDAO.addToCart(cvo);
+		return result;
+	}
 
 }

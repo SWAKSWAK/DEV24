@@ -3,6 +3,8 @@ package com.dev24.client.cart.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,12 +14,15 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.dev24.client.cart.service.CartService;
 import com.dev24.client.cart.vo.CartVO;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -80,6 +85,25 @@ public class CartController {
 		log.info("crt_num : "+crt_num);
 		int result = cartService.cartDelete(crt_num);
 		return result==1 ? new ResponseEntity<String>("SUCCESS", HttpStatus.OK) : new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	
+	@PostMapping(value="/addToCart", produces = {MediaType.APPLICATION_JSON_VALUE, "application/text; charset=utf8"})
+	public ResponseEntity<String> addToCart(@RequestBody CartVO cvo, HttpSession session) {
+		log.info("addToCart 호출 성공");
+		
+		ResponseEntity<String> returnResult;
+		int c_num = Integer.parseInt((String)session.getAttribute("c_num"));
+		
+		cvo.setC_num(c_num);
+		int result = cartService.addToCart(cvo);
+		
+		if (result == 1) {
+			returnResult = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+		}else {
+			returnResult = new ResponseEntity<String>("FAIL", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return returnResult;
 	}
 	
 	
