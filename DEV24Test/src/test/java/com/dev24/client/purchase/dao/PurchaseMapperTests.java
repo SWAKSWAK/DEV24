@@ -26,18 +26,18 @@ public class PurchaseMapperTests {
 	
 	/*@Test
 	public void testPurchaseForm() {
-		log.info("purchaseForm ¸Þ¼­µå È£Ãâ");
+		log.info("purchaseForm ï¿½Þ¼ï¿½ï¿½ï¿½ È£ï¿½ï¿½");
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		map.put("crt_num", 6);
 		List<CartVO> result = purchaseDAO.purchaseForm(map);
 		for(CartVO vo : result) {
-			log.info("purchaseForm °á°ú : "+ vo);			
+			log.info("purchaseForm ï¿½ï¿½ï¿½ : "+ vo);			
 		}
 	}*/
 	
-	@Test
-	public void testPurchaseInsert() {
-		log.info("purchaseInsert ¸Þ¼­µå È£Ãâ");
+	//@Test
+	/*public void testPurchaseInsert() {
+		log.info("purchaseInsert ï¿½Þ¼ï¿½ï¿½ï¿½ È£ï¿½ï¿½");
 		PurchaseVO pvo = new PurchaseVO();
 		pvo.setC_num(2);
 		pvo.setP_address("test");
@@ -50,6 +50,6 @@ public class PurchaseMapperTests {
 		pvo.setP_zipcode("test");
 		int result = purchaseDAO.purchaseInsert(pvo);
 		log.info(result);
-	}
+	}*/
 
 }

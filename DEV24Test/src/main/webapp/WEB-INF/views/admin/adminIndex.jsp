@@ -129,7 +129,7 @@
           <ul class="nav nav-sidebar">
             <li class="active"><a href="../jsp/booksAdmin.jsp">도서정보관리<span class="sr-only">(current)</span></a></li>
             <li><a href="/admin/stockList">재고관리 </a></li>
-            <li><a href="#">구매관리</a></li>
+            <li><a href="/admin/pdetailList">구매세부</a></li>
             <li><a href="../jsp/customerAdmin.jsp">회원관리</a></li>
           </ul>
           <ul class="nav nav-sidebar">
