@@ -25,6 +25,9 @@
 		
 		<link rel="stylesheet" href="/resources/include/css/style_cart.css">
     	<style>
+    		.contentHeaderCartMsg > *{
+    			display: inline-block;
+    		}
     		.contentWrap {
     			text-align: center;
     		}
@@ -187,7 +190,6 @@
 			}
 			.cartMsg{
 				font-size: 12px;
-				/* display: block !important; */
 				position: absolute;
 				background-color: #dcd6f7;
 				width: 210px;
@@ -227,8 +229,7 @@
 			.contentFooter {
 				margin-bottom: 150px;
 			}
-			
-			.
+
     	</style>
 		
 		<script src="/resources/include/js/jquery-1.12.4.min.js"></script>
@@ -255,34 +256,69 @@
     					return;
     				}
     				
+    				var cvo = new Object();
+    				var cvoList = new Array();
+    				
     				var dataNum = $(this).parents(".bookWrap").attr("data-num");
     				var crt_qty = $(".crt_qty:eq("+index+")").val();
     				var b_price = $(".b_price:eq("+index+")").html();
-    				var data = JSON.stringify({
-    					"b_num" : dataNum,
-    					"crt_qty" : crt_qty,
-    					"crt_price" : b_price * crt_qty
-    				});
-    				$.ajax({
-    					url : "/cart/addToCart",
-    					type : "POST",
-    					data : data,
-    					headers : {
-    						"Content-Type" : "application/json",
-    						"X-HTTP-Method-Override" : "POST"
-    					},
-    					dataType : "text",
-    					success: function (result) {
-    						if (result == 'SUCCESS'){
-	    						$(".cartMsg:eq("+index+")").css("display", "block");
-    						}
-						},
-						error : function(){
-							alert("장바구니 담기에 실패했습니다.\n관리자에게 문의해 주세요.")
-						}
-    				});
+    				
+    				cvo.b_num = dataNum;
+    				cvo.crt_qty = crt_qty;
+    				cvo.crt_price = b_price * crt_qty;
+    				console.log(cvo.b_price);
+    				
+    				cvoList.push(cvo);
+    				
+    				var data = JSON.stringify(cvoList);
+    				
+    				var result = addCart(data);
+    				if(result == 'SUCCESS')
+						$(".cartMsg:eq("+index+")").css("display", "block");
+    				
     				
     			});
+    			
+    			$(".selectedCartBtn").click(function(){
+    				var isQtyZero = false;
+    				var cvoList = new Array();
+    				var cvo;
+    				if ($(".checkbox:checked").length == 0){
+						alert("선택된 도서가 없습니다.");
+						return;
+					}
+    				$(".checkbox:checked").each(function(idx){
+    					cvo = new Object();
+    					
+        				var index = $(".checkbox").index(this);
+    					var dataNum = $(this).parents(".bookWrap").attr("data-num");
+        				var crt_qty = $(".crt_qty:eq("+index+")").val();
+        				var b_price = $(".b_price:eq("+index+")").html();
+        				
+        				if (crt_qty < 1){
+    						alert("수량을 입력해 주세요.");
+    						isQtyZero = true;
+    						return;
+        				}
+        				
+    					cvo.b_num = dataNum;
+    					cvo.crt_qty = crt_qty;
+    					cvo.crt_price = b_price*crt_qty;
+    					
+    					console.log(cvo.toString());
+    					cvoList.push(cvo);
+    				});
+    				
+    				if(isQtyZero)
+    					return;
+
+					var cartJsonArr = JSON.stringify(cvoList);
+					console.log(cartJsonArr);
+    				var result = addCart(cartJsonArr);
+    				if(result == 'SUCCESS')
+						$(".contentHeaderCartMsg").css("display", "block");
+    			});
+    			
     			
     			$(".goCartBtn").click(function(){
     				location.href="/cart/cartList";
@@ -339,7 +375,32 @@
 					return false;
 				}
 				return true;
-			}
+			};
+			
+			function addCart(data){
+				var returnVal = "";
+				
+				$.ajax({
+					url : "/cart/addToCart",
+					type : "POST",
+					data : data,
+					async: false,
+					headers : {
+						"Content-Type" : "application/json",
+						"X-HTTP-Method-Override" : "POST"
+					},
+					dataType : "text",
+					success: function (result) {
+						returnVal = 'SUCCESS';
+					},
+					error : function(){
+						alert("장바구니 담기에 실패했습니다.\n관리자에게 문의해 주세요.");
+						returnVal = 'FAIL';
+					}
+				});
+				console.log(returnVal);
+				return returnVal;
+			};
     	</script>
 
 	</head>
@@ -357,8 +418,19 @@
 				<button type="button" class="btn text-right selectedCartBtn" name="cartBtn" >장바구니 담기</button>
 				<button type="button" class="btn text-right selectedBuyBtn" name="buyBtn" >구매</button>
 			</div>
+			<div class="contentHeaderCartMsg" style="display: none;">
+				<p class="cartMsgText">
+					<span class="cartMsgTextBold">상품이 장바구니에 담겼습니다.</span>
+					바로 확인하시겠습니까?
+				</p>
+				<div class="contentHeaderCartBtnWrap">
+					<button type="button" class="btn goCartBtn">예</button>
+					<button type="button" class="btn noCartBtn">아니오</button>
+				</div>	
+			</div>
 		</div>
-			<h1 id="listTitle"></h1> 
+			<h1 id="listTitle"></h1>
+			<div class="listWrap">
 					<c:choose>
 						<c:when test="${ not empty bookList }">
 							<c:forEach var="bl" items="${ bookList }">
@@ -414,7 +486,7 @@
 									</div>
 									<div class="btnWrap">
 										<div class="cntWrap">
-											<input type="number" value="0" class="crt_qty" min="0" max="99"/>
+											<input type="number" value="1" class="crt_qty" min="0" max="99"/>
 											<button type="button" class="upBtn" ><i class="fas fa-caret-up"></i></button>
 											<button type="button" class="downBtn" ><i class="fas fa-caret-down"></i></button>
 										</div>

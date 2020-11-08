@@ -2,6 +2,7 @@ package com.dev24.client.cart.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -18,11 +19,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dev24.client.cart.service.CartService;
 import com.dev24.client.cart.vo.CartVO;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -88,22 +88,42 @@ public class CartController {
 	}
 	
 	
-	@PostMapping(value="/addToCart", produces = {MediaType.APPLICATION_JSON_VALUE, "application/text; charset=utf8"})
-	public ResponseEntity<String> addToCart(@RequestBody CartVO cvo, HttpSession session) {
+	@PostMapping(value="/addToCart", produces = "text/plain; charset=utf8")
+	@ResponseBody
+	public String addToCart(@RequestBody List<Map<String, Object>> cartList, HttpSession session) {
+		
+		
 		log.info("addToCart 호출 성공");
 		
-		ResponseEntity<String> returnResult;
+		String returnStr = "";
 		int c_num = Integer.parseInt((String)session.getAttribute("c_num"));
+		CartVO cvo;
+		List<CartVO> cvoList = new ArrayList<CartVO>();
 		
-		cvo.setC_num(c_num);
-		int result = cartService.addToCart(cvo);
+		for (Map<String, Object> map : cartList) {
+			cvo = new CartVO();
+			
+			int b_num = Integer.parseInt(map.get("b_num")+"");
+			int crt_qty = Integer.parseInt(map.get("crt_qty")+"");
+			int crt_price = Integer.parseInt(map.get("crt_price")+"");
+			
+			cvo.setB_num(b_num);
+			cvo.setCrt_qty(crt_qty);
+			cvo.setCrt_price(crt_price);
+			cvo.setC_num(c_num);
+			
+			cvoList.add(cvo);
+		}
+		
+		 
+		int result = cartService.addToCart(cvoList);
 		
 		if (result == 1) {
-			returnResult = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+			returnStr = "SUCCESS";
 		}else {
-			returnResult = new ResponseEntity<String>("FAIL", HttpStatus.INTERNAL_SERVER_ERROR);
+			returnStr = "FAIL";
 		}
-		return returnResult;
+		return returnStr;
 	}
 	
 	

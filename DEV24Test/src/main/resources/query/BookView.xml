@@ -3,7 +3,7 @@
 <mapper namespace="com.dev24.client.book.dao.BookDAO">
 
 	
-	<select id="bookViewList" parameterType="list" resultType="bookView">
+	<select id="bookViewList" resultType="bookView">
 		SELECT
 			b_num, b_name, b_date, b_list, b_author,
 			b_pub, b_authorinfo, b_info, b_price,
