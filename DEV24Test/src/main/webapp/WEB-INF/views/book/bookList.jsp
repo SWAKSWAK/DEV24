@@ -23,29 +23,6 @@
 		<![endif]-->
 		
 		<link rel="stylesheet" href="/resources/include/css/style_cart.css">
-		<script src="/resources/include/js/jquery-1.12.4.min.js"></script>
-    	<script src="/resources/include/js/jquery-3.5.1.min.js"></script>
-    	<script>
-    		$(function() {
-    			$(".cartBtn").click(function(){
-    				
-    			});
-    			$(".butBtn").click(function(){
-    				
-    			});
-    			$(".bookWrap").not("btnWrap > *").click(function(){
-    				if ($(".listcoverWrap, ").find())
-    				var checkbox = $(this).find(".checkbox");
-    				if($(this).find(".checkbox").prop("checked") == true){
-    					checkbox.prop("checked",false);
-    					console.log("if");
-    				} else {
-    					checkbox.prop("checked",true);
-    					console.log("else");
-    				}
-    			});
-    		})
-    	</script>
     	<style>
     		.contentWrap {
     			text-align: center;
@@ -127,7 +104,7 @@
        			font-weight: bold;
        		}
        		.won {
-				color: #5A5A5B;
+				color: #959595;
        			font-size: 14px;
        			padding-top: 3px;
        		}
@@ -207,6 +184,32 @@
 				opacity: 0.8;
 				cursor: pointer;
 			}
+			.cartMsg{
+				font-size: 12px;
+				/* display: block !important; */
+				position: absolute;
+				background-color: #dcd6f7;
+				width: 210px;
+				border-radius: 4px;
+				padding: 5px;
+				box-sizing: border-box;
+			}
+			.cartMsgText{
+				color: #424874;
+				text-align: center;
+			}
+			.cartMsgTextBold {
+				font-weight: bold;
+			}
+			.cartBtnWrap {
+				text-align: center;
+			}
+			.goCartBtn, .noCartBtn {
+				background-color:#424874;
+				color: #dcd6f7;
+				width: 65px;
+			}
+			
 			.chkWrap {
 				display: inline-block;
 				height: 100%;
@@ -223,8 +226,118 @@
 			.contentFooter {
 				margin-bottom: 150px;
 			}
+			
 			.
     	</style>
+		
+		<script src="/resources/include/js/jquery-1.12.4.min.js"></script>
+    	<script src="/resources/include/js/jquery-3.5.1.min.js"></script>
+    	<script>
+    		$(function() {
+    			
+    			//수량 실시간 갑지 (1~99)
+    			$(".cntNum").on("propertychange change keyup paste input", function(){
+    				cntNumRange(this);
+    			});
+    			
+    			$(".cartBtn").click(function(){
+    				var index = $(".cartBtn").index(this);
+    				if(!cntNumRange(".cntNum:eq("+index+")")) return;
+    				/* if ($(".cntNum:eq("+index+")").val("", 0) == 0){
+    					alert("수량을 입력해 주세요.");
+    					$(".cntNum:eq("+index+")").val(0);
+    					return;
+    				} */
+    				if ($(".cntNum:eq("+index+")").val() == 0){
+    					alert("수량을 입력해 주세요.");
+    					$(".cntNum:eq("+index+")").val(0);
+    					return;
+    				}
+    				
+    				var dataNum = $(this).parents(".bookWrap").attr("data-num");
+    				var cntNum = $(this).parents(".cntNum").val();
+    				var data = JSON.stringify({
+    					b_num : dataNum
+    				});
+    				$.ajax({
+    					url : "/cart/addtoCart",
+    					type : "POST",
+    					data : data,
+    					headers : {
+    						"Content-Type" : "application/json",
+    						"X-HTTP-Method-Override" : "POST"
+    					},
+    					dataType : "text",
+    					success: function (result) {
+    						if (result == 1){
+	    						$(".cartMsg:eq("+index+")").css("display", "block");
+    						}
+						},
+						error : function(){
+							alert("장바구니 담기에 실패했습니다.\n관리자에게 문의해 주세요.")
+						}
+    				});
+    				
+    			});
+    			
+    			$(".goCartBtn").click(function(){
+    				location.href="/cart/cartList";
+    			});
+    			$(".noCartBtn").click(function(){
+    				$(this).parents(".cartMsg").css("display", "none");
+    			});
+    			
+    			$(".butBtn").click(function(){
+    				
+    			});
+    			
+    			$(".upBtn").click(function(){
+    				console.log("upBtn");
+    				var n = $(".upBtn").index(this);
+    				var cntNum = $(".cntNum:eq("+n+")");
+    				$(".cntNum:eq("+n+")").val(cntNum.val()*1 + 1);
+    				if (!cntNumRange(cntNum)) return;
+    			});
+
+    			$(".downBtn").click(function(){
+    				var n = $(".downBtn").index(this);
+    				var cntNum = $(".cntNum:eq("+n+")");
+    				$(".cntNum:eq("+n+")").val(cntNum.val()*1 - 1);
+    				if (!cntNumRange(cntNum)) return;
+    			});
+    			
+    			
+    			/* $(".bookWrap").click(function(){
+    				if ($(".listcoverWrap").find()){
+	    				var checkbox = $(this).find(".checkbox");
+	    				if($(this).find(".checkbox").prop("checked") == true){
+	    					checkbox.prop("checked",false);
+	    					console.log("if");
+	    				} else {
+	    					checkbox.prop("checked",true);
+	    					console.log("else");
+	    				}
+    				}
+    			}); */
+    		})
+    		
+    		//false : range에서 벗어남
+    		function cntNumRange(selector) {
+
+				if ($(selector).val() < 0) {
+					alert("수량은 1개부터 99개 까지 입력 가능합니다."); 
+					$(selector).val("0");
+					return false;
+				}
+				if ($(selector).val() > 99) {
+					alert("수량은 1개부터 99개 까지 입력 가능합니다."); 
+					$(selector).val("99");
+					return false;
+				}
+				return true;
+			}
+    	</script>
+
 	</head>
 	<body>
 		<div class="contentWrap">
@@ -294,14 +407,24 @@
 									</div>
 									<div class="btnWrap">
 										<div class="cntWrap">
-											<input type="number" readonly="readonly" value="0" class="cntNum" min="0"/>
+											<input type="number" value="0" class="cntNum" min="0" max="99"/>
 											<button type="button" class="upBtn" ><i class="fas fa-caret-up"></i></button>
 											<button type="button" class="downBtn" ><i class="fas fa-caret-down"></i></button>
 										</div>
 										<!-- <input type="number" class="number text-right" name="cartCnt" value="0" min="0"/> -->
 										
-										<button type="button" class="btn text-right cartBtn" name="cartBtn" >장바구니 담기</button>
-										<button type="button" class="btn text-right buyBtn" name="buyBtn" >구매</button>
+										<button type="button" class="btn text-right cartBtn">장바구니 담기</button>
+										<div class="cartMsg" style="display: none;">
+											<p class="cartMsgText">
+												<span class="cartMsgTextBold">상품이 장바구니에 담겼습니다.</span><br />
+												바로 확인하시겠습니까?
+											</p>
+											<div class="cartBtnWrap">
+												<button type="button" class="btn goCartBtn">예</button>
+												<button type="button" class="btn noCartBtn">아니오</button>
+											</div>											
+										</div>
+										<button type="button" class="btn text-right buyBtn">구매</button>
 										
 									</div>
 									<div class="chkWrap">
