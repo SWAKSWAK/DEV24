@@ -12,8 +12,10 @@
 			listcover_imgurl, detailcover_imgurl, detail_imgurl
 		FROM 
 			book_view
-		WHERE ROWNUM <![CDATA[<= 20]]>
-		ORDER BY b_num
+		ORDER BY 
+			b_num
+		LIMIT
+			#{startList}, #{listSize}
 	</select>
 	
 </mapper>
