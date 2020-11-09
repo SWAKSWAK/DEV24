@@ -8,7 +8,7 @@
            <nav>
 		      <ul id="gnb">
                 <li class="dropBox" id="book">
-                    <span>일반도서</span>
+                    <span><a href="/book">일반도서</a></span>
                     <ul class="dropmenu">
                       <li class=""><a href="#">프로그래밍 언어</a></li>
                       <li><a href="#">네트워크/해킹/보안</a></li>
