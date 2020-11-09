@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dev24.admin.purchase.dao.PurchaseDaoAdmin">
+	
+	<!-- 관리자 페이지 *** 구매관리 리스트 출력 -->
+	<select id="purchaseList" parameterType="adminPurchase" resultType="adminPurchase">
+		select p_num, c_num, c_id, p_pmethod, sales_price, to_char(p_buydate, 'YYYY-MM-DD') as p_buydate, pd_orderstate, isrefund
+		from admin_purchase_view
+		<where>
+			
+			<if test="date_start != ''">
+				<![CDATA[(to_char(p_buydate, 'YYYY-MM-DD') between #{date_start} and #{date_end}) ]]>
+				<if test="refundCheck != 'ALL'">
+					<![CDATA[AND (isRefund = #{refundCheck})]]>
+				
+					<if test="search=='p_num'">
+						<![CDATA[AND (p_num LIKE '%'||#{keyword}||'%')]]>
+					</if>
+					<if test="search=='c_id'">
+						<![CDATA[AND (c_id LIKE '%'||#{keyword}||'%')]]>
+					</if>
+					<if test="search=='p_pmethod'">
+						<![CDATA[AND (p_pmethod LIKE '%'||#{keyword}||'%')]]>
+					</if>
+					<if test="search=='pd_orderstate'">
+						<![CDATA[AND (pd_orderstate LIKE '%'||#{keyword}||'%')]]>
+					</if>
+				</if>
+				
+				<if test="refundCheck == 'ALL'">
+					<if test="search=='p_num'">
+						<![CDATA[AND (p_num LIKE '%'||#{keyword}||'%')]]>
+					</if>
+					<if test="search=='c_id'">
+						<![CDATA[AND (c_id LIKE '%'||#{keyword}||'%')]]>
+					</if>
+					<if test="search=='p_pmethod'">
+						<![CDATA[AND (p_pmethod LIKE '%'||#{keyword}||'%')]]>
+					</if>
+					<if test="search=='pd_orderstate'">
+						<![CDATA[AND (pd_orderstate LIKE '%'||#{keyword}||'%')]]>
+					</if>
+				</if>
+			</if>
+			
+		</where>
+		order by p_num
+	</select>
+
+</mapper>

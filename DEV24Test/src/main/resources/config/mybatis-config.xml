@@ -10,5 +10,7 @@
 		<typeAlias type="com.dev24.client.bookimg.vo.BookImgVO" alias="bookImg"/>
 		<typeAlias type="com.dev24.client.customer.vo.CustomerVO" alias="customer"/>
 		<typeAlias type="com.dev24.admin.stock.vo.StockVO" alias="stock"/>
+		<typeAlias type="com.dev24.admin.purchase.vo.AdminPurchaseViewVO" alias="adminPurchase"/>
+		<typeAlias type="com.dev24.admin.pdetail.vo.AdminPdetailViewVO" alias="adminPdetail"/>
 	</typeAliases>
 </configuration>

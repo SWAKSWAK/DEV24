@@ -1,4 +1,4 @@
-package com.dev24.admin;
+package com.dev24.main.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +15,7 @@ public class MainController {
 		return "index";
 	}
 	
-	@RequestMapping(value="/admin", method=RequestMethod.GET)
+	@RequestMapping(value="/adminIndex", method=RequestMethod.GET)
 	public String adminIndex() {
 		return "/admin/adminIndex";
 	}

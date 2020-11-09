@@ -51,8 +51,16 @@
     display: block;
 }
 
-#f_searchDate input[type="radio"]{
+input[type="radio"]{
     margin-left: 10px;
+}
+
+.form-group{
+	margin-right: 20px;
+}
+
+.form-group:last-child{
+	margin-right: 0px;
 }
 
 #btnArea{
@@ -84,6 +92,10 @@
 
 table td, table th{
     vertical-align: middle !important;
+}
+
+.table tbody tr:hover{
+	background-color: rgba(0,0,0,0.2) !important;
 }
 
 /*********************************down*********************************/

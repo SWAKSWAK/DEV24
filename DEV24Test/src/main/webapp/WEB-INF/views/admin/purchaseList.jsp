@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -18,13 +19,124 @@
 		
 		<link rel="stylesheet" type="text/css" href="/resources/include/dist/css/bootstrap.min.css" />
          <link rel="stylesheet" type="text/css" href="/resources/include/dist/css/bootstrap-theme.css" />
-          <link rel="stylesheet" href="css/adminPage.css">
+          <link rel="stylesheet" href="/resources/include/css/adminPage.css">
    		 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
     
          <script type="text/javascript" src="/resources/include/js/jquery-1.12.4.min.js"></script>
+         <script type="text/javascript" src="/resources/include/js/jquery-3.5.1.min.js"></script>
          <script type="text/javascript" src="/resources/include/dist/js/bootstrap.js"></script>
          <script type="text/javascript" src="/resources/include/js/common.js"></script>
-		
+         
+		<script type="text/javascript">
+			$(function(){
+				/* 금액 콤마 찍기 */
+				var l = $(".listTable").find("tbody tr").length;
+				var sum = 0;
+				for(var i=0; i<l; i++){
+					var price = $(".listTable").find("tbody tr").eq(i).find("td.td_price").text();
+					sum += parseInt(price);
+					$(".listTable").find("tbody tr").eq(i).find("td.td_price").text(addComma(price));
+				}
+    			$("#total_count").text(addComma(l)); // 전체 구매 횟수
+				$("#total_price").text(addComma(sum)); // 전체 금액
+				
+				
+				/* 메인으로 이동 버튼 */
+				$("#goMainBtn").click(function(){
+					location.href="/adminIndex";
+				});
+				
+				
+				
+				/* 검색할 날짜 기본값 설정 */
+				var today = new Date(); // 오늘날짜
+				var year = today.getFullYear();
+				var month = String(today.getMonth()+1);
+				var day = String(today.getDate()); // 일
+				
+				if(month.length == 1){ 
+					  month = "0" + month; 
+				} 
+				if(day.length == 1){ 
+				  day = "0" + day; 
+				}
+				
+				var fullToday = year + "-" + month + "-" + day;
+				console.log(fullToday);
+				
+				/* 키워드 검색 시 */
+				$("#searchTextBtn").click(function(){
+					if($("#search").val()!="all"){ // 검색 조건이 '전체'일 때 빼고는 유효성 체크!
+						if(!chkData("#keyword", "검색어를"))return;
+					}
+					goPage(); // 검색 완료 후 purchaseList 페이지 재호출하는 함수
+				});
+				
+				
+				/* 검색 후 검색대상과 검색단어 출력 */
+				//console.log("keyword : ${data.keyword}");
+				//console.log("search : ${data.search}");
+				if("${data.keyword}" != ""){
+					$("#keyword").val("${data.keyword}");
+					$("#search").val("${data.search}");
+				}
+				if("${data.refundCheck}" != ""){
+					$("input[value='${data.refundCheck}']").prop("checked", true);
+				}
+				if("${data.date_start}" != ""){
+					$("input[name='date_start']").val("${data.date_start}");
+				}else{
+					$("#date_start").val(fullToday);
+				}
+				if("${data.date_end}" != ""){
+					$("input[name='date_end']").val("${data.date_end}");
+				}else{
+					$("#date_end").val(fullToday);
+				}
+
+				console.log("${data.date_start}");
+				console.log("${data.date_end}");
+				/* 입력양식 enter제거 */
+				$("#keyword").bind("keydown", function(event){
+					if(event.keyCode == 13){
+						event.preventDefault();
+					}
+				});
+				
+				/* 검색 조건 '전체'로 했을 때 */
+				$("#search").change(function(){
+					if($("#search").val()=='all'){
+						$("#keyword").val("전체 데이터 조회");
+					}else if($("#search").val()!='all'){
+						$("#keyword").val("");
+						$("#keyword").focus();
+					}
+				});
+				
+				
+				/* 자세히 버튼 눌렀을 때 해당 구매의 구매상세 페이지로 이동 */
+				$(".adminPdetailBtn").click(function(){
+					var p_num = $(this).parents("tr").find("td.td_pnum").text();
+					location.href="/admin/pdetailList/"+p_num;
+				});
+				
+			}); // 최상위 종료
+			
+			
+			/* 검색을 위한 실질적인 처리 함수 */
+			function goPage(){
+				if($("#search").val()=="all"){
+					$("#keyword").val("");
+				}
+				
+				$("#f_searchText").attr({
+					"method" : "get",
+					"action" : "/admin/purchaseList"
+				});
+				$("#f_searchText").submit();
+			}
+			
+		</script>
 
 	</head>
 	<body>
@@ -37,32 +149,28 @@
 	                    <form name="f_searchText" id="f_searchText" class="form-inline">
 	                        <div class="form-group">
 	                            <label>검색조건</label>
-	                            <select name="ad_search" id="ad_search" class="form-control">
+	                            <select name="search" id="search" class="form-control">
 	                                <option value="all">전체</option>
 	                                <option value="p_num">구매번호</option>
 	                                <option value="c_id">주문자ID</option>
 	                                <option value="p_pmethod">결제방법</option>
-	                                <option value="p_orderdate">주문상태</option>
+	                                <option value="pd_orderstate">주문상태</option>
 	                            </select>
 	                            <input type="text" name="keyword" id="keyword" class="form-control" />
-	                            <input type="button" id="boardSearchBtn" value="검색" class="btn btn-default" />
 	                        </div>
-	                    </form>
-	                    <form name="f_searchDate" id="f_searchDate" class="form-inline">
+	                    
 	                        <div class="form-group">
 	                            <label>구매날짜</label>
-	                            <input type="date" name="p_buydate" id="p_buydate_start" class="form-control" /> ~ 
-	                            <input type="date" name="p_buydate" id="p_buydate_end" class="form-control" />
-	                            <input type="button" id="boardSearchBtn" value="검색" class="btn btn-default" />
+	                            <input type="date" name="date_start" id="date_start" class="form-control" /> ~ 
+	                            <input type="date" name="date_end" id="date_end" class="form-control" />
 	                        </div>
-	                    </form>
-	                    <form name="f_searchDate" id="f_searchDate" class="form-inline">
 	                        <div class="form-group">
 	                            <label>환불내역</label>
 	                            <input type="radio" name="refundCheck" id="refundYes" value="Y" />Y
 	                            <input type="radio" name="refundCheck" id="refundNo" value="N" />N
-	                            <input type="button" id="boardSearchBtn" value="검색" class="btn btn-default" />
+	                            <input type="radio" name="refundCheck" id="refundAll" value="ALL" checked="checked" />ALL
 	                        </div>
+	                        <input type="button" id="searchTextBtn" value="검색" class="btn btn-default" />
 	                    </form>
 	                </div><!-- admin_search -->
 	
@@ -88,229 +196,29 @@
 	                    </tr>
 	                </thead>
 	                <tbody>
-	                    <tr>
-	                        <td>purchase2</td>
-	                        <td>hong12</td>
-	                        <td>계좌이체</td>
-	                        <td>40,000</td>
-	                        <td>2020-05-06</td>
-	                        <td>구매확정</td>
-	                        <td>Y</td>
-	                        <td>
-	                            <input type="button" id="adminPdetailBtn" value="자세히" class="btn btn-default" />
-	                        </td>
-	                    </tr>
-	                    <tr>
-	                        <td>purchase1</td>
-	                        <td>hong12</td>
-	                        <td>계좌이체</td>
-	                        <td>20,000</td>
-	                        <td>2020-05-16</td>
-	                        <td>배송예정</td>
-	                        <td>N</td>
-	                        <td>
-	                            <input type="button" id="adminPdetailBtn" value="자세히" class="btn btn-default" />
-	                        </td>
-	                    </tr>
-	                     <tr>
-	                        <td>purchase2</td>
-	                        <td>hong12</td>
-	                        <td>계좌이체</td>
-	                        <td>40,000</td>
-	                        <td>2020-05-06</td>
-	                        <td>구매확정</td>
-	                        <td>Y</td>
-	                        <td>
-	                            <input type="button" id="adminPdetailBtn" value="자세히" class="btn btn-default" />
-	                        </td>
-	                    </tr> <tr>
-	                        <td>purchase2</td>
-	                        <td>hong12</td>
-	                        <td>계좌이체</td>
-	                        <td>40,000</td>
-	                        <td>2020-05-06</td>
-	                        <td>구매확정</td>
-	                        <td>Y</td>
-	                        <td>
-	                            <input type="button" id="adminPdetailBtn" value="자세히" class="btn btn-default" />
-	                        </td>
-	                    </tr> <tr>
-	                        <td>purchase2</td>
-	                        <td>hong12</td>
-	                        <td>계좌이체</td>
-	                        <td>40,000</td>
-	                        <td>2020-05-06</td>
-	                        <td>구매확정</td>
-	                        <td>Y</td>
-	                        <td>
-	                            <input type="button" id="adminPdetailBtn" value="자세히" class="btn btn-default" />
-	                        </td>
-	                    </tr> <tr>
-	                        <td>purchase2</td>
-	                        <td>hong12</td>
-	                        <td>계좌이체</td>
-	                        <td>40,000</td>
-	                        <td>2020-05-06</td>
-	                        <td>구매확정</td>
-	                        <td>Y</td>
-	                        <td>
-	                            <input type="button" id="adminPdetailBtn" value="자세히" class="btn btn-default" />
-	                        </td>
-	                    </tr> <tr>
-	                        <td>purchase2</td>
-	                        <td>hong12</td>
-	                        <td>계좌이체</td>
-	                        <td>40,000</td>
-	                        <td>2020-05-06</td>
-	                        <td>구매확정</td>
-	                        <td>Y</td>
-	                        <td>
-	                            <input type="button" id="adminPdetailBtn" value="자세히" class="btn btn-default" />
-	                        </td>
-	                    </tr> <tr>
-	                        <td>purchase2</td>
-	                        <td>hong12</td>
-	                        <td>계좌이체</td>
-	                        <td>40,000</td>
-	                        <td>2020-05-06</td>
-	                        <td>구매확정</td>
-	                        <td>Y</td>
-	                        <td>
-	                            <input type="button" id="adminPdetailBtn" value="자세히" class="btn btn-default" />
-	                        </td>
-	                    </tr> <tr>
-	                        <td>purchase2</td>
-	                        <td>hong12</td>
-	                        <td>계좌이체</td>
-	                        <td>40,000</td>
-	                        <td>2020-05-06</td>
-	                        <td>구매확정</td>
-	                        <td>Y</td>
-	                        <td>
-	                            <input type="button" id="adminPdetailBtn" value="자세히" class="btn btn-default" />
-	                        </td>
-	                    </tr> <tr>
-	                        <td>purchase2</td>
-	                        <td>hong12</td>
-	                        <td>계좌이체</td>
-	                        <td>40,000</td>
-	                        <td>2020-05-06</td>
-	                        <td>구매확정</td>
-	                        <td>Y</td>
-	                        <td>
-	                            <input type="button" id="adminPdetailBtn" value="자세히" class="btn btn-default" />
-	                        </td>
-	                    </tr> <tr>
-	                        <td>purchase2</td>
-	                        <td>hong12</td>
-	                        <td>계좌이체</td>
-	                        <td>40,000</td>
-	                        <td>2020-05-06</td>
-	                        <td>구매확정</td>
-	                        <td>Y</td>
-	                        <td>
-	                            <input type="button" id="adminPdetailBtn" value="자세히" class="btn btn-default" />
-	                        </td>
-	                    </tr> <tr>
-	                        <td>purchase2</td>
-	                        <td>hong12</td>
-	                        <td>계좌이체</td>
-	                        <td>40,000</td>
-	                        <td>2020-05-06</td>
-	                        <td>구매확정</td>
-	                        <td>Y</td>
-	                        <td>
-	                            <input type="button" id="adminPdetailBtn" value="자세히" class="btn btn-default" />
-	                        </td>
-	                    </tr> <tr>
-	                        <td>purchase2</td>
-	                        <td>hong12</td>
-	                        <td>계좌이체</td>
-	                        <td>40,000</td>
-	                        <td>2020-05-06</td>
-	                        <td>구매확정</td>
-	                        <td>Y</td>
-	                        <td>
-	                            <input type="button" id="adminPdetailBtn" value="자세히" class="btn btn-default" />
-	                        </td>
-	                    </tr> <tr>
-	                        <td>purchase2</td>
-	                        <td>hong12</td>
-	                        <td>계좌이체</td>
-	                        <td>40,000</td>
-	                        <td>2020-05-06</td>
-	                        <td>구매확정</td>
-	                        <td>Y</td>
-	                        <td>
-	                            <input type="button" id="adminPdetailBtn" value="자세히" class="btn btn-default" />
-	                        </td>
-	                    </tr> <tr>
-	                        <td>purchase2</td>
-	                        <td>hong12</td>
-	                        <td>계좌이체</td>
-	                        <td>40,000</td>
-	                        <td>2020-05-06</td>
-	                        <td>구매확정</td>
-	                        <td>Y</td>
-	                        <td>
-	                            <input type="button" id="adminPdetailBtn" value="자세히" class="btn btn-default" />
-	                        </td>
-	                    </tr> <tr>
-	                        <td>purchase2</td>
-	                        <td>hong12</td>
-	                        <td>계좌이체</td>
-	                        <td>40,000</td>
-	                        <td>2020-05-06</td>
-	                        <td>구매확정</td>
-	                        <td>Y</td>
-	                        <td>
-	                            <input type="button" id="adminPdetailBtn" value="자세히" class="btn btn-default" />
-	                        </td>
-	                    </tr> <tr>
-	                        <td>purchase2</td>
-	                        <td>hong12</td>
-	                        <td>계좌이체</td>
-	                        <td>40,000</td>
-	                        <td>2020-05-06</td>
-	                        <td>구매확정</td>
-	                        <td>Y</td>
-	                        <td>
-	                            <input type="button" id="adminPdetailBtn" value="자세히" class="btn btn-default" />
-	                        </td>
-	                    </tr> <tr>
-	                        <td>purchase2</td>
-	                        <td>hong12</td>
-	                        <td>계좌이체</td>
-	                        <td>40,000</td>
-	                        <td>2020-05-06</td>
-	                        <td>구매확정</td>
-	                        <td>Y</td>
-	                        <td>
-	                            <input type="button" id="adminPdetailBtn" value="자세히" class="btn btn-default" />
-	                        </td>
-	                    </tr> <tr>
-	                        <td>purchase2</td>
-	                        <td>hong12</td>
-	                        <td>계좌이체</td>
-	                        <td>40,000</td>
-	                        <td>2020-05-06</td>
-	                        <td>구매확정</td>
-	                        <td>Y</td>
-	                        <td>
-	                            <input type="button" id="adminPdetailBtn" value="자세히" class="btn btn-default" />
-	                        </td>
-	                    </tr> <tr>
-	                        <td>purchase2</td>
-	                        <td>hong12</td>
-	                        <td>계좌이체</td>
-	                        <td>40,000</td>
-	                        <td>2020-05-06</td>
-	                        <td>구매확정</td>
-	                        <td>Y</td>
-	                        <td>
-	                            <input type="button" id="adminPdetailBtn" value="자세히" class="btn btn-default" />
-	                        </td>
-	                    </tr>
+	                	<c:choose>
+	                		<c:when test="${not empty list}">
+	                			<c:forEach var="list" items="${list}">
+	                				<tr>
+				                        <td class="td_pnum">${list.p_num}</td>
+				                        <td>${list.c_id}</td>
+				                        <td>${list.p_pmethod}</td>
+				                        <td class="td_price">${list.sales_price}</td>
+				                        <td>${list.p_buydate}</td>
+				                        <td>${list.pd_orderstate}</td>
+				                        <td>${list.isRefund}</td>
+				                        <td>
+				                            <input type="button" value="자세히" class="btn btn-default adminPdetailBtn" />
+				                        </td>
+				                    </tr>
+	                			</c:forEach>
+	                		</c:when>
+	                		<c:otherwise>
+	                			<tr>
+	                				<td colspan="8">내역이 없습니다.</td>
+	                			</tr>
+	                		</c:otherwise>
+	                	</c:choose>
 	                </tbody>
 	            </table>
 	        
@@ -319,8 +227,8 @@
 	        
 	        <div id="down">
 	            <div class="center">
-	                <label>총 구매횟수 : <strong>2회</strong></label>
-	                <label>총 결제금액 : <strong>60,000원</strong></label>
+	                <label>총 구매횟수 : <strong><span id="total_count"></span>회</strong></label>
+	                <label>총 결제금액 : <strong><span id="total_price"></span>원</strong></label>
 	            </div><!--center-->
 	        </div><!--down-->
 	    </div><!--container-->
