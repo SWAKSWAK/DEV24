@@ -11,6 +11,7 @@
 		<typeAlias type="com.dev24.client.customer.vo.CustomerVO" alias="customer"/>
 		<typeAlias type="com.dev24.admin.stock.vo.StockVO" alias="stock"/>
 		<typeAlias type="com.dev24.admin.stock.vo.StockDetailVO" alias="stockdetail"/>
+		<typeAlias type="com.dev24.admin.admin.vo.AdminVO" alias="stockdetail"/>
 		<typeAlias type="com.dev24.common.pagination.Pagination" alias="page"/>
 	</typeAliases>
 </configuration>
