@@ -19,7 +19,11 @@
 		<table  class="table table-striped">
 			<tr>
 				<td>아이디</td>
-				<td></td>
+				<td><input type="text" name="adm_id" id="adm_id"></td>
+			</tr>
+			<tr>
+				<td>비밀번호</td>
+				<td><input type="password" name="adm_passwd" id="adm_password"></td>
 			</tr>
 		</table>
 	</body>
