@@ -40,4 +40,13 @@ public class StockServiceImpl implements StockService {
 		return detail;
 	}
 
+	@Override
+	public int stockInsert(StockVO svo) {
+		int result =0;
+		result = stockdao.stockInsert(svo);
+		return result;
+	}
+	
+	
+
 }

@@ -26,7 +26,7 @@ public class StockController {
 	
 	@RequestMapping(value="/stockList", method=RequestMethod.GET)
 	public String stockList(@ModelAttribute("data") StockVO svo, BookVO bvo, Model model) {
-		log.info("stockList 호출 성공!");
+		log.info("stockList �샇異� �꽦怨�!");
 		List<StockVO> stockList = stockService.stockList(svo);
 		List<BookVO> bookstockList = stockService.stockBInfoList(bvo);
 		model.addAttribute("stockList", stockList);
@@ -36,11 +36,27 @@ public class StockController {
 	
 	@RequestMapping(value="/stockDetail", method=RequestMethod.GET)
 	public String getStockDetail(@ModelAttribute("data") StockDetailVO sdvo, Model model) {
-		log.info("stockDetail 호출 성공!");
+		log.info("stockDetail �샇異� �꽦怨�!");
 		
 		StockDetailVO stockDetail = stockService.getStockDetail(sdvo);
 		model.addAttribute("stockDetail", stockDetail);
 		
 		return "admin/stockDetail";
+	}
+	
+	@RequestMapping(value="/stockInsert", method=RequestMethod.POST)
+	public String stockInsert(StockVO svo, Model model) {
+		log.info("boardInsert 호출 성공");
+		
+		int result =0;
+		String url="";
+		
+		result=stockService.stockInsert(svo);
+		if(result==1) {
+			url="/admin/stockList";
+		}else {
+			url="/admin/stockList";
+		}
+		return "redirect:"+url;
 	}
 }

@@ -11,6 +11,7 @@ public class StockVO extends CommonVO{
 	private int stk_incp=0;
 	private String b_name="";
 	private String b_author="";
+	private int b_num=0;
 	private int stk_qty=0;
 	private int stk_salp=0;
 	private int catetwo_num=0;

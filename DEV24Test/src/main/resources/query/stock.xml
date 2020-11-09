@@ -58,5 +58,11 @@
 		from stock_book_info 
 		where b_num= #{stk_incp}
 	</select>
+	
+	<insert id="stockInsert" parameterType="stock">
+		insert into stock 
+		(stk_incp, stk_qty, stk_salp, adm_num, b_num)
+		values(#{stk_incp}, #{stk_qty}, #{stk_salp}, #{adm_num}, #{b_num})
+	</insert>
 
 </mapper>

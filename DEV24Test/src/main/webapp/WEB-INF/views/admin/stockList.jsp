@@ -81,6 +81,7 @@
 	    		 console.log($("#stk_qty").val()); 
 	    		 console.log($("#adm_num").val()); 
 	    		 console.log($("#stk_salp").val()); 
+	    		 var stk_incp = $("#b_num").val();
 	    		 
 	    		 if(!chkSubmit("#stk_qty", "입고수량을")) return;
 	    		 else if (!chkSubmit("#stk_salp", "판매가격을"))return;
@@ -88,17 +89,19 @@
 	    			 
 	    		 else{
 	    			 $.ajax({
-	    				url: "/admin/stockAdmin.jsp", 
+	    				url: "/admin/stockInsert", 
 	    				type: "post",
 	    				data: {
-	    					b_num : $("#b_bum").val(), 
+	    					b_num : $("#b_num").val(), 
 	    					stk_qty: $("#stk_qty").val(), 
 	    					adm_num: $("#adm_num").val(), 
-	    					stk_salp: $("#stk_salp").val()
+	    					stk_salp: $("#stk_salp").val(), 
+	    					stk_incp:stk_incp
 	    				},
 	    				dataType:"text",
 	    				success:function(){
-	    					alert("데이터 전송 완료");
+	    					alert("재고 입려 완료");
+	    					location.href="/admin/stockList";
 	    				},
 	    			 });
 	    		 }

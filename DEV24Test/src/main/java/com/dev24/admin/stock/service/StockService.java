@@ -11,4 +11,5 @@ public interface StockService {
 	public List<StockVO> stockList(StockVO svo);
 	public List<BookVO> stockBInfoList(BookVO bvo);
 	public StockDetailVO getStockDetail(StockDetailVO sdvo);
+	public int stockInsert(StockVO svo);
 }
