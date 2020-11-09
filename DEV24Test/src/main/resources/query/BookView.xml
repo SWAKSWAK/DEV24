@@ -14,8 +14,8 @@
 			book_view
 		ORDER BY 
 			b_num
-		LIMIT
-			#{startList}, #{listSize}
+		<!-- LIMIT
+			#{startList}, #{listSize} -->
 	</select>
 	
 </mapper>
