@@ -14,7 +14,7 @@ public class PdetailServiceImpl implements PdetailService {
 	/*
 	 * @Setter(onMethod_ = @Autowired) private PdetailDAO pdetailDAO;
 	 * 
-	 * // ±¸¸Å »ó¼¼ »ğÀÔ
+	 * // êµ¬ë§¤ ìƒì„¸ ì‚½ì…
 	 * 
 	 * @Override public int pdetailInsert(PdetailVO pdvo) { int result = 0; result=
 	 * pdetailDAO.pdetailInsert(pdvo); return result; }

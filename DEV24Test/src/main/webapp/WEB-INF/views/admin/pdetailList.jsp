@@ -18,7 +18,7 @@
 		
 		<link rel="stylesheet" type="text/css" href="/resources/include/dist/css/bootstrap.min.css" />
          <link rel="stylesheet" type="text/css" href="/resources/include/dist/css/bootstrap-theme.css" />
-          <link rel="stylesheet" href="css/adminPage.css">
+          <link rel="stylesheet" href="/resources/include/css/adminPage.css">
    		 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
     
          <script type="text/javascript" src="/resources/include/js/jquery-1.12.4.min.js"></script>
@@ -27,11 +27,10 @@
 		<script>
     
 	        $(function(){
-	            
+	        	// 환불 건의 결제 금액 식별(글자색 빨간색)
 	            var rows = $(".listTable > tbody > tr").length;
-	            console.log(rows);
-	            
-	            // 환불 건의 결제 금액 식별
+	            //console.log(rows);
+
 	            for(var i=0; i<rows; i++){
 	                var tr = $(".listTable > tbody > tr").eq(i);
 	                var td = tr.find(".td_refund").text();
@@ -40,8 +39,17 @@
 	                    tr.find(".td_price").css("color","red").text("-"+text);
 	                }
 	            }
-	           
-	  
+	            
+	            /* 메인으로 이동 버튼 */
+				$("#goMainBtn").click(function(){
+					location.href="/adminIndex";
+				});
+	            
+	            /* 구매관리 페이지로 이동 버튼 */
+				$("#goPurchaseBtn").click(function(){
+					location.href="/admin/purchaseList";
+				});
+	            
 	        })
 	    </script>
 		
@@ -68,16 +76,13 @@
 	                                <option value="rf_num">환불번호</option>
 	                            </select>
 	                            <input type="text" name="keyword" id="keyword" class="form-control" />
-	                            <input type="button" id="boardSearchBtn" value="검색" class="btn btn-default" />
 	                        </div>
-	                    </form>
-	                    <form name="f_searchDate" id="f_searchDate" class="form-inline">
 	                        <div class="form-group">
 	                            <label>구매날짜</label>
-	                            <input type="date" name="p_buydate" id="p_buydate_start" class="form-control" /> ~ 
-	                            <input type="date" name="p_buydate" id="p_buydate_end" class="form-control" />
-	                            <input type="button" id="boardSearchBtn" value="검색" class="btn btn-default" />
+	                            <input type="date" name="p_buydate_start" id="p_buydate_start" class="form-control" /> ~ 
+	                            <input type="date" name="p_buydate_end" id="p_buydate_end" class="form-control" />
 	                        </div>
+	                        <input type="button" id="searchTextBtn" value="검색" class="btn btn-default" />
 	                    </form>
 	                </div><!-- admin_search -->
 	

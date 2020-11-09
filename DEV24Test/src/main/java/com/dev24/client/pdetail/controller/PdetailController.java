@@ -28,11 +28,11 @@ public class PdetailController {
 	}*/
 	
 	/****************************
-	 * ±¸¸Å»ó¼¼ Å×ÀÌºí »ğÀÔ
+	 * êµ¬ë§¤ìƒì„¸ í…Œì´ë¸” ì‚½ì…
 	 * **********/
 	//@RequestMapping(value="/pdetailInsert", method= {RequestMethod.POST})
 	/*public String pdetailInsert(PdetailVO pdvo) {
-		log.info("pdetailInsert È£Ãâ ¼º°ø");
+		log.info("pdetailInsert í˜¸ì¶œ ì„±ê³µ");
 		
 		int result = 0;
 		result = pdetailService.pdetailInsert(pdvo);

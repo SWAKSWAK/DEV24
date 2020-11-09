@@ -21,4 +21,11 @@ public class CommonVO {
 	
 	/*stock.jsp 에서 중분류별 검색으로 활용하기 위해 선언된 변수 stock.xml 에서 매핑을 하기 위해 있다*/
 	private String category="";
+	
+	
+	private String date_start = ""; // 기본값 sysdate
+	private String date_end = ""; // 기본값sysdate
+	
+	private String refundCheck = ""; // 환불여부 기준
+	
 }
