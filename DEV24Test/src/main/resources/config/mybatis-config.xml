@@ -16,5 +16,6 @@
 		<typeAlias type="com.dev24.admin.pdetail.vo.AdminPdetailViewVO" alias="adminPdetail"/>
 		<typeAlias type="com.dev24.common.pagination.Pagination" alias="pagination"/>
 		<typeAlias type="com.dev24.client.refund.vo.RefundVO" alias="refund" />
+		<typeAlias type="com.dev24.client.freeboard.vo.FreeBoardVO" alias="freeboard" />
 	</typeAliases>
 </configuration>
