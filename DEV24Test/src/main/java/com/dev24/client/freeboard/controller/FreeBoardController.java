@@ -35,6 +35,11 @@ public class FreeBoardController {
 	@RequestMapping(value="/freeboardDetail")
 	public String freeBoardDetail(@ModelAttribute("data") FreeBoardVO fbvo, Model model) {
 		
+		FreeBoardVO freeDetail = freeboardService.freeboardDetail(fbvo);
+		freeboardService.updateFBReadCount(fbvo.getFb_num());
+		model.addAttribute("freeDetail", freeDetail);
+		
+
 		return "freeboard/freeboardDetail";
 		
 	}

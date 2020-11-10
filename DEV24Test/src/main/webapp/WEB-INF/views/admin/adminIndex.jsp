@@ -254,7 +254,7 @@
               <span class="text-muted">총 게시글 수</span>
             </div>
             
-            
+            <br>
             
           <%--   <img data-src="holder.js/300x200?text=Add \n line breaks \n anywhere.">  --%>
           
