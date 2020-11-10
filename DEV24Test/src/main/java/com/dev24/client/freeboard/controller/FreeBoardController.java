@@ -31,4 +31,11 @@ public class FreeBoardController {
 		
 		return "freeboard/freeboardList";
 	}
+	
+	@RequestMapping(value="/freeboardDetail")
+	public String freeBoardDetail(@ModelAttribute("data") FreeBoardVO fbvo, Model model) {
+		
+		return "freeboard/freeboardDetail";
+		
+	}
 }

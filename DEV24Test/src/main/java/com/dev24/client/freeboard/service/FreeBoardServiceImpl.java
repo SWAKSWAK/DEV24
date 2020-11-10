@@ -30,4 +30,14 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 		return result;
 	}
 
+	@Override
+	public FreeBoardVO freeboardDetail(FreeBoardVO fbvo) {
+		FreeBoardVO detail = null;
+		detail = freeboardDAO.freeboardDetail(fbvo);
+		if(detail!=null) {
+			detail.setFb_content(detail.getFb_content().toString().replaceAll("\n", "<br>"));
+		}
+		return detail;
+	}
+
 }
