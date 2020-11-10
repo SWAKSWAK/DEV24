@@ -1,11 +1,14 @@
 package com.dev24.admin.admin.service;
 
+
+import com.dev24.admin.admin.vo.AdminIndexVO;
+
 public interface AdminIndexService {
-	public int purchaseCount();
-	public int stockCount();
-	public int refundCount();
-	public int saleCount();
-	public int reviewCount();
-	public int neCount();
-	public int fbCount();
+	public AdminIndexVO adminIndex();
+	public int pCount();
+	public int stkCount();
+	public int rfCount();
+	public int salCount();
+	public int revCount();
+	public int qnaCount();
 }

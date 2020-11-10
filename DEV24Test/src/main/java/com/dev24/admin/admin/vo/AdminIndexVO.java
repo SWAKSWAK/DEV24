@@ -9,6 +9,7 @@ public class AdminIndexVO {
 	private int rf_cnt=0;
 	private int sal_cnt=0;
 	private int rev_cnt=0;
+	private int qna_cnt=0;
 	private int ne_cnt=0;
 	private int fb_cnt=0;
 }
