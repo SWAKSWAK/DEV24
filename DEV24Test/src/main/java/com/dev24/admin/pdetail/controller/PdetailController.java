@@ -32,7 +32,8 @@ public class PdetailController {
 		try {
 			List<AdminPdetailViewVO> plist = pdetailService.pdetailList(pdvo);
 			int result = 0;
-			result = plist.get(0).getP_num(); // 구매 상세는 무조건 구매가 일어나야 발생하는 정보로 list값이 null이 될 수 없음
+			//result = plist.get(0).getP_num(); // 구매 상세는 무조건 구매가 일어나야 발생하는 정보로 list값이 null이 될 수 없음
+			result = pdvo.getP_num();
 			model.addAttribute("p_num", result);
 			model.addAttribute("plist", plist);
 
@@ -45,17 +46,5 @@ public class PdetailController {
 	}
 	
 	
-	/** 구매번호 출력 */
-	@ResponseBody
-	//@RequestMapping(value="/admin/pdetail/{p_num}", produces= {MediaType.TEXT_PLAIN_VALUE})
-	@RequestMapping(value="/purchaseNumber", produces= {MediaType.TEXT_PLAIN_VALUE})
-	public String getPurchaseNumber(@RequestParam("p_num") int p_num) {
-		log.info("getPurchaseNumber 호출 성공");
-		int result = 0;
-		result = pdetailService.getPurchaseNumber(p_num);
-		
-		// 컨트롤러의 반환값은 뷰 정보로 간주하기 때문에 일반 문자임을 아래와 같이 표기해야함!
-		return String.valueOf(result);
-	}
 	
 }

@@ -23,13 +23,7 @@ public class PdetailServiceImpl implements PdetailService {
 		return list;
 	}
 
-	// 구매번호 출력
-	@Override
-	public int getPurchaseNumber(int p_num) {
-		int result = 0;
-		result = pdetailDaoAdmin.getPurchaseNumber(p_num);
-		return result;
-	}
+
 
 
 }
