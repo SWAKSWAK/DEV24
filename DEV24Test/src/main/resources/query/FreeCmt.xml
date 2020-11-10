@@ -3,7 +3,13 @@
 <mapper namespace="com.dev24.client.freeboard.freecmt.dao.FreeCmtDAO">
 
 	<select id="freeCmtList" parameterType="freecmt" resultType="freecmt">
-	
+		select freecmt.fbc_num, customer.c_nickname as fbc_author, freecmt.fbc_content, freecmt.fbc_writeday, 
+		freecmt.fb_num, freecmt.c_num 
+		from freecmt 
+		inner join 
+		customer 
+		on freecmt.c_num=customer.c_num
+		where fb_num=#{fb_num}
 	</select>
 	
 </mapper>

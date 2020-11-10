@@ -100,13 +100,13 @@
 				<th>이 미 지</th>
 				<td colspan="3"><img src="${detail.fb_img_url}"/></td>
 			</tr>
-			
 		</table>
+		<jsp:include page="freecmt.jsp"/>
     </div> <!-- content_wrap -->
     
     <!--*************************************************************-->
     
-    <jsp:include page="freecmt.jsp"></jsp:include>
+   
     
 </body>
 </html>
