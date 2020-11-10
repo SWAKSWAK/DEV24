@@ -32,4 +32,12 @@
 		select count(q_num) from qna where trunc(q_writedate) = TO_DATE(sysdate,'yy/mm/dd')
 	</select>
 	
+	<select id="neCount" resultType="int">
+		select count(ne_num) from neboard where trunc(ne_date) = TO_DATE(sysdate,'yy/mm/dd')
+	</select>
+	
+	<select id="fbCount" resultType="int">
+		select count(fb_num) from freeboard where trunc(fb_writeday) = TO_DATE(sysdate,'yy/mm/dd')
+	</select>
+	
 </mapper>

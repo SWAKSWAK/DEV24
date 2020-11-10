@@ -10,4 +10,6 @@ public interface AdminIndexDAO {
 	public int salCount();
 	public int revCount();
 	public int qnaCount();
+	public int neCount();
+	public int fbCount();
 }

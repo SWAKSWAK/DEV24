@@ -30,6 +30,8 @@ public class AdminIndexServiceImpl implements AdminIndexService {
 		adminIndex.setSal_cnt(salCount());
 		adminIndex.setRev_cnt(revCount());
 		adminIndex.setQna_cnt(qnaCount());
+		adminIndex.setNe_cnt(neCount());
+		adminIndex.setFb_cnt(fbCount());
 		return adminIndex;
 	}
 
@@ -68,8 +70,18 @@ public class AdminIndexServiceImpl implements AdminIndexService {
 		return result;
 	}
 
-	
-	
+	@Override
+	public int neCount() {
+		int result = 0;
+		result = adminIndexDAO.neCount();
+		return result;
+	}
 
+	@Override
+	public int fbCount() {
+		int result = 0;
+		result = adminIndexDAO.fbCount();
+		return result;
+	}
 
 }
