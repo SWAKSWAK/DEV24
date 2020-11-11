@@ -29,34 +29,34 @@
     <script type="text/javascript" src="/resources/include/js/holder.js"></script>
     
     <script> 
-    	Holder.addTheme("blue", {
-    	  bg: "#0099ff",
-    	  fg: "#ffffff",
-    	  size: 20,
-    	  font: "Helvetica Neue, Helvetica, Arial, sans-serif",
-    	  fontweight: "normal"
-    	});
-    	
-    	Holder.addTheme("green", {
-      	  bg: "#00cc99",
-      	  fg: "#ffffff",
-      	  size: 20,
-      	  font: "Helvetica Neue, Helvetica, Arial, sans-serif",
-      	  fontweight: "normal"
-      	});
-    	
-    	Holder.addTheme("red", {
-       	 bg: "#ff0000",
-       	 fg: "#ffffff",
-       	 size: 20,
-       	 font: "Helvetica Neue, Helvetica, Arial, sans-serif",
-       	 fontweight: "normal"
+       Holder.addTheme("blue", {
+         bg: "#0099ff",
+         fg: "#ffffff",
+         size: 20,
+         font: "Helvetica Neue, Helvetica, Arial, sans-serif",
+         fontweight: "normal"
+       });
+       
+       Holder.addTheme("green", {
+           bg: "#00cc99",
+           fg: "#ffffff",
+           size: 20,
+           font: "Helvetica Neue, Helvetica, Arial, sans-serif",
+           fontweight: "normal"
+         });
+       
+       Holder.addTheme("red", {
+           bg: "#ff0000",
+           fg: "#ffffff",
+           size: 20,
+           font: "Helvetica Neue, Helvetica, Arial, sans-serif",
+           fontweight: "normal"
         });
-    	
-    	
-    	<%--
-    	
-    	#content_wrap {
+       
+       
+       <%--
+       
+       #content_wrap {
             height: 1000px;
             text-align: left;
         }
@@ -67,35 +67,35 @@
             width: 200px;
             height: 200px;
             background-color: blue;
-			/*text-align: center;*/
+         /*text-align: center;*/
             font-size: 1.7rem;
             color: antiquewhite;
             vertical-align: middle;
         }
-    	
-    	<div id="content_wrap">
+       
+       <div id="content_wrap">
         <div id="circle">
             <br/><br/>가즈아~~~!!
         </div>
         
-   		 </div>
-    	
-    	--%>
-    	
-    	
-	</script>
+          </div>
+       
+       --%>
+       
+       
+   </script>
     
     <script type="text/javascript">
-    	$(function(){
-    		var date = new Date();
-        	$(".date").text(date);	
-        	$("#today").text(date);	
-    	});
-    	
+       $(function(){
+          var date = new Date();
+           $(".date").text(date);   
+           $("#today").text(date);   
+       });
+       
     </script>
     
     <style type="text/css">
-    	  .circle{
+         .circle{
             display: inline-block;
             border: 1px solid;
             border-radius: 150.1px !important;
@@ -130,7 +130,7 @@
             <li class="active"><a href="../jsp/booksAdmin.jsp">도서정보관리<span class="sr-only">(current)</span></a></li>
             <li><a href="/admin/stockList">재고관리 </a></li>
             <li><a href="/admin/pdetailList">구매세부</a></li>
-            <li><a href="../jsp/customerAdmin.jsp">회원관리</a></li>
+            <li><a href="/admin/0/0">도서목록</a></li>
           </ul>
           <ul class="nav nav-sidebar">
             <li><a href="../jsp/faqAdmin.jsp">FAQ 관리페이지</a></li>
@@ -146,13 +146,13 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h1 class="page-header"> 오늘의 DEV24 현황 </h1> <h3 class="date"></h3>
         <br/>
-		
-		<%--도서 관련 dashboard 윗부분 --%>
+      
+      <%--도서 관련 dashboard 윗부분 --%>
           <div class="row placeholders">
             <div class="col-xs-6 col-sm-3 placeholder">
-            <c:set var="stock" scope="session" value="43981"/>
+            <c:set var="admin" value="${adminIndex}"/>
             <%-- select sum(stk_qty) from stock; --%>
-              <img data-src="holder.js/200x200?theme=blue&text=${stock}권" class="img-responsive" alt="Generic placeholder thumbnail">
+              <img data-src="holder.js/200x200?theme=blue&text=${adminIndex.stk_cnt}권" class="img-responsive" alt="Generic placeholder thumbnail">
               <h4>재고현황</h4>
               <span class="text-muted">총 보유 도서량</span>
             </div>
@@ -160,58 +160,60 @@
             <div class="col-xs-6 col-sm-3 placeholder">
             <%-- 
             select count(p_num) from purchase 
-			where p_buydate >= (select to_date(sysdate, 'YY/MM/DD') from dual);
-			
-			select *from purchase
-			where trunc(p_buydate) = TO_DATE(sysdate,'yy/mm/dd');
-			
-			select count(p_num) from purchase
-			where trunc(p_buydate) = TO_DATE('20/10/28','yy/mm/dd');
+         where p_buydate >= (select to_date(sysdate, 'YY/MM/DD') from dual);
+         
+         select *from purchase
+         where trunc(p_buydate) = TO_DATE(sysdate,'yy/mm/dd');
+         
+         select count(p_num) from purchase
+         where trunc(p_buydate) = TO_DATE('20/10/28','yy/mm/dd');
             --%>
-            <c:set var="purchase" scope="session" value="2154"/>
-              <img data-src="holder.js/200x200?theme=green&text=${purchase}건" class="img-responsive" alt="Generic placeholder thumbnail">
+            <%-- <c:set var="purchase" scope="session" value="2154"/> --%>
+            
+
+              <img data-src="holder.js/200x200?theme=green&text=${admin.p_cnt}건" class="img-responsive" alt="Generic placeholder thumbnail">
               <h4>구매현황</h4>
               <span class="text-muted">오늘 구매 현황</span>
             </div>
             <div class="col-xs-6 col-sm-3 placeholder">
-            	<c:set var="refund" scope="session" value="50"/>
-              <img data-src="holder.js/200x200?theme=red&text= ${refund}건" class="img-responsive">
+               <c:set var="refund" scope="session" value="50"/>
+              <img data-src="holder.js/200x200?theme=red&text= ${admin.rf_cnt}건" class="img-responsive">
               <h4>환불신청수</h4>
               <span class="text-muted">오늘 환불신청</span>
             </div>
             
              <div class="col-xs-6 col-sm-3 placeholder"> 
-            	<c:set var="sales" scope="session" value="50000000"/>
-            	
-            	
-            	<%--
-            		----- 테이블 inner join 으로 날짜별 구매확정한 가격 가져오기----- 
-            		select pdetail.pd_price, purchase.p_buydate
-					from purchase 
-					inner join pdetail 
-					on pdetail.c_num=purchase.c_num and purchase.p_num=pdetail.p_num
-					where trunc(p_buydate) = to_date('20/10/28', 'yy/mm/dd') and pdetail.pd_orderstate='confirm';
-            		
-            		
-            		---- 설정 날짜의 매출의 합을  가져오기 -----
-            		select sum(pd_price) from (select pdetail.pd_price, purchase.p_buydate
-					from purchase 
-					inner join pdetail 
-					on pdetail.c_num=purchase.c_num and purchase.p_num=pdetail.p_num 
-					where trunc(p_buydate) = to_date('20/10/28', 'yy/mm/dd') and pdetail.pd_orderstate='confirm');
-            	
-            	--%>
-            	
-            	
-            	<%-- 
-           	holder.js 의 값중 매출 가격 정리 테스트 용도로 사용한 코드.. 
+               <c:set var="sales" scope="session" value="50000000"/>
+               
+               
+               <%--
+                  ----- 테이블 inner join 으로 날짜별 구매확정한 가격 가져오기----- 
+                  select pdetail.pd_price, purchase.p_buydate
+               from purchase 
+               inner join pdetail 
+               on pdetail.c_num=purchase.c_num and purchase.p_num=pdetail.p_num
+               where trunc(p_buydate) = to_date('20/10/28', 'yy/mm/dd') and pdetail.pd_orderstate='confirm';
+                  
+                  
+                  ---- 설정 날짜의 매출의 합을  가져오기 -----
+                  select sum(pd_price) from (select pdetail.pd_price, purchase.p_buydate
+               from purchase 
+               inner join pdetail 
+               on pdetail.c_num=purchase.c_num and purchase.p_num=pdetail.p_num 
+               where trunc(p_buydate) = to_date('20/10/28', 'yy/mm/dd') and pdetail.pd_orderstate='confirm');
+               
+               --%>
+               
+               
+               <%-- 
+              holder.js 의 값중 매출 가격 정리 테스트 용도로 사용한 코드.. 
             <c:set var="testmoney" value="5416876000"/>
             <img data-src="holder.js/300x200?theme=blue&text=${testmoney/10000} 만원" class="img-responsive">
             --%> 
             
              <c:set var="testmoney" value="541687612"/>
             
-              <img data-src="holder.js/200x200?theme=blue&text=${(testmoney-testmoney%10000)/10000}만원" class="img-responsive">
+              <img data-src="holder.js/200x200?theme=blue&text=${adminIndex.sal_cnt/10000}만원" class="img-responsive">
               <h4>매출</h4>
               <span class="text-muted">오늘 매출금액</span>
             </div> 
@@ -220,11 +222,11 @@
             <div class="col-xs-6 col-sm-3 placeholder">
             
             <%--
-            	select count(re_num) from review where trunc(re_writedate) = to_date(sysdate, 'yy/mm/dd');
-				select count(re_num) from review where trunc(re_writedate) = to_date('20/10/29', 'yy/mm/dd');
+               select count(re_num) from review where trunc(re_writedate) = to_date(sysdate, 'yy/mm/dd');
+            select count(re_num) from review where trunc(re_writedate) = to_date('20/10/29', 'yy/mm/dd');
              --%>
             <c:set var="review" scope="session" value="458"/>
-              <img data-src="holder.js/200x200?theme=blue&text=${review}개" class="img-responsive" alt="Generic placeholder thumbnail">
+              <img data-src="holder.js/200x200?theme=blue&text=${adminIndex.rev_cnt}개" class="img-responsive" alt="Generic placeholder thumbnail">
               <h4>리뷰 현황</h4>
               <span class="text-muted">리뷰글 현황</span>
             </div>
@@ -233,67 +235,66 @@
             <div class="col-xs-6 col-sm-3 placeholder">
             <%-- select count(q_num) from qna where trunc(q_writedate) = TO_DATE(sysdate,'yy/mm/dd'); --%>
             <c:set var="qna" scope="session" value="17"/>
-              <img data-src="holder.js/200x200?theme=green&text=${qna}개" class="img-responsive" alt="Generic placeholder thumbnail">
+              <img data-src="holder.js/200x200?theme=green&text=${adminIndex.qna_cnt}개" class="img-responsive" alt="Generic placeholder thumbnail">
               <h4>QnA 현황</h4>
               <span class="text-muted">오늘 QnA 신청 현황</span>
             </div>
             
             <div class="col-xs-6 col-sm-3 placeholder">
-            	<%--select count(ne_num) from neboard; --%>
-            	<c:set var="nevent" scope="session" value="1475"/>
-              <img data-src="holder.js/200x200?theme=red&text=${nevent}개" class="img-responsive">
+               <%--select count(ne_num) from neboard; --%>
+              <img data-src="holder.js/200x200?theme=red&text=${adminIndex.ne_cnt}개" class="img-responsive">
               <h4>공지사항 이벤트 현황</h4>
               <span class="text-muted">공지사항 및 이벤트 글 수</span>
             </div>
             
             <div class="col-xs-6 col-sm-3 placeholder">
             <%-- select count(fb_num) from freeboard; --%>
-            <c:set var="freeboard" scope="session" value="18452"/>
-              <img data-src="holder.js/200x200?theme=blue&text=${freeboard}" class="img-responsive" alt="Generic placeholder thumbnail">
+              <img data-src="holder.js/200x200?theme=blue&text=${adminIndex.fb_cnt}개" class="img-responsive" alt="Generic placeholder thumbnail">
               <h4>자유게시판 현황</h4>
               <span class="text-muted">총 게시글 수</span>
             </div>
             
-            
+            <br>
             
           <%--   <img data-src="holder.js/300x200?text=Add \n line breaks \n anywhere.">  --%>
           
             
             <%-- <div class="circle">
-            	야이 새끼야!!!!!
-            	야임마~!!!!!
+               야이 새끼야!!!!!
+               야임마~!!!!!
             </div> --%>
             
           <%--  <img data-src="holder.js/200x200?theme=blue&text=야마!" class="img-responsive" alt="Generic placeholder thumbnail">
             <img data-src="holder.js/200x200?theme=green&text=야마!" class="img-responsive" alt="Generic placeholder thumbnail">
             <img data-src="holder.js/200x200?theme=red&text=야마!" class="img-responsive" alt="Generic placeholder thumbnail">  --%>
             
+            <%---asdfasdfasdfsadfasdfasdfsadfasdf --%>
             
           </div>
 
-		<%-- 매출 현황 테이블의 제목 --%>
-		
-		<%-- 
-			======================당일 매출 순번 테이블 sql 문 ==============================
-			
-			create view purchaseinfo as
-			select purchase.p_num, purchase.p_sender, purchase.c_num, purchase.p_buydate, pdetail.b_num from 
-			purchase 
-			inner join pdetail 
-			on pdetail.c_num=purchase.c_num and purchase.p_num=pdetail.p_num;
+      <%-- 매출 현황 테이블의 제목 --%>
+      
+      <%-- 
+         ======================당일 매출 순번 테이블 sql 문 ==============================
+         
+         create view purchaseinfo as
+         select purchase.p_num, purchase.p_sender, purchase.c_num, purchase.p_buydate, pdetail.b_num from 
+         purchase 
+         inner join pdetail 
+         on pdetail.c_num=purchase.c_num and purchase.p_num=pdetail.p_num;
 
-			select*from purchaseinfo;
-			먼저 테이블의 뷰를 생성해준다.. 
-			
-			select b_num, count(p_num)
-			from purchaseinfo 
-			group by b_num
-			having count(p_num) >= (select max(count(b_num)) from purchaseinfo group by b_num); 
-			
-			/*현재 날짜와 연동이 안됨... 날짜까지 설정을 해주는 구문을 만들어야함...*/
-			
-			=========================================================================
-		--%>
+         select*from purchaseinfo;
+         먼저 테이블의 뷰를 생성해준다.. 
+         
+         select b_num, count(p_num)
+         from purchaseinfo 
+         group by b_num
+         having count(p_num) >= (select max(count(b_num)) from purchaseinfo group by b_num); 
+         
+         /*현재 날짜와 연동이 안됨... 날짜까지 설정을 해주는 구문을 만들어야함...*/
+         
+         =========================================================================
+      --%>
           <h2 class="sub-header">오늘 최대 매출 도서</h2> <p class="date"></p>
           <div class="table-responsive">
             <table class="table table-striped">
@@ -323,35 +324,35 @@
                 </tr>
                 
                 <tr>
-                	<td>김서버의 서버 구축의 정석</td>
-                	<td>김서버 </td>
-                	<td>김서버 컴퍼니</td>
-                	<td>25000</td>
-                	<td>네트워크/해킹/보안</td>
+                   <td>김서버의 서버 구축의 정석</td>
+                   <td>김서버 </td>
+                   <td>김서버 컴퍼니</td>
+                   <td>25000</td>
+                   <td>네트워크/해킹/보안</td>
                 </tr>
                 
                 <tr>
-                	<td>최디비의 디비하고 디비자기</td>
-                	<td>최디비</td>
-                	<td>최디비 컴퍼니</td>
-                	<td>25000</td>
-                	<td>OS/데이터베이스</td>
+                   <td>최디비의 디비하고 디비자기</td>
+                   <td>최디비</td>
+                   <td>최디비 컴퍼니</td>
+                   <td>25000</td>
+                   <td>OS/데이터베이스</td>
                 </tr>
                 
                 <tr>
-                	<td>양풀스택의 풀스택 웹개발자되기</td>	
-                	<td>양풀스택</td>	
-                	<td>양풀스택 컴퍼니</td>	
-                	<td>50000</td>	
-                	<td>웹사이트</td>	
+                   <td>양풀스택의 풀스택 웹개발자되기</td>   
+                   <td>양풀스택</td>   
+                   <td>양풀스택 컴퍼니</td>   
+                   <td>50000</td>   
+                   <td>웹사이트</td>   
                 </tr>
                 
                 <tr>
-                	<td>고편집의 영상 편집 입문</td>	
-                	<td>고편집</td>	
-                	<td>고편집 코퍼레이션</td>	
-                	<td>35000</td>	
-                	<td>컴퓨터 입문/활용</td>	
+                   <td>고편집의 영상 편집 입문</td>   
+                   <td>고편집</td>   
+                   <td>고편집 코퍼레이션</td>   
+                   <td>35000</td>   
+                   <td>컴퓨터 입문/활용</td>   
                 </tr>
                 
              

@@ -50,6 +50,11 @@
 					location.href="/admin/purchaseList";
 				});
 	            
+				/* 구매번호 출력 */
+	              var p_num = $("#pnum span").text();
+	            $("#p_num").val(p_num);
+	            console.log("p_num : "+p_num);
+	            
 	        })
 	    </script>
 		

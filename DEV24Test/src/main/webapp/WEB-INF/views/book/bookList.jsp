@@ -28,6 +28,34 @@
     		.contentHeaderCartMsg > *{
     			display: inline-block;
     		}
+    		.topLeftDiv, .topRightDiv {
+    			display: inline-block;
+    		}
+    		.selectedCartBtn, .selectedBuyBtn {
+    			width: 110px;
+    		}
+    		.bottomRightDiv > button:hover{
+    			opacity: 0.8;
+    		}
+    		.sort{
+    			display: inline-block;
+    			margin: 0 10px;
+    		}
+    		.sort:hover {
+    			cursor: pointer;
+    		}
+    		.pageNum{
+    			display: inline-block;
+    			padding: 5px;
+    		}
+    		.pageBtn {
+    			display: inline-block;
+    			font-size: 20px;
+    			font-weight: bold;
+    		}
+    		.pageBtn {
+    			cursor: pointer;
+    		}
     		.contentWrap {
     			text-align: center;
     		}
@@ -324,7 +352,7 @@
     				location.href="/cart/cartList";
     			});
     			$(".noCartBtn").click(function(){
-    				$(this).parents(".cartMsg").css("display", "none");
+    				$(this).parent().parent("div").css("display", "none");
     			});
     			
     			$(".butBtn").click(function(){
@@ -345,21 +373,59 @@
     				$(".crt_qty:eq("+n+")").val(crt_qty.val()*1 - 1);
     				if (!crt_qtyRange(crt_qty)) return;
     			});
+				
+    			
+    			//pagination 정보  변수에 담기
+    			var page = ${pagination.page};//현재페이지
+    			var startPage = ${pagination.startPage};//지금 길이의 시작페이지
+    			var endPage = ${pagination.endPage};
+    			var pageLength = ${pagination.pageLength};
+    			var cateOne_num = ${pagination.cateOne_num};
+    			var cateTwo_num = ${pagination.cateTwo_num};
     			
     			
-    			/* $(".bookWrap").click(function(){
-    				if ($(".listcoverWrap").find()){
-	    				var checkbox = $(this).find(".checkbox");
-	    				if($(this).find(".checkbox").prop("checked") == true){
-	    					checkbox.prop("checked",false);
-	    					console.log("if");
-	    				} else {
-	    					checkbox.prop("checked",true);
-	    					console.log("else");
-	    				}
-    				}
-    			}); */
-    		})
+    			if (startPage-1 <= 0)
+    				$(".prevBtn").css("cursor", "default");
+
+				if(page+1 > pageLength)
+					$(".nextBtn").css("cursor", "default");
+				
+				if (startPage-5 <= 0)
+					$(".prevRangeBtn").css("cursor", "default");
+					
+				if(startPage+1 > pageLength)
+					$(".nextRangeBtn").css("cursor", "default");
+				
+    			$(".prevBtn").click(function(){
+    				if (startPage-1 > 0)
+    					location.href = "/book/"+cateOne_num+"/"+cateTwo_num+"?page="+page-1;
+    			});
+
+    			$(".nextBtn").click(function(){
+    				if(endPage+1 <= pageLength)
+    					location.href = "/book/"+cateOne_num+"/"+cateTwo_num+"?page="+page+1;
+    			});
+
+    			$(".prevRangeBtn").click(function(){
+    				if (startPage-5 > 0)
+    					location.href = "/book/"+cateOne_num+"/"+cateTwo_num+"?page="+page-5;
+    			});
+
+    			$(".nextRangeBtn").click(function(){
+    				if(startPage+5 <= pageLength)
+    					location.href = "/book/"+cateOne_num+"/"+cateTwo_num+"?page="+page+5;
+    			});
+    			
+    			$(".pageNumBtn").click(function(){
+    				location.href = "/book/"+cateOne_num+"/"+cateTwo_num+"?page="+$(this).html();
+    			});
+    			
+    			$(".pageNum[data-num='"+page+"'] > a.pageNumBtn")
+    										.css("font-weight", "bold")
+    										.css("text-decoration", "underline");
+    			
+    		});
+    		
     		
     		//false : range에서 벗어남
     		function crt_qtyRange(selector) {
@@ -377,6 +443,7 @@
 				return true;
 			};
 			
+			//장바구니 추가 함수
 			function addCart(data){
 				var returnVal = "";
 				
@@ -402,21 +469,53 @@
 				return returnVal;
 			};
     	</script>
-
 	</head>
 	<body>
 		<div class="contentWrap">
 		<div class="contentHeader">
-			<div class="Sorts">
-				<span class="sort devPowSort">DEV24 랭킹순</span>
-				<span class="sort bestSort">판매량순</span>
-				<span class="sort newSort">신상품순</span>
-				<span class="sort lowPriceSort">낮은가격순</span>
-				<span class="sort highPriceSort">높은가격순</span>
+			<div class="top">
+				<div class="topLeftDiv">
+					<span class="sort devPowSort">DEV24 랭킹순</span>
+					<span class="sort bestSort">판매량순</span>
+					<span class="sort newSort">신상품순</span>
+					<span class="sort lowPriceSort">낮은가격순</span>
+					<span class="sort highPriceSort">높은가격순</span>
+				</div>
+				<div class="topRightDiv">
+					<select id="listSize">
+						<option value="20">20개씩 보기</option>
+						<option value="40">40개씩 보기</option>
+					</select>
+				</div>
 			</div>
-			<div class="btns">
-				<button type="button" class="btn text-right selectedCartBtn" name="cartBtn" >장바구니 담기</button>
-				<button type="button" class="btn text-right selectedBuyBtn" name="buyBtn" >구매</button>
+			<div class="bottom">
+				<!-- pagination -->
+				<div class="bottomLeftDiv">
+					<div class="paginationBox">
+						<ul class="pagination">
+							<li class="pageBtn prevRangeBtn" >
+								<i class="fas fa-angle-double-left"></i>
+							</li>
+							<li class="pageBtn prevBtn" >
+								<i class="fas fa-angle-left"></i>
+							</li>
+							<c:forEach var="i" begin="${pagination.startPage}" end="${pagination.endPage}">
+								<li class="pageNum" data-num="${i}"><a class="pageNumBtn" href="#">${i}</a></li>
+							</c:forEach>
+							<li class="pageBtn nextBtn">
+								<i class="fas fa-angle-right"></i>
+							</li>
+							<li class="pageBtn nextRangeBtn">
+								<i class="fas fa-angle-double-right"></i>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<!-- content header buttons -->
+				<div class="bottomRightDiv">
+					<button type="button" class="btn btn-default text-right selectedCartBtn" name="cartBtn" >장바구니 담기</button>
+					<button type="button" class="btn btn-default text-right selectedBuyBtn" name="buyBtn" >구매</button>
+				</div>
 			</div>
 			<div class="contentHeaderCartMsg" style="display: none;">
 				<p class="cartMsgText">
@@ -424,8 +523,8 @@
 					바로 확인하시겠습니까?
 				</p>
 				<div class="contentHeaderCartBtnWrap">
-					<button type="button" class="btn goCartBtn">예</button>
-					<button type="button" class="btn noCartBtn">아니오</button>
+					<button type="button" class="btn btn-success goCartBtn">예</button>
+					<button type="button" class="btn btn-default noCartBtn">아니오</button>
 				</div>	
 			</div>
 		</div>

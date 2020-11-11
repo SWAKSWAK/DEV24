@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.dev24.client.book.dao.BookDAO;
 import com.dev24.client.book.vo.BookViewVO;
+import com.dev24.common.pagination.Pagination;
 
 import lombok.Setter;
 
@@ -17,9 +18,14 @@ public class BookServiceImpl implements BookService{
 	private BookDAO bookDAO;
 	
 	@Override
-	public ArrayList<BookViewVO> bookViewList() {
-		ArrayList<BookViewVO> list = bookDAO.bookViewList();
+	public ArrayList<BookViewVO> bookViewList(Pagination pagination) {
+		ArrayList<BookViewVO> list = bookDAO.bookViewList(pagination);
 		return list;
 	}
 	
+	@Override
+	public int getBookListCnt() {
+		int result = bookDAO.getBookListCnt();
+		return result;
+	}
 }
