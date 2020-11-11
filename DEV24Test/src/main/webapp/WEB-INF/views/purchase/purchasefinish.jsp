@@ -34,27 +34,23 @@
 	                   <col width="20%" />
 	                   <col width="30%" />
 	               </colgroup>
-	                <tr>
-	                    <th>주문번호</th>
-	                    <td class="td_p_num" colspan="3">purchase001</td>
-	                 </tr>
 	                  <tr>
 	                    <th>수령자</th>
-	                    <td>purchase001</td>
+	                    <td>${pvo.p_receiver}</td>
 	                    <th>수령자연락처</th>
-	                    <td>purchase001</td>
+	                    <td>${pvo.p_receivephone}</td>
 	                </tr>
 	                  <tr>
 	                    <th>우편번호</th>
-	                    <td colspan="3">purchase001</td>
+	                    <td colspan="3">${pvo.p_zipcode}</td>
 	                </tr>
 	                   <tr>
 	                    <th>배송주소</th>
-	                    <td colspan="3">purchase001</td>
+	                    <td colspan="3">${pvo.p_address}</td>
 	                </tr>
 	                  <tr>
 	                    <th>구매금액</th>
-	                    <td colspan="3">purchase001</td>
+	                    <td colspan="3">${pvo.p_price}</td>
 	                </tr>
 	            </table>
 	        

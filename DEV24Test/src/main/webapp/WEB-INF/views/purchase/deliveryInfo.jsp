@@ -119,7 +119,8 @@
 	                <h3>배송주소</h3>
 	            </div>
 	            
-	            
+	      			<form id="f_purchase" name="f_purchase">
+	      			      
 		            <div id="delivery_wrap">
 		            	<input type="hidden" name="p_receivephone" id="p_receivephone" />
 		            	<input type="hidden" name="p_senderphone" id="p_senderphone" />
@@ -199,6 +200,8 @@
 		                    </li>
 		                </ul>
 		            </div><!--payment_wrap-->
+		            
+		         </form>
 		            
 		          
 		            

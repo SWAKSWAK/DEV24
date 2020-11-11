@@ -213,7 +213,43 @@ public class PurchaseController {
 	public String purchasefinish(@ModelAttribute("data") PurchaseVO pvo, Model model) {
 		log.info("purchasefinish 호출 성공");
 		
+		model.addAttribute("pvo", pvo);
 		return "purchase/purchasefinish";
+	}
+	
+	@ResponseBody
+	@PostMapping(value="/purchasedItemDelete")
+	public String purchasedItemDelete(@RequestBody List<Map<String, Integer>> cvoList, HttpSession session, Model model) {
+		log.info("purchasedItemDelete 호출 성공");
+		
+		List<CartVO> cartList = new ArrayList<CartVO>();
+		CartVO cvo = new CartVO();
+		
+		
+		for (int i=0; i<cvoList.size(); i++) {
+			String s_num = cvoList.get(i).get("crt_num")+"";
+			log.info(i+"번째 : "+s_num);
+			
+				if(s_num != null) {
+					log.info(i + ": " + s_num);
+					cvo = new CartVO();
+					int crt_num = Integer.parseInt(s_num);
+					cvo.setCrt_num(crt_num);
+					cartList.add(cvo);
+				}
+			}
+		
+		int result = 0;
+		String resultData = "";
+		result = purchaseService.purchasedItemDelete(cartList);
+		
+		if (result == 0) {
+			resultData = "FAIL";
+		}else {
+			resultData = "SUCCESS";
+		}
+		
+		return resultData;
 	}
 	
 	

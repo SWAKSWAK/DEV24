@@ -14,8 +14,10 @@ public interface PurchaseService {
 	public CustomerVO getSenderInfo(int c_num);
 	
 	public int purchaseInsert(PurchaseVO pvo);
-	//public int purchaseInsert(List<PurchaseVO> pvoList);
 	public int pdetailInsert(List<PdetailVO> pdvoList);
 	
 	public int getMaxPnum();
+	
+	// 구매 완료한 상품 삭제
+	public int purchasedItemDelete(List<CartVO> cvoList);
 }

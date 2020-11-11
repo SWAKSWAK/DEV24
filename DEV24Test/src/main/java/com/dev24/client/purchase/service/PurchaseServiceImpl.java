@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.dev24.client.cart.dao.CartDAO;
 import com.dev24.client.cart.vo.CartVO;
 import com.dev24.client.customer.dao.CustomerDAO;
 import com.dev24.client.customer.vo.CustomerVO;
@@ -22,6 +23,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 	
 	private CustomerDAO customerDAO;
 	private PdetailDAO pdetailDAO;
+	private CartDAO cartDAO;
 
 	// 구매화면 출력(체크 상품 가져오기)
 	@Override
@@ -55,10 +57,19 @@ public class PurchaseServiceImpl implements PurchaseService {
 		return result;
 	}
 
+	// p_num 구하기
 	@Override
 	public int getMaxPnum() {
 		int result = 0;
 		result = purchaseDAO.getMaxPnum();
+		return result;
+	}
+
+	// 구매 완료한 상품 삭제
+	@Override
+	public int purchasedItemDelete(List<CartVO> cvoList) {
+		int result = 0;
+		result = cartDAO.purchasedItemDelete(cvoList);
 		return result;
 	}
 	

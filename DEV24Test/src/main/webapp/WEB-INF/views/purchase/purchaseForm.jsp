@@ -116,6 +116,7 @@
         			// ****** 결제하기 로직 시작
         			var pdvo;
         			var pdvoList = new Array();
+        			var crtnumList = new Array();
         			
         			
         			var p = $(".finalprice strong span").text();
@@ -132,8 +133,8 @@
 					var p_receivephone = {"p_receivephone": $("#p_receivephone").val()};
 					var p_senderphone = {"p_senderphone" : $("#p_senderphone").val()};
 					
-					console.log(p_price);
-					console.log(typeof(p_price));
+					//console.log(p_price);
+					//console.log(typeof(p_price));
 					//console.log("p_pmethod : " + p_pmethod);
 					
 					pdvoList.push(p_receiver);
@@ -145,24 +146,10 @@
 					pdvoList.push(p_receivephone);
 					pdvoList.push(p_senderphone);
 					
-					//var pvo = new Object();
-					
-					/*pdvo.p_receiver = p_receiver;
-					pdvo.p_price = p_price;
-					pdvo.p_zipcode = p_zipcode;
-					pdvo.p_pmethod = p_pmethod;
-					pdvo.p_address = p_address;
-					pdvo.p_sender = p_sender;
-					pdvo.p_receivephone = p_receivephone;
-					pdvo.p_senderphone = p_senderphone;*/
-					
-        			
-					
-
         			for(var i=0; i<l; i++){ // pdetail
         				pdvo = new Object();
         				
-        				//var dataNum = $(".t_orderItems tbody tr").eq(i).attr("data-num");
+        				var crt_num = $(".t_orderItems tbody tr").eq(i).attr("data-num");
         				var b_num = $(".t_orderItems tbody tr").eq(i).attr("data-bnum");
         				var pd_price = $(".t_orderItems tbody tr").eq(i).find(".td_price span").text();
         				pd_price = unComma(pd_price);
@@ -181,28 +168,17 @@
 	        				pdvoList.push(pdvo);
         				}
         				
+        				var c = {"crt_num":crt_num};
+        				crtnumList.push(c);
+        				
         			}
     	            
-    	            //pdvoList.push(pvo);
-    	            
-    	            
-    	            //console.log("pdvo : "+pdvo);
     	            var data = JSON.stringify(pdvoList);
     	            
-    	            console.log("=========================");
-    	            console.log(data);
+    	            
+    	            console.log(data); 
     	            
     	            order(data);
-    	            /*if(result == 'SUCCESS'){
-    	            	// 폼 데이터 전달
-            			$("#f_purchase").attr({
-            				"action":"/purchase/purchaseInsert",
-            				"method":"post"
-            			});
-            			$("#f_purchase").submit();
-    	            }*/
-    				
-
            		}); // 결제 버튼 이벤트 종료
     			
     		}); // 최상위 종료
@@ -210,7 +186,6 @@
     		
     		/* 체크된 상품 주문하기 눌렀을 때 */
 	   		 function order(data){
-	   			//var returnVal = "";
 	            $.ajax({
 	               url : "/purchase/purchaseInsert",
 	               type : "post",
@@ -221,11 +196,7 @@
 	               }, 
 	               dataType : "text",
 	               success: function (result) {
-	            	   //returnVal = 'SUCCESS';
-	            	   alert("성공!!");
-	            	   
-	            	   //var data = JSON.stringify(result);
-	            	  
+
 	            	   $.ajax({
 	    	               url : "/purchase/pdetailInsert",
 	    	               type : "post",
@@ -236,14 +207,41 @@
 	    	               }, 
 	    	               dataType : "text",
 	    	               success: function (result) {
-	    	            	   alert("성공!!");
 	    	            	   console.log("result :"+result);
-    	            			// 폼 데이터 전달
-    	            			$("#f_purchase").attr({
-    	            				"action":"/purchase/purchasefinish",
-    	            				"method":"post"
-    	            			});
-    	            			$("#f_purchase").submit();
+    	            			
+    	            			var crtnumList = new Array();
+    	            			var l = $(".t_orderItems tbody tr").length;
+    	            			console.log(l);
+	    	            	   for(var i=0; i<l; i++){ // crt_num
+	    	        				var crt_num = $(".t_orderItems tbody tr").eq(i).attr("data-num");
+	    	        				var c = {"crt_num":crt_num};
+	    	        				crtnumList.push(c);
+	    	        			} 
+	    	            	   var cartNum = JSON.stringify(crtnumList);
+	    	            	   console.log(cartNum);
+	    	            	   $.ajax({
+	    	    	               url : "/purchase/purchasedItemDelete",
+	    	    	               type : "post",
+	    	    	               data : cartNum,
+	    	    	               headers : {
+	    	    	                  "Content-Type" : "application/json",
+	    	    	                  "X-HTTP-Method-Override" : "POST"
+	    	    	               }, 
+	    	    	               dataType : "text",
+	    	    	               success: function (result) {
+	    	    	            	   console.log("result :"+result);
+	        	            			// 폼 데이터 전달
+	        	            			$("#f_purchase").attr({
+	        	            				"action":"/purchase/purchasefinish",
+	        	            				"method":"post"
+	        	            			});
+	        	            			$("#f_purchase").submit();
+	    	    	            	   
+	    	    	               },
+	    	    	               error : function(){
+	    	    	                  alert("장바구니 삭제 쪽 - 시스템 오류 발생. \n관리자에게 문의해 주세요.");
+	    	    	               }
+	    	    	            });
 	    	            	   
 	    	               },
 	    	               error : function(){
@@ -254,11 +252,8 @@
 	               },
 	               error : function(){
 	                  alert("시스템 오류 발생. \n관리자에게 문의해 주세요.");
-	                  //returnVal = 'FAIL';
 	               }
 	            });
-	            //console.log("returnVal : " + returnVal);
-				//return returnVal;
 	         };
     	
     	</script>
@@ -328,14 +323,8 @@
 	           </div>
 	           </div><!--totalprice_wrap-->
 	           
-	           <form id="f_purchase" name="f_purchase">
-	           		<!-- <input type="hidden" name="pd_price" id="pd_price" /> -->
-	           		<!-- <input type="hidden" name="b_num" id="b_num" /> -->
-	           
 	           <%-- 배송주소 영역 --%>
 			   <jsp:include page="deliveryInfo.jsp" />
-
-				</form>
 
 	            <!--*** 최종확인 영역 ***-->
 	           <div id="lastcheck_wrap">
