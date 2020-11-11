@@ -16,9 +16,48 @@
 			<script src="/resources/js/html5shiv.js"></script>
 		<![endif]-->
 		
+		<link rel="stylesheet" href="/resources/include/css/style_purchaseFinished.css">
+		<script src="/resources/include/js/jquery-1.12.4.min.js"></script>
+    	<script src="/resources/include/js/jquery-3.5.1.min.js"></script>
+    	<script src="/resources/include/js/common.js"></script>
+		
 
 	</head>
 	<body>
-		구매 성공!
+		<div id="content_wrap">
+	      <p>구매가 완료되었습니다.</p>
+	      
+	       <table class="table" border="1">
+	               <colgroup>
+	                   <col width="20%" />
+	                   <col width="30%" />
+	                   <col width="20%" />
+	                   <col width="30%" />
+	               </colgroup>
+	                <tr>
+	                    <th>주문번호</th>
+	                    <td class="td_p_num" colspan="3">purchase001</td>
+	                 </tr>
+	                  <tr>
+	                    <th>수령자</th>
+	                    <td>purchase001</td>
+	                    <th>수령자연락처</th>
+	                    <td>purchase001</td>
+	                </tr>
+	                  <tr>
+	                    <th>우편번호</th>
+	                    <td colspan="3">purchase001</td>
+	                </tr>
+	                   <tr>
+	                    <th>배송주소</th>
+	                    <td colspan="3">purchase001</td>
+	                </tr>
+	                  <tr>
+	                    <th>구매금액</th>
+	                    <td colspan="3">purchase001</td>
+	                </tr>
+	            </table>
+	        
+	    </div> <!-- content_wrap -->
 	</body>
 </html>

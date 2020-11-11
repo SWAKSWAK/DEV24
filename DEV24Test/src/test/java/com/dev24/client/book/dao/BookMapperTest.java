@@ -24,7 +24,7 @@ public class BookMapperTest {
 	@Test
 	public void testBookList() {
 		BookViewVO bvo;
-		ArrayList<BookViewVO> bookList = bookDAO.bookViewList();
+//		ArrayList<BookViewVO> bookList = bookDAO.bookViewList();
 		log.info("bvo 가져오기");
 		
 		//모든 데이터

@@ -6,10 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.dev24.admin.pdetail.vo.AdminPdetailViewVO;
 import com.dev24.admin.purchase.service.PurchaseService;
 import com.dev24.admin.purchase.vo.AdminPurchaseViewVO;
 
@@ -31,10 +29,6 @@ public class PurchaseController {
 		return "/admin/purchaseList";
 	}
 	
-	@GetMapping(value="/pdetailList/{p_num}")
-	public String pdetailList(@ModelAttribute("data") AdminPdetailViewVO pdvo, @PathVariable("p_num") int p_num, Model model) {
-		log.info("pdetailList 호출 성공");
-		
-		return "/admin/pdetailList";
-	}
+	
+
 }

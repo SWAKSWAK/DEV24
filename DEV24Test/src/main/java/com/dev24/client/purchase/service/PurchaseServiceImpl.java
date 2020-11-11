@@ -3,7 +3,6 @@ package com.dev24.client.purchase.service;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.dev24.client.cart.vo.CartVO;
@@ -24,22 +23,15 @@ public class PurchaseServiceImpl implements PurchaseService {
 	private CustomerDAO customerDAO;
 	private PdetailDAO pdetailDAO;
 
-	/*@Override
-	public List<CartVO> purchaseForm(Map<String, Integer> map) {
-		List<CartVO> list = null;
-		list = purchaseDAO.purchaseForm(map);
-		return list;
-	}*/
-
-	// 구매화면 주문상품 출력
+	// 구매화면 출력(체크 상품 가져오기)
 	@Override
-	public CartVO purchaseForm(int crt_num) {
-		CartVO vo = null;
-		vo = purchaseDAO.purchaseForm(crt_num);
-		return vo;
+	public List<CartVO> purchaseForm(List<CartVO> cvoList) {
+		List<CartVO> list = null;
+		list = purchaseDAO.purchaseForm(cvoList);
+		return list;
 	}
 
-	// 구매화면 주문자 정보 출력
+	// 주문자 정보 출력
 	@Override
 	public CustomerVO getSenderInfo(int c_num) {
 		CustomerVO cvo = null;
@@ -47,7 +39,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 		return cvo;
 	}
 
-	// 구매 완료 후 삽입
+	// 구매 삽입
 	@Override
 	public int purchaseInsert(PurchaseVO pvo) {
 		int result = 0;
@@ -55,11 +47,18 @@ public class PurchaseServiceImpl implements PurchaseService {
 		return result;
 	}
 
-	// 구매 상세 삽입
+	// 구매 상세 자동 삽입
 	@Override
-	public int pdetailInsert(PdetailVO pdvo) {
+	public int pdetailInsert(List<PdetailVO> pdvoList) {
 		int result = 0;
-		result= pdetailDAO.pdetailInsert(pdvo);
+		result= pdetailDAO.pdetailInsert(pdvoList);
+		return result;
+	}
+
+	@Override
+	public int getMaxPnum() {
+		int result = 0;
+		result = purchaseDAO.getMaxPnum();
 		return result;
 	}
 	

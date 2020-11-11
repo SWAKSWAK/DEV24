@@ -26,7 +26,12 @@
          <script type="text/javascript" src="/resources/include/js/jquery-3.5.1.min.js"></script>
          <script type="text/javascript" src="/resources/include/dist/js/bootstrap.js"></script>
          <script type="text/javascript" src="/resources/include/js/common.js"></script>
-         
+         <style>
+         	.table{
+         		margin-top:140px;
+         		margin-bottom:70px;
+         	}
+         </style>
 		<script type="text/javascript">
 			$(function(){
 				/* 금액 콤마 찍기 */
@@ -43,7 +48,7 @@
 				
 				/* 메인으로 이동 버튼 */
 				$("#goMainBtn").click(function(){
-					location.href="/adminIndex";
+					location.href="/admin/adminIndex";
 				});
 				
 				
@@ -116,8 +121,15 @@
 				
 				/* 자세히 버튼 눌렀을 때 해당 구매의 구매상세 페이지로 이동 */
 				$(".adminPdetailBtn").click(function(){
-					var p_num = $(this).parents("tr").find("td.td_pnum").text();
-					location.href="/admin/pdetailList/"+p_num;
+					var p_num = $(this).parents("tr").attr("data-num");
+					$("#p_num").val(p_num);
+					
+					$("#detailForm").attr({
+						"method": "get",
+						"action": "/admin/pdetailList"
+					});
+					$("#detailForm").submit();
+					
 				});
 				
 			}); // 최상위 종료
@@ -143,6 +155,9 @@
 		<div id="container">
 	        <div id="upper">
 	           <div class="center">
+	           	<form id="detailForm" name="detailForm">
+					<input type="hidden" name="p_num" id="p_num" />
+				</form>
 	                <h2 id="tit">구매관리</h2>
 	
 	                <div id="admin_search">
@@ -199,7 +214,7 @@
 	                	<c:choose>
 	                		<c:when test="${not empty list}">
 	                			<c:forEach var="list" items="${list}">
-	                				<tr>
+	                				<tr data-num="${list.p_num}">
 				                        <td class="td_pnum">${list.p_num}</td>
 				                        <td>${list.c_id}</td>
 				                        <td>${list.p_pmethod}</td>
