@@ -156,7 +156,21 @@
 		    		 console.log("도서 코드= "+ stockcode);
 	    	  });
 	    	  
+	    	  
+	    	  
+	    	  $("#stockInsertBtn").click(function(){
+	    		 location.href="/admin/stockInsertForm";
+	    	  });
+	    	  
 	      });
+	      
+	      function selectBstate(){
+	    	 $("#b_state").attr({
+	    		"method":"get", 
+	    		"action":"/admin/stockList"
+	    	});
+	    	$("#b_state").submit();
+	      }
 	      
 	      /*검색 버튼을 위한 함수*/
 	      function goPage(){
@@ -229,7 +243,8 @@
 			<!-- <div class="col-sm-8"> -->
 				<div class="panel-body">
 				    <!-- button to generate model form -->
-				    <a href="#myModal" data-toggle="modal" class="btn btn-s btn-success">재고등록</a>
+				    <%-- <a href="#myModal" data-toggle="modal" class="btn btn-s btn-success">재고등록</a> --%>
+				    <input type="button" value="재고등록" id="stockInsertBtn" class="btn btn-s btn-success"/>
 				    <input type="button" name="goHome" id="goHome" class="btn btn-s btn-success" value="관리자페이지 "/>
 				
 				    <!-- model form settings-->
@@ -257,6 +272,15 @@
 				    				
 				                    <form role="form">
 				                        <div class="form-group">
+				                        	<label>상품상태</label>
+				                        	<select class="form-control" name="b_state" id="b_state">
+												<option value="all">등록</option>
+												<option value="unreg" id="unreg" >미등록</option>				                        		
+				                        	</select>
+				                        	<br/>
+				                        	<input type="button" value="선택" id="bstatebtn" name="bstatebtn"  class="btn btn-default"/>
+				                        	<br/>
+				                        	<br/>
 				                            <label>상품코드</label>
 				                           	<select class="form-control" name="b_num" id="b_num">
 					                            <c:choose>
@@ -285,7 +309,7 @@
 				                        </div>
 				                        
 				                        <div class="form-group">
-				                        	<label>판매가격</label>
+				                        	<label>입고가격</label>
 				                        	<input type="number" class="form-control" placeholder="판매가격 입력 " name="stk_salp" id="stk_salp"/>
 				                        </div>
 				                        <input type="button" class="btn btn-default" value="도서등록" name="submitBtn" id="submitBtn"/>

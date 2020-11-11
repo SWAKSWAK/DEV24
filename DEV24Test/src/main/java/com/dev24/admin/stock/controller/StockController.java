@@ -2,6 +2,7 @@ package com.dev24.admin.stock.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -42,6 +43,23 @@ public class StockController {
 		model.addAttribute("stockDetail", stockDetail);
 		
 		return "admin/stockDetail";
+	}
+	
+	@RequestMapping(value="/stockInsertForm", method = RequestMethod.GET)
+	public String stockInsertForm( @ModelAttribute("data") BookVO bvo, Model model) {
+		log.info("stockInsertForm 호출 성공");
+		
+		log.info(bvo.getB_state());
+		
+		StockVO svo = new StockVO();
+		
+	List<StockVO> stockList = stockService.stockList(svo);
+		List<BookVO> bookstockList = stockService.stockBInfoList(bvo);
+		model.addAttribute("stockList", stockList);
+		model.addAttribute("bookstockList", bookstockList);
+
+		
+		return "admin/stockInsertForm";
 	}
 	
 	@RequestMapping(value="/stockInsert", method=RequestMethod.POST)

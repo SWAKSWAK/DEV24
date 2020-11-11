@@ -49,7 +49,14 @@
 	
 	
 	<select id="stockBInfoList" parameterType="book" resultType="book">
-		select b_num, b_name, b_author, b_pub from book order by b_num 
+		select b_num, b_name, b_author, b_pub from book
+		<where>
+			<if test="b_state=='unreg'">
+				b_state is not null
+			</if>
+		</where>  
+		
+		order by b_num
 	</select>
 	
 	
