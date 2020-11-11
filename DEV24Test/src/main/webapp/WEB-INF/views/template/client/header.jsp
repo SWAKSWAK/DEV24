@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page trimDirectiveWhitespaces="true" %>
 
 	<header>
@@ -28,13 +29,22 @@
 		        <li><a href="/freeboard/freeboardList">커뮤니티</a></li> <!-- 자유게시판, 공지사항/이벤트 -->
 		        <li><a href="#">고객지원</a></li> <!-- 주문내역/배송조회, QnA, FAQ -->
 		      </ul> <!-- gnb -->
-		    
-		      <ul id="util">
-			    <li><a href="#"><i class="far fa-user"></i>로그인</a></li>
-			    <li><a href="#"><i class="fas fa-user-tie"></i>회원가입</a></li>
-			    <li><a href="/cart/cartList"><i class="fas fa-shopping-cart"></i>장바구니</a></li>
-			 </ul> <!-- util -->
 		      
+		      <ul id="util">
+				    <li id="toLogin"><a href="#"><i class="far fa-user"></i>로그인</a></li>
+				    <li id="toJoin"><a href="#"><i class="fas fa-user-tie"></i>회원가입</a></li>
+			    <c:if test="${not empty c_id}">
+				    <li id="toMypage"><a href="#"><i class="fas fa-user-tie"></i>마이페이지</a></li>
+				    <li><a href="/cart/cartList"><i class="fas fa-shopping-cart"></i>장바구니</a></li>
+			    </c:if>
+			    
+			    <!-- 로그인 처리 완료 후 지울 영역** -->
+			    <li id="toMypage"><a href="#"><i class="fas fa-user-tie"></i>마이페이지</a></li>
+				<li><a href="/cart/cartList"><i class="fas fa-shopping-cart"></i>장바구니</a></li>
+			    <!-- 로그인 처리 완료 후 지울 영역** 여기까지 -->
+			    
+			 </ul> <!-- util -->
+			   
 		    </nav> <!-- nav -->
        
            <div id="h_search">
