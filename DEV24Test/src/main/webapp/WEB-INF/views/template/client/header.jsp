@@ -9,7 +9,7 @@
            <nav>
 		      <ul id="gnb">
                 <li class="dropBox" id="book">
-                    <span><a href="/book/0/0">일반도서</a></span>
+                    <span><a href="/book">일반도서</a></span>
                     <ul class="dropmenu">
                       <li class=""><a href="#">프로그래밍 언어</a></li>
                       <li><a href="#">네트워크/해킹/보안</a></li>
@@ -34,12 +34,12 @@
 				    <li id="toLogin"><a href="#"><i class="far fa-user"></i>로그인</a></li>
 				    <li id="toJoin"><a href="#"><i class="fas fa-user-tie"></i>회원가입</a></li>
 			    <c:if test="${not empty c_id}">
-				    <li id="toMypage"><a href="#"><i class="fas fa-user-tie"></i>마이페이지</a></li>
+				    <li id="toMypage"><a href="/mypage/mypage"><i class="fas fa-user-tie"></i>마이페이지</a></li>
 				    <li><a href="/cart/cartList"><i class="fas fa-shopping-cart"></i>장바구니</a></li>
 			    </c:if>
 			    
 			    <!-- 로그인 처리 완료 후 지울 영역** -->
-			    <li id="toMypage"><a href="#"><i class="fas fa-user-tie"></i>마이페이지</a></li>
+			    <li id="toMypage"><a href="/mypage/mypage"><i class="fas fa-user-tie"></i>마이페이지</a></li>
 				<li><a href="/cart/cartList"><i class="fas fa-shopping-cart"></i>장바구니</a></li>
 			    <!-- 로그인 처리 완료 후 지울 영역** 여기까지 -->
 			    
