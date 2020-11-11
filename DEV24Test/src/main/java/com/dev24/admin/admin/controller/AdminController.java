@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.dev24.admin.admin.service.AdminIndexService;
 import com.dev24.admin.admin.service.AdminService;
+import com.dev24.admin.admin.vo.AdminIndexVO;
 import com.dev24.admin.admin.vo.AdminVO;
 
 import lombok.AllArgsConstructor;
@@ -21,9 +23,11 @@ import lombok.extern.log4j.Log4j;
 @RequestMapping("admin/*")
 @AllArgsConstructor
 //@SessionAttributes({"adm_id", "adm_num", "adm_name"})
+
 public class AdminController {
 	
 	private AdminService adminService;
+	private AdminIndexService adminIndexService;
 	
 	@RequestMapping(value="/admin/adminLoginForm")
 	public String adminLoginForm() {
@@ -33,7 +37,7 @@ public class AdminController {
 	@ResponseBody
 	@RequestMapping(value="/pwdConfirm", method=RequestMethod.POST, produces="text/plain; charset=UTF-8")
 	public String adminPasswordCheck(@ModelAttribute("data") AdminVO avo, Model model, HttpSession session) {
-		log.info("pwdConfirm È£Ãâ ¼º°ø");
+		log.info("pwdConfirm È£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
 		AdminVO advo;
 		String result ="";
 		
@@ -58,10 +62,17 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value="/adminIndex", method=RequestMethod.GET)
-	public String adminIndex(HttpSession session) {
+	public String adminIndex(HttpSession session, AdminIndexVO advo, Model model) {
 		String abc = session.getAttribute("adm_num") + "";
 		int result = Integer.parseInt(abc);
+		AdminIndexVO adminIndex = null;
+		adminIndex = adminIndexService.adminIndex();
+		model.addAttribute("adminIndex", adminIndex);
+		
 		log.info("=========="+result+"==================");
+		
+		
+		
 		return "/admin/adminIndex";
 	}
 	

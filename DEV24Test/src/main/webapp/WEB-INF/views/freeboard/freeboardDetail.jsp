@@ -17,6 +17,9 @@
     <script src="/resources/include/js/jquery-1.12.4.min.js"></script>
     <script src="/resources/include/js/jquery-3.5.1.min.js"></script>
     <script src="https://kit.fontawesome.com/a333e3670c.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/resources/include/js/common.js"></script>
+    <script type="text/javascript" src="/resources/include/dist/js/bootstrap.min.js"></script>
+    
     <script>
         $(function(){
            // gnb 메뉴 클릭 시

@@ -53,7 +53,12 @@ public class AdminIndexServiceImpl implements AdminIndexService {
 	public int salCount() {
 		int result = 0;
 		result = adminIndexDAO.salCount();
-		return result;
+		String sales = Integer.toString(result);
+		if(sales!=null) {
+			return result;
+		}else {
+			return 0;
+		}
 	}
 
 	@Override

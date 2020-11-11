@@ -7,13 +7,24 @@
 		<title>freecmt.jsp</title>
 		
 		<script type="text/javascript" src="/resources/include/js/jquery-1.12.4.min.js"></script>
+		<script type="text/javascript" src="/resources/include/js/common.js"></script>
+      	<script type="text/javascript" src="/resources/include/dist/js/bootstrap.min.js"></script>
 		
 		<script type="text/javascript">
 			
 			$(function(){
 				
 				var fb_num = ${freeDetail.fb_num};
-				listAll(fb_num)
+				listAll(fb_num);
+				
+				/*댓글 등록 버튼 클릭시 모달창 설정작업*/
+				$("#replyInsertFormBtn").click(function(){
+					setModal("댓글 등록", "insertBtn", "등록");
+					dataReset();
+					$("#replyModal").modal();
+				});
+				
+				
 			});
 			
 			
@@ -89,7 +100,45 @@
 	</head>
 	<body>
 	
-		<div id="reviewList"></div>
+		<%------ 등록화면 형역 (modal) --%>
+		<div id="replyContainer">
+			
+			<p class="text-right">
+				<button type="button" class="btn btn-success" id="replyInsertFormBtn">댓글등록</button>
+			</p>
+			
+			<div id="reviewList"></div>
+		
+			<div class="modal fade" id="replyModal" tabindex="-1" role="dialog" aria-labelledby="replyModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				        <h4 class="modal-title" id="replyModalLabel">댓글등록</h4>
+				      </div>
+				      <div class="modal-body">
+				        <form id="comment_form" name="comment_form">
+				        	<input type="hidden" name="fb_num" value="${detail.fb_num}"/>
+				          <div class="form-group">
+				            <label for="r_name" class="control-label">작성자</label>
+				            <input type="text" class="form-control" name="fbc_author" id="fbc_author" maxlength="25"/> 
+				          </div>
+				          <div class="form-group">
+				            <label for="r_content" class="control-label">글내용</label>
+				            <textarea class="form-control" name="fbc_content" id="fbc_content"></textarea>
+				          </div>
+				        </form>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+				        <button type="button" class="btn btn-primary" id="replyInsertBtn">등록</button>
+				      </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		
+		
 	
 	</body>
 </html>

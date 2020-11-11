@@ -12,4 +12,12 @@
 		where fb_num=#{fb_num}
 	</select>
 	
+	<insert id="freeCmtInsert" parameterType="freecmt">
+		insert into freecmt 
+		(fbc_num, fbc_author, fbc_content, fbc_writeday, fb_num, c_num) 
+		values 
+		(FBC_NUM_SEQ.nextval, #{c_nickname}, #{fbc_content}, sysdate, #{fb_num}, #{c_num})
+
+	</insert>
+	
 </mapper>

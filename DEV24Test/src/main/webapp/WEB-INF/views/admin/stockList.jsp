@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <!-- 문서 유형 : 현재 웹 문서가 어떤 HTML 버전에 맞게 작성되었는지를 알려준다. -->
@@ -100,7 +101,7 @@
 	    				},
 	    				dataType:"text",
 	    				success:function(){
-	    					alert("재고 입려 완료");
+	    					alert("재고 입력 완료");
 	    					location.href="/admin/stockList";
 	    				},
 	    			 });
@@ -181,8 +182,8 @@
       
       
       <style type="text/css">
-			.panel-body{background-color: white;}     
-			#keyword, #search, #searchTerm, #searchData, #searchTerm, #category, #stk_regdate {height:33px;}
+		/* 	.panel-body{background-color: white;}     
+		/*	#keyword, #search, #searchTerm, #searchData, #searchTerm, #category, #stk_regdate {height:33px;}*/
 			
 			.searchCategory{padding:15px; float:left;}
 			
@@ -221,11 +222,11 @@
 			<input type="hidden" id="stk_incp" name="stk_incp"/>
 		</form>
    		
-		<!-- model form -->
-		<h1 id="title"> 재고관리 페이지</h1>
-		
-		<div class="row">
-			<div class="col-sm-5">
+		<!-- model form 
+		<h1 id="title"> 재고관리 페이지</h1>-->
+	
+		<div class="content-wrap"> 
+			<!-- <div class="col-sm-8"> -->
 				<div class="panel-body">
 				    <!-- button to generate model form -->
 				    <a href="#myModal" data-toggle="modal" class="btn btn-s btn-success">재고등록</a>
@@ -296,7 +297,7 @@
 				    </div>
 				</div>
 			</div>
-		</div>
+<!-- </div> -->
 		
 		 <!-- 여기서부터가 우리가 입력할 body 부분 시작. 재고 리스트를 여기에 출력 -->
 		<div>
@@ -306,13 +307,13 @@
 					<form name="searchForm" id="searchForm">
 						<div class="searchCategory">
 						<label>검색조건</label>
-						<select id="search" name="search">
+						<select id="search" name="search" class="form-control">
 							<option value="all">전체</option>
 							<option value="b_name">도서명</option>
 							<option value="b_author">작가</option>
 							<option value="stk_incp">도서코드</option>
 						</select>
-						<input type="text" id="keyword" name="keyword" placeholder="검색어/코드 를 입력해주세요"/>
+						<input type="text" id="keyword" name="keyword" placeholder="검색어/코드 를 입력해주세요" class="form-control"/>
 						<button type="button" class="btn btn-primary btn-sm" id="searchData">검색</button>
 						
 										
@@ -332,7 +333,7 @@
 						<form id="categorySearch" name="categorySearch">
 							<div class="searchCategory">
 								<label for="category">도서 카테고리</label>
-								<select name="category" id="category">
+								<select name="category" id="category" class="form-control">
 									<option value="pl">프로그래밍 언어</option>
 									<option value="osdb">OS/데이터베이스</option>
 									<option value="webp">웹프로그래밍</option>
@@ -343,7 +344,7 @@
 									<option value="webc">웹/컴퓨터/입문 활용</option>
 								</select>
 							<%-- 	<input type="hidden" name="categorynumber" id="categorynumber"/> --%>
-								<input type="button" name="searchStkCate" id="searchStkCate" value="검색" class="btn btn-info"/>
+								<input type="button" name="searchStkCate" id="searchStkCate" value="검색" class="btn btn-info" />
 							</div>
 						</form>
 						
@@ -539,7 +540,7 @@
 							    		<td class="stkDetail">${book.b_name}</td>
 							    		<td>${book.b_author }</td>
 							    		<td>${book.stk_qty} 권</td>
-							    		<td>${book.stk_salp}</td>
+							    		<td><fmt:formatNumber value="${book.stk_salp}"/></td>
 							    		
 							    		<%-- <td>${book.cateone_num }</td> --%>
 							    		<td>${cateOne}</td>
@@ -586,6 +587,7 @@
 		
 	 --%>
 		
+	
 	
    </body>
 </html>

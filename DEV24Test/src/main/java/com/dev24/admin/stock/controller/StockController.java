@@ -18,7 +18,7 @@ import lombok.extern.log4j.Log4j;
 
 @Controller
 @Log4j
-@RequestMapping("admin/*")
+@RequestMapping("/admin/*")
 @AllArgsConstructor
 public class StockController {
 	
@@ -46,7 +46,7 @@ public class StockController {
 	
 	@RequestMapping(value="/stockInsert", method=RequestMethod.POST)
 	public String stockInsert(StockVO svo, Model model) {
-		log.info("boardInsert 호출 성공");
+		log.info("stockInsert 호출 성공");
 		
 		int result =0;
 		String url="";

@@ -25,4 +25,16 @@ public class FreeCmtServiceImpl implements FreeCmtService{
 		return list;
 	}
 
+	@Override
+	public int freeCmtInsert(FreeCmtVO fcmtvo) {
+		int result =0;
+		try {
+			result = freecmtDAO.freeCmtInsert(fcmtvo);
+		}catch(Exception e) {
+			e.printStackTrace();
+			result =0;
+		}
+		return result;
+	}
+
 }
