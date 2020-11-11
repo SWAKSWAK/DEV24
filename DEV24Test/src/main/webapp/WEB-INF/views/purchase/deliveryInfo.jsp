@@ -100,8 +100,8 @@
 		                }
 		 
 		                // 우편번호와 주소 정보를 해당 필드에 넣는다.
-		                console.log(data.zonecode);
-		                console.log(fullRoadAddr);
+		                //console.log(data.zonecode);
+		                //console.log(fullRoadAddr);
 		                
 		                $("input[name='p_zipcode']").val(data.zonecode);
 		                $("input[name='p_address']").val(fullRoadAddr);
@@ -119,7 +119,8 @@
 	                <h3>배송주소</h3>
 	            </div>
 	            
-	            
+	      			<form id="f_purchase" name="f_purchase">
+	      			      
 		            <div id="delivery_wrap">
 		            	<input type="hidden" name="p_receivephone" id="p_receivephone" />
 		            	<input type="hidden" name="p_senderphone" id="p_senderphone" />
@@ -135,7 +136,7 @@
 		                    </tr>
 		                    <tr class="tr_address">
 		                        <th>배송주소</th>
-		                        <td><input type="text" name="p_zipcode" id="p_zipcode" class="form-control" />
+		                        <td><input type="text" name="p_zipcode" id="p_zipcode" class="form-control" readonly="readonly" />
 		                            <input type="button" id="zipcodeSearchBtn" class="btn btn-default" value="우편번호 찾기" /></td>
 		                    </tr>
 		                    <tr>
@@ -186,19 +187,21 @@
 		            <div id="payment_wrap">
 		                <ul>
 		                    <li>
-		                        <label><input type="radio" name="p_pmethod" id="p_pmethod_card" />신용카드</label>
+		                        <label><input type="radio" name="p_pmethod" id="p_pmethod_card" value="신용카드" />신용카드</label>
 		                    </li>
 		                    <li>
-		                        <label><input type="radio" name="p_pmethod" id="p_pmethod_toss" />계좌이체</label>
+		                        <label><input type="radio" name="p_pmethod" id="p_pmethod_toss" value="계좌이체" />계좌이체</label>
 		                    </li>
 		                    <li>
-		                        <label><input type="radio" name="p_pmethod" id="p_pmethod_cash" />무통장입금</label>
+		                        <label><input type="radio" name="p_pmethod" id="p_pmethod_cash" value="무통장입금" />무통장입금</label>
 		                    </li>
 		                    <li>
-		                        <label><input type="radio" name="p_pmethod" id="p_pmethod_phone" />핸드폰결제</label>
+		                        <label><input type="radio" name="p_pmethod" id="p_pmethod_phone" value="핸드폰결제" />핸드폰결제</label>
 		                    </li>
 		                </ul>
 		            </div><!--payment_wrap-->
+		            
+		         </form>
 		            
 		          
 		            

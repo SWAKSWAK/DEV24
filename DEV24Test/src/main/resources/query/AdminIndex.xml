@@ -17,11 +17,9 @@
 	</select>
 	
 	<select id="salCount" resultType="int">
-		select sum(pd_price) from (select pdetail.pd_price, purchase.p_buydate
-		from purchase 
-		inner join pdetail 
-		on pdetail.c_num=purchase.c_num and purchase.p_num=pdetail.p_num 
-		where trunc(p_buydate) = to_date(sysdate, 'yy/mm/dd') and pdetail.pd_orderstate='confirm')
+		select nvl ((select sum(pd_price) from (select pdetail.pd_price, purchase.p_buydate from purchase inner 
+		join pdetail on pdetail.c_num=purchase.c_num and purchase.p_num=pdetail.p_num where trunc(p_buydate) 
+		= to_date(sysdate, 'yy/mm/dd') and pdetail.pd_orderstate='confirm')), 0) as state from dual
 	</select>
 	
 	<select id="revCount" resultType="int">

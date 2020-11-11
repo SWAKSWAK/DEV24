@@ -2,7 +2,6 @@ package com.dev24.admin.purchase.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.dev24.admin.purchase.dao.PurchaseDaoAdmin;
@@ -15,6 +14,7 @@ import lombok.AllArgsConstructor;
 public class PurchaseServiceImpl implements PurchaseService {
 	
 	private PurchaseDaoAdmin purchaseDAO;
+	
 
 	// 구매 관리 목록 리스트 출력
 	@Override
@@ -23,5 +23,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 		list = purchaseDAO.purchaseList(pvo);
 		return list;
 	}
+
+	
 
 }

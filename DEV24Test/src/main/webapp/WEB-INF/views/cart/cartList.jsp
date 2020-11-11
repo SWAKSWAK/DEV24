@@ -21,6 +21,11 @@
 		<script src="/resources/include/js/jquery-1.12.4.min.js"></script>
     	<script src="/resources/include/js/jquery-3.5.1.min.js"></script>
     	<script src="/resources/include/js/common.js"></script>
+    	<style>
+    	.price_text span{
+    		font-size:25px;
+    	}
+    	</style>
     	<script>
     		$(function(){
     			checkAllDefault("#book_table", "${cartList1}");
@@ -146,41 +151,59 @@
     					alert("선택한 상품이 없습니다.");
     					return;
     				}
-    				else{
-    					var crt_num = []; // 체크된 상품의 장바구니 번호 배열로 받기
-    					
-    					var book_tr = $("#book_table").find("tr.tr").length;
-    					var ebook_tr = $("#ebook_table").find("tr.tr").length;
-    	    	        for(var i=0; i < book_tr; i++){
-    	    	            if($("#book_table").find("tr.tr").eq(i).find(".checkItem").is(":checked") == true){
-    	    	            	crt_num[i] = $("#book_table").find("tr.tr").eq(i).attr("data-num");
-    	    	            	console.log(crt_num[i]);
-    	    	            }
-    	    	        }
-    	    	        for(var i=0; i < ebook_tr; i++){
-    	    	            if($("#ebook_table").find("tr.tr").eq(i).find(".checkItem").is(":checked") == true){
-    	    	            	crt_num[i+book_tr] = $("#ebook_table").find("tr.tr").eq(i).attr("data-num");
-    	    	            	console.log(crt_num[i+book_tr]);
-    	    	            }
-    	    	        }
-    	    	        // 체크된 상품 장바구니 번호 수만큼 input type hidden 추가
-    	    	        for(var i=0; i<crt_num.length; i++){
-    	    	        	console.log("crt_num => "+crt_num[i]);
-    	    	        	var input = $("<input>");
-    	    	        	input.attr({
-    	    	        		"type":"hidden", "name":"crt_num",
-    	    	        		"value":crt_num[i], "id":"crt_num"+i
-    	    	        	});
-    	    	        	$("#f_cart").append(input);
-    	    	        }
-    	    	        
-    	    	        /*$("#f_cart").attr({
-    	    	        	"method" : "post",
-    	    	        	"action" : "/purchase/purchaseForm"
-    	    	        });
-    	    	        $("#f_cart").submit();*/
-    	    	        
-    				}
+    				
+   	                var cvoList = new Array(); // 체크된 상품의 장바구니 번호 배열로 받기
+   	                var cvo;
+
+   					var book_tr = $("#book_table").find("tr.tr").length;
+   					var ebook_tr = $("#ebook_table").find("tr.tr").length;
+    	            $("#book_table").find("tr.tr").find(".checkItem:checked").each(function(index){
+    	            	var dataNum = $(this).parents("tr.tr").attr("data-num");
+    	            	var index = $(".checkItem").index(this);
+    	            	cvo = new Object();
+    	            	
+    	            	cvo.crt_num = dataNum;
+    	            	console.log(dataNum);
+    	            	
+    	            	cvoList.push(cvo);
+    	            });
+	    	            
+    	        	$("#ebook_table").find("tr.tr").find(".checkItem:checked").each(function(index){
+    	            	cvo = new Object();
+    	            	
+    	            	var index = $(".checkItem").index(this);
+    	            	var dataNum = $(this).parents("tr.tr").attr("data-num");
+    	            	
+    	            	cvo.crt_num = dataNum;
+    	            	console.log("dataNum : "+dataNum);
+    	            	
+    	            	cvoList.push(cvo);
+    	            });
+   	    	        
+   	    	        var cartJsonArr = JSON.stringify(cvoList);
+   	                console.log(cartJsonArr);
+   	                
+   	             	order(cartJsonArr);
+
+    			});// 주문하기 이벤트 끝
+    			
+    			
+    			/* 상품 1개만 주문 */
+    			$(".orderItemBtn").click(function(){
+    				var dataNum = $(this).parents("tr.tr").attr("data-num");
+    				var index = $(".checkItem").index(this);
+    				
+    				var cvoList = new Array();
+    				var cvo = new Object();    	
+    				
+    				cvo.crt_num = dataNum;
+	            	console.log(dataNum);
+	            	
+	            	cvoList.push(cvo);
+	            	
+    				var cvoJson = JSON.stringify(cvoList);
+	            	
+    				order(cvoJson);
     			});
     			
     			
@@ -215,8 +238,6 @@
     	        for(var i=0; i < tr_length; i++){
     	            if($(table).find("tr.tr").eq(i).find(".checkItem").is(":checked") == true){
     	            	var price = $(table).find("tr.tr").eq(i).find("td.td_price span").text();
-    	            	//price = price.replace(",", "");
-    					//price = parseInt(price);
         				price = parseInt(unComma(price));
     					//console.log(price);
         				console.log(typeof(price));
@@ -262,15 +283,32 @@
     		}
     		
     		
+    		/* 체크된 상품 주문하기 눌렀을 때 */
+    		 function order(data){
+	            $.ajax({
+	               url : "/purchase/purchaseItems.json",
+	               type : "post",
+	               data : data,
+	               headers : {
+	                  "Content-Type" : "application/json",
+	                  "X-HTTP-Method-Override" : "POST"
+	               }, 
+	               dataType : "text",
+	               success: function (result) {
+	            	   location.href="/purchase/purchaseForm";
+	               },
+	               error : function(){
+	                  alert("시스템 오류 발생. \n관리자에게 문의해 주세요.");
+	               }
+	            });
+	         };
+    		
+    		
     	</script>
 
 	</head>
 	<body>
 		<div id="content_wrap">
-		
-			<form id="f_cart" name="f_cart">
-				<!-- <input type="hidden" name="crt_num" id="crt_num" />  -->
-			</form>
 		
 	       	<div class="cart_wrap">
 	           <div class="tit_cart">
@@ -305,7 +343,7 @@
 		                			 <tr class="tr" data-num="${cart.crt_num}">
 					                      <td class="td_check"><input type="checkbox" class="checkItem" name="checkItem" /></td>
 					                      <td class="td_book">
-					                         <span class="td_bookimg">${cart.listcover_imgurl}</span>
+					                         <span class="td_bookimg"><img src="${cart.listcover_imgurl}" /></span>
 					                         <span class="td_bookname">${cart.b_name}</span>
 					                      </td>
 					                      <td class="td_price"><span>${cart.crt_price}</span>원</td>
@@ -368,7 +406,7 @@
 		                			 <tr class="tr" data-num="${cart.crt_num}">
 					                      <td><input type="checkbox" class="checkItem" name="checkItem" /></td>
 					                      <td class="td_book">
-					                          <span class="td_bookimg">${cart.listcover_imgurl}</span>
+					                          <span class="td_bookimg"><img src="${cart.listcover_imgurl}" /></span>
 					                          <span class="td_bookname">${cart.b_name}</span>
 					                      </td>
 					                      <td class="td_price"><span>${cart.crt_price}</span>원</td>

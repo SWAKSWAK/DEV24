@@ -22,46 +22,47 @@
 		<script src="/resources/include/js/jquery-1.12.4.min.js"></script>
     	<script src="/resources/include/js/jquery-3.5.1.min.js"></script>
     	<script src="/resources/include/js/common.js"></script>
+    	<style>
+    	.price_text span{
+    		font-size : 25px;
+    	}
+    	</style>
     	<script type="text/javascript">
     		var pattern = /^[0-9]*$/; // 숫자만 허용
     		
     		$(function(){
-    			// 각 상품 금액 콤마 찍기
-    			var price = $(".td_price span").text();
-    			$(".td_price span").text(addComma(price));
-    			var sumPrice = $(".td_sumPrice span").text();
-    			$(".td_sumPrice span").text(addComma(sumPrice));
-    			
-    			// 일반도서와 이북 금액 합계 구하기
-    			var l = $(".table tr.tr").length;
-    			//console.log(l);
-    			var b_sum = 0;
-    			var eb_sum = 0;
+    			/* 각 상품 금액 콤마 찍기 */
+    			var l = $(".table tbody tr").length;
+    			var price = 0;
+    			var sumPrice = 0;
+    			var bookp = 0;
+    			var ebookp = 0;
+    			var total = 0;
     			for(var i=0; i<l; i++){
-	    			var cate = $("tr.tr").eq(i).attr("data-cate");
+    				price = $(".table tbody tr").eq(i).find(".td_price span").text();
+    				$(".table tbody tr").eq(i).find(".td_price span").text(addComma(price));
+    				
+    				sumPrice = $(".table tbody tr").eq(i).find(".td_sumPrice span").text();
+    				$(".table tbody tr").eq(i).find(".td_sumPrice span").text(addComma(sumPrice));
+    			}
+    			
+    			/* 상품 합계 구하기 */
+    			for(var i=0; i<l; i++){
+	    			var cate = $(".table tbody tr").eq(i).attr("data-cate");
 	    			//console.log("cate : "+cate);
-	    			var p = $("tr.tr").eq(i).find("td.td_sumPrice span").text();
-	    			//console.log(p);
+	    			sumPrice = $(".table tbody tr").eq(i).find(".td_sumPrice span").text();
+	    			
     				if(cate == 1){
-    					b_sum += parseInt(unComma(p));
+    					bookp += parseInt(unComma(sumPrice));
     				}else if(cate == 2){
-    					eb_sum += parseInt(unComma(p));
+    					ebookp += parseInt(unComma(sumPrice));
     				}
     			}
-    			var total = b_sum + eb_sum; // 최종 결제 금액 구하기
-           		$("#totalprice_wrap").find(".book_price span").text(addComma(b_sum));
-           		$("#totalprice_wrap").find(".ebook_price span").text(addComma(eb_sum));
+    			total = bookp + ebookp; // 최종 결제 금액
+           		$("#totalprice_wrap").find(".book_price span").text(addComma(bookp));
+           		$("#totalprice_wrap").find(".ebook_price span").text(addComma(ebookp));
            		$("#totalprice_wrap").find(".last_price span").text(addComma(total));
-           		// 화면 하단 최종 결제 금액 최종확인란
            		$(".finalprice strong span").text(addComma(total));
-           		$("#p_price").val(total);
-				//console.log($("#p_price").val());
-				
-				/*******************************/
-				var a = $("tr.tr").attr("data-bnum");
-				var b = $("td.td_price span").text();
-				$("#b_num").val(a);
-				$("#pd_price").val(b);
            		
            		
            		/* 결제하기 버튼 클릭 시 */
@@ -110,18 +111,150 @@
         			var full_sph = sph1+"-"+sph2+"-"+sph3;
         			$("#p_senderphone").val(full_sph);
         			//console.log($("#p_senderphone").val());
-           			
-        			// 폼 데이터 전달
-        			$("#f_purchase").attr({
-        				"action":"/purchase/purchaseInsert",
-        				"method":"post"
-        			});
-        			$("#f_purchase").submit();
         			
-           			
-           		});
+        			
+        			// ****** 결제하기 로직 시작
+        			var pdvo;
+        			var pdvoList = new Array();
+        			var crtnumList = new Array();
+        			
+        			
+        			var p = $(".finalprice strong span").text();
+           			p = unComma(p);
+           			$("#p_price").val(parseInt(p));
+       				
+           			// purcahse
+					var p_receiver = {"p_receiver" : $("#p_receiver").val()};
+					var p_price = {"p_price" : $("#p_price").val()};
+					var p_zipcode = {"p_zipcode" : $("#p_zipcode").val()};
+					var p_pmethod = {"p_pmethod" : $("input[name='p_pmethod']:checked").val()};
+					var p_address = {"p_address" : $("#p_address").val()};
+					var p_sender = {"p_sender" : $("#p_sender").val()};
+					var p_receivephone = {"p_receivephone": $("#p_receivephone").val()};
+					var p_senderphone = {"p_senderphone" : $("#p_senderphone").val()};
+					
+					//console.log(p_price);
+					//console.log(typeof(p_price));
+					//console.log("p_pmethod : " + p_pmethod);
+					
+					pdvoList.push(p_receiver);
+					pdvoList.push(p_price);
+					pdvoList.push(p_zipcode);
+					pdvoList.push(p_pmethod);
+					pdvoList.push(p_address);
+					pdvoList.push(p_sender);
+					pdvoList.push(p_receivephone);
+					pdvoList.push(p_senderphone);
+					
+        			for(var i=0; i<l; i++){ // pdetail
+        				pdvo = new Object();
+        				
+        				var crt_num = $(".t_orderItems tbody tr").eq(i).attr("data-num");
+        				var b_num = $(".t_orderItems tbody tr").eq(i).attr("data-bnum");
+        				var pd_price = $(".t_orderItems tbody tr").eq(i).find(".td_price span").text();
+        				pd_price = unComma(pd_price);
+        				var crt_qty = $(".t_orderItems tbody tr").eq(i).find(".td_qty").text();
+        				//console.log("crt_qty : "+typeof(crt_qty));
+        				//console.log("b_num : "+b_num);
+        				//console.log("pd_price : " + pd_price);
+        				crt_qty = parseInt(crt_qty);
+        				
+        				for(var j=crt_qty; j>0; j--){
+	        				
+	        				pdvo.b_num = b_num;
+	        				pdvo.pd_price = pd_price;
+	        				
+	        				console.log(pdvo);
+	        				pdvoList.push(pdvo);
+        				}
+        				
+        				var c = {"crt_num":crt_num};
+        				crtnumList.push(c);
+        				
+        			}
+    	            
+    	            var data = JSON.stringify(pdvoList);
+    	            
+    	            
+    	            console.log(data); 
+    	            
+    	            order(data);
+           		}); // 결제 버튼 이벤트 종료
     			
     		}); // 최상위 종료
+    		
+    		
+    		/* 체크된 상품 주문하기 눌렀을 때 */
+	   		 function order(data){
+	            $.ajax({
+	               url : "/purchase/purchaseInsert",
+	               type : "post",
+	               data : data,
+	               headers : {
+	                  "Content-Type" : "application/json",
+	                  "X-HTTP-Method-Override" : "POST"
+	               }, 
+	               dataType : "text",
+	               success: function (result) {
+
+	            	   $.ajax({
+	    	               url : "/purchase/pdetailInsert",
+	    	               type : "post",
+	    	               data : data,
+	    	               headers : {
+	    	                  "Content-Type" : "application/json",
+	    	                  "X-HTTP-Method-Override" : "POST"
+	    	               }, 
+	    	               dataType : "text",
+	    	               success: function (result) {
+	    	            	   console.log("result :"+result);
+    	            			
+    	            			var crtnumList = new Array();
+    	            			var l = $(".t_orderItems tbody tr").length;
+    	            			console.log(l);
+	    	            	   for(var i=0; i<l; i++){ // crt_num
+	    	        				var crt_num = $(".t_orderItems tbody tr").eq(i).attr("data-num");
+	    	        				var c = {"crt_num":crt_num};
+	    	        				crtnumList.push(c);
+	    	        			} 
+	    	            	   var cartNum = JSON.stringify(crtnumList);
+	    	            	   console.log(cartNum);
+	    	            	   $.ajax({
+	    	    	               url : "/purchase/purchasedItemDelete",
+	    	    	               type : "post",
+	    	    	               data : cartNum,
+	    	    	               headers : {
+	    	    	                  "Content-Type" : "application/json",
+	    	    	                  "X-HTTP-Method-Override" : "POST"
+	    	    	               }, 
+	    	    	               dataType : "text",
+	    	    	               success: function (result) {
+	    	    	            	   console.log("result :"+result);
+	        	            			// 폼 데이터 전달
+	        	            			$("#f_purchase").attr({
+	        	            				"action":"/purchase/purchasefinish",
+	        	            				"method":"post"
+	        	            			});
+	        	            			$("#f_purchase").submit();
+	    	    	            	   
+	    	    	               },
+	    	    	               error : function(){
+	    	    	                  alert("장바구니 삭제 쪽 - 시스템 오류 발생. \n관리자에게 문의해 주세요.");
+	    	    	               }
+	    	    	            });
+	    	            	   
+	    	               },
+	    	               error : function(){
+	    	                  alert("구매상세 쪽 - 시스템 오류 발생. \n관리자에게 문의해 주세요.");
+	    	               }
+	    	            });
+	            	   
+	               },
+	               error : function(){
+	                  alert("시스템 오류 발생. \n관리자에게 문의해 주세요.");
+	               }
+	            });
+	         };
     	
     	</script>
 
@@ -134,7 +267,7 @@
 	                <h3>상품확인</h3>
 	            </div>
 	            
-	            <table class="table" border="1">
+	            <table class="table t_orderItems" border="1">
 	               <colgroup>
 	                   <col width="50%" /> <!--상품명-->
 	                   <col width="10%" /> <!--가격-->
@@ -150,28 +283,26 @@
 	                    </tr>
 	                </thead>
 	                <tbody>
-	                	<%-- <c:forEach var="item" items="${list}">
-	                		<tr class="tr" data-num="${item.crt_num}" data-cate="${item.cateone_num}">
-		                        <td class="td_book">
-		                            <span class="td_bookimg"><img src="${item.listcover_imgurl}"/></span>
-		                            <span class="td_bookname">${item.b_name}</span>
-		                        </td>
-		                        <td class="td_price"><span>${item.b_price}</span>원</td>
-		                        <td>${item.crt_qty}</td>
-		                        <td class="td_sumPrice"><span>${item.crt_price}</span>원</td>
-		                    </tr>
-	                	</c:forEach> --%>
-	                	
-						<tr class="tr" data-num="${list.crt_num}" data-cate="${list.cateone_num}" data-bnum="${list.b_num}" >
-		                     <td class="td_book">
-		                         <span class="td_bookimg"><img src="${list.listcover_imgurl}"/></span>
-		                         <span class="td_bookname">${list.b_name}</span>
-		                     </td>
-		                     <td class="td_price"><span>${list.b_price}</span>원</td>
-		                     <td>${list.crt_qty}</td>
-		                     <td class="td_sumPrice"><span>${list.crt_price}</span>원</td>
-		                </tr>
-	                    
+	                	<c:choose>
+	                		<c:when test="${not empty list}">
+	                			<c:forEach var="item" items="${list}">
+			                		<tr class="tr" data-num="${item.crt_num}" data-cate="${item.cateone_num}" data-bnum="${item.b_num}">
+				                        <td class="td_book">
+				                            <span class="td_bookimg"><img src="${item.listcover_imgurl}"/></span>
+				                            <span class="td_bookname">${item.b_name}</span>
+				                        </td>
+				                        <td class="td_price"><span>${item.b_price}</span>원</td>
+				                        <td class="td_qty">${item.crt_qty}</td>
+				                        <td class="td_sumPrice"><span>${item.crt_price}</span>원</td>
+				                    </tr>
+			                	</c:forEach>
+	                		</c:when>
+	                		<c:otherwise>
+	                			<tr>
+	                				<td colspan="5">담긴 상품이 없습니다.</td>
+	                			</tr>
+	                		</c:otherwise>
+	                	</c:choose>      
 	                </tbody>
 	            </table>
 	            
@@ -192,13 +323,8 @@
 	           </div>
 	           </div><!--totalprice_wrap-->
 	           
-	           <form id="f_purchase" name="f_purchase">
-	           		<input type="hidden" name="pd_price" id="pd_price" />
-	           		<input type="hidden" name="b_num" id="b_num" />
-	           
 	           <%-- 배송주소 영역 --%>
 			   <jsp:include page="deliveryInfo.jsp" />
-
 
 	            <!--*** 최종확인 영역 ***-->
 	           <div id="lastcheck_wrap">
@@ -207,7 +333,7 @@
 	               <label><input type="checkbox" name="agreeCheck" id="agreeCheck" />동의합니다.(전자상거래법 제8조 제2항)</label>
 	           </div><!--lastcheck_wrap-->
 	           
-	           </form>
+	           
 	           
 	           <input type="button" name="purchaseSuccessBtn" id="purchaseSuccessBtn" class="btn btn-success" value="결제하기" />
 	       </div><!--purchase_wrap-->

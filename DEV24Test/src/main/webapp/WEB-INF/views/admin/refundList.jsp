@@ -56,7 +56,7 @@
 	                    <form name="f_searchText" id="f_searchText" class="form-inline">
 	                        <div class="form-group">
 	                            <label>검색조건</label>
-	                            <select name="ad_search" id="ad_search" class="form-control">
+	                            <select name="search" id="search" class="form-control">
 	                                <option value="all">전체</option>
 	                                <option value="rf_num">환불번호</option>
 	                                <option value="p_num">구매상세번호</option>
@@ -64,19 +64,18 @@
 	                                <option value="b_name">도서명</option>
 	                                <option value="c_id">주문자ID</option>
 	                                <option value="rf_reason">환불사유</option>
-	                                <option value="p_orderdate">주문상태</option>
+	                                <option value="pd_orderdate">주문상태</option>
 	                            </select>
 	                            <input type="text" name="keyword" id="keyword" class="form-control" />
-	                            <input type="button" id="boardSearchBtn" value="검색" class="btn btn-default" />
 	                        </div>
 	                    </form>
 	                    <form name="f_searchDate" id="f_searchDate" class="form-inline">
 	                        <div class="form-group">
 	                            <label>승인날짜</label>
-	                            <input type="date" name="p_buydate" id="p_buydate_start" class="form-control" /> ~ 
-	                            <input type="date" name="p_buydate" id="p_buydate_end" class="form-control" />
-	                            <input type="button" id="boardSearchBtn" value="검색" class="btn btn-default" />
+	                            <input type="date" name="date_start" id="date_start" class="form-control" /> ~ 
+	                            <input type="date" name="date_end" id="date_end" class="form-control" />
 	                        </div>
+	                        <input type="button" id="searchTextBtn" value="검색" class="btn btn-default" />
 	                    </form>
 	                </div><!-- admin_search -->
 	

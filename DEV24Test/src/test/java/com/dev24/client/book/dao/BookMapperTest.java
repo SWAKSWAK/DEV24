@@ -22,9 +22,30 @@ public class BookMapperTest {
 	private BookDAO bookDAO;
 	
 	@Test
+<<<<<<< HEAD
 	public void testBookInsert() {
 		BookViewVO bvo = new BookViewVO();
 
+=======
+	public void testBookList() {
+		BookViewVO bvo;
+//		ArrayList<BookViewVO> bookList = bookDAO.bookViewList();
+		log.info("bvo 가져오기");
+		
+		//모든 데이터
+//		for (int i = 0 ; i < bookList.size() ; i++) {
+//			bvo = bookList.get(i);
+//			log.info(bvo.toString());
+//					
+//		}
+		
+		//index 0, 마지막 데이터만
+//		String first = bookList.get(0).toString();
+//		String last = bookList.get(bookList.size() - 1).toString();
+//		
+//		log.info(first);
+//		log.info(last);
+>>>>>>> branch 'master' of https://github.com/SWAKSWAK/dev24test2.git
 		
 	}
 	

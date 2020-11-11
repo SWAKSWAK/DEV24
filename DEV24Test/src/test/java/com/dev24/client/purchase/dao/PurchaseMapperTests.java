@@ -26,12 +26,12 @@ public class PurchaseMapperTests {
 	
 	/*@Test
 	public void testPurchaseForm() {
-		log.info("purchaseForm ï¿½Þ¼ï¿½ï¿½ï¿½ È£ï¿½ï¿½");
-		Map<String, Integer> map = new HashMap<String, Integer>();
-		map.put("crt_num", 6);
-		List<CartVO> result = purchaseDAO.purchaseForm(map);
+		log.info("purchaseForm ¸Þ¼­µå È£Ãâ");
+		CartVO cvo = new CartVO();
+		cvo.setCrt_num(6);
+		List<CartVO> result = purchaseDAO.purchaseForm(cvo);
 		for(CartVO vo : result) {
-			log.info("purchaseForm ï¿½ï¿½ï¿½ : "+ vo);			
+			log.info("purchaseForm °á°ú : "+ vo);			
 		}
 	}*/
 	

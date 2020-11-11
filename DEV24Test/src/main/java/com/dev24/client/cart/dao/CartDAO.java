@@ -9,4 +9,7 @@ public interface CartDAO {
 	public int cartUpdate(CartVO cvo);
 	public int cartDelete(int crt_num);
 	public int addToCart(List<CartVO> cvoList);
+	
+	// 구매 완료한 상품 삭제
+	public int purchasedItemDelete(List<CartVO> cvoList);
 }

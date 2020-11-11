@@ -11,6 +11,6 @@
 	</update>
 	
 	<select id="freeboardDetail" parameterType="freeboard" resultType="freeboard">
-		select fb_num, fb_author, fb_title, fb_content, fb_img_url from freeboard
+		select fb_num, fb_author, fb_title, fb_content, fb_img_url from freeboard where fb_num=#{fb_num}
 	</select>
 </mapper>

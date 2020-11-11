@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.dev24.client.cart.service.CartService;
 import com.dev24.client.cart.vo.CartVO;
@@ -31,6 +32,7 @@ import lombok.extern.log4j.Log4j;
 @RequestMapping("/cart/*")
 @Log4j
 @AllArgsConstructor
+@SessionAttributes({"c_id","c_num"})
 public class CartController {
 	private CartService cartService;
 	
@@ -41,6 +43,10 @@ public class CartController {
 	@GetMapping("/cartList")
 	public String CartList(@ModelAttribute("data") CartVO cvo, Model model) {
 		log.info("cartList() 메서드 호출");
+		
+		//임시 로그인용.  프로젝트 완료 시 삭제
+		model.addAttribute("c_id", "lee1234");
+		model.addAttribute("c_num", "2");
 		
 		List<CartVO> list = cartService.cartList(cvo);
 		List<CartVO> list1 = new ArrayList<CartVO>();
