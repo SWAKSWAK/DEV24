@@ -2,11 +2,17 @@ package com.dev24.client.book.dao;
 
 import java.util.ArrayList;
 
-import com.dev24.client.book.vo.BookViewVO;
+import com.dev24.client.book.vo.BookVO;
 import com.dev24.common.pagination.Pagination;
 
 public interface BookDAO {
 	
-	public ArrayList<BookViewVO> bookViewList(Pagination pagination);
+	//select
+	public ArrayList<BookVO> bookViewList(Pagination pagination);
 	public int getBookListCnt();
+	public BookVO bookDetail(int b_num);
+	
+	//insert
+	public int bookNumber();
+	public int bookInsert(BookVO bvo);
 }

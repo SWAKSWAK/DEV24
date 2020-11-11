@@ -6,4 +6,5 @@ import com.dev24.client.bookimg.vo.BookImgVO;
 
 public interface BookImgDAO {
 	public ArrayList<BookImgVO> bookImgList();
+	public void bookImgInsert(BookImgVO bivo);
 }

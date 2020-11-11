@@ -20,19 +20,19 @@
 		<put-attribute name="footer" value="/WEB-INF/views/template/client/footer.jsp" />
 	</definition>
 	
-	<definition name="cart/*" extends="content">
-		<put-attribute name="title" value="DEV24 구매" />
-		<put-attribute name="body" value="/WEB-INF/views/cart/{1}.jsp" />
-	</definition>
-	
-	<definition name="book/*" extends="content">
-		<put-attribute name="title" value="DEV24 도서" />
-		<put-attribute name="body" value="/WEB-INF/views/book/{1}.jsp" />
-	</definition>
-	
-	<definition name="purchase/*" extends="content">
-		<put-attribute name="title" value="DEV24 구매" />
-		<put-attribute name="body" value="/WEB-INF/views/purchase/{1}.jsp" />
-	</definition>
+		<definition name="cart/*" extends="content">
+			<put-attribute name="title" value="DEV24 구매" />
+			<put-attribute name="body" value="/WEB-INF/views/cart/{1}.jsp" />
+		</definition>
+		
+		<definition name="book/*" extends="content">
+			<put-attribute name="title" value="DEV24 도서" />
+			<put-attribute name="body" value="/WEB-INF/views/book/{1}.jsp" />
+		</definition>
+		
+		<definition name="purchase/*" extends="content">
+			<put-attribute name="title" value="DEV24 구매" />
+			<put-attribute name="body" value="/WEB-INF/views/purchase/{1}.jsp" />
+		</definition>
 	
 </tiles-definitions>

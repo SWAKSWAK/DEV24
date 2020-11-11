@@ -12,6 +12,9 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
 		
+
+		
+		
 				<!-- 모바일 웹 페이지 설정 -->
 		<link rel="shortcut icon" href="/resources/image/icon.png" />
 		<link rel="apple-touch-icon" href="/resources/image/icon.png" />
@@ -48,10 +51,12 @@
     			display: inline-block;
     			padding: 5px;
     		}
-    		.pageBtn {
+    		.pageBtn{
     			display: inline-block;
-    			font-size: 20px;
     			font-weight: bold;
+    		}
+    		.pageBtn * {
+    			font-size: 20px;
     		}
     		.pageBtn {
     			cursor: pointer;
@@ -59,7 +64,6 @@
     		.contentWrap {
     			text-align: center;
     		}
-    		
     		.listWrap {
     			display: inline-block;
     			margin-top: 20px;
@@ -376,13 +380,19 @@
 				
     			
     			//pagination 정보  변수에 담기
-    			var page = ${pagination.page};//현재페이지
-    			var startPage = ${pagination.startPage};//지금 길이의 시작페이지
-    			var endPage = ${pagination.endPage};
-    			var pageLength = ${pagination.pageLength};
-    			var cateOne_num = ${pagination.cateOne_num};
-    			var cateTwo_num = ${pagination.cateTwo_num};
+    			var page = parseInt(${pagination.page});//현재페이지
+    			var startPage = parseInt(${pagination.startPage});//지금 길이의 시작페이지
+    			var endPage = parseInt(${pagination.endPage});
+    			var pageLength = parseInt(${pagination.pageLength});
+    			var cateOne_num = parseInt(${pagination.cateOne_num});
+    			var cateTwo_num = parseInt(${pagination.cateTwo_num});
+    			var range = parseInt(${pagination.range});
     			
+    			if (page > pageLength){
+    				
+    				page = pageLength;
+    				
+    			}
     			
     			if (startPage-1 <= 0)
     				$(".prevBtn").css("cursor", "default");
@@ -396,28 +406,47 @@
 				if(startPage+1 > pageLength)
 					$(".nextRangeBtn").css("cursor", "default");
 				
+				var uri = "/book/"+cateOne_num+"/"+cateTwo_num+"?page=";
+				
     			$(".prevBtn").click(function(){
-    				if (startPage-1 > 0)
-    					location.href = "/book/"+cateOne_num+"/"+cateTwo_num+"?page="+page-1;
+    				if (startPage-1 > 0){
+    					if(page-1 != startPage-1){
+    						location.href = uri+(page-1);
+    					} else {
+    						location.href = uri+(startPage-1)+"&startPage="+(startPage-5);
+    					}
+    				}
     			});
 
     			$(".nextBtn").click(function(){
-    				if(endPage+1 <= pageLength)
-    					location.href = "/book/"+cateOne_num+"/"+cateTwo_num+"?page="+page+1;
+    				if(endPage+1 <= pageLength){
+    					if(page+1 != startPage +5){
+    						location.href = uri+(page+1);
+    					}else{
+	    					location.href = uri+(page+1)+"&startPage="+(startPage+5);
+    					}
+    				}
     			});
 
     			$(".prevRangeBtn").click(function(){
-    				if (startPage-5 > 0)
-    					location.href = "/book/"+cateOne_num+"/"+cateTwo_num+"?page="+page-5;
+    				if ((startPage-5) > 0)
+    					location.href = uri+(page-5)+"&startPage="+(startPage-5);
     			});
 
     			$(".nextRangeBtn").click(function(){
-    				if(startPage+5 <= pageLength)
-    					location.href = "/book/"+cateOne_num+"/"+cateTwo_num+"?page="+page+5;
+    				console.log("(startPage+5) : " + (startPage+5));
+    				console.log("pageLength : " + pageLength);
+    				if((endPage+5) < pageLength){
+    					location.href = uri+(page+5)+"&startPage="+(startPage+5);
+    				} else {
+    					range = pageLength - (startPage+5);
+    					
+    					location.href = uri+(page+range+1)+"&startPage="+(startPage+5)+"&endPage="+(pageLength);
+    				}
     			});
     			
     			$(".pageNumBtn").click(function(){
-    				location.href = "/book/"+cateOne_num+"/"+cateTwo_num+"?page="+$(this).html();
+    				location.href = uri+$(this).html()+"&startPage="+startPage;
     			});
     			
     			$(".pageNum[data-num='"+page+"'] > a.pageNumBtn")

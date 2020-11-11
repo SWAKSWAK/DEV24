@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.dev24.client.book.service.BookService;
-import com.dev24.client.book.vo.BookViewVO;
+import com.dev24.client.book.vo.BookVO;
 import com.dev24.common.pagination.Pagination;
 
 import lombok.AllArgsConstructor;
@@ -31,20 +31,22 @@ public class BookController {
 							@PathVariable int cateOne_num,
 							@PathVariable int cateTwo_num,
 							@RequestParam(required = false, defaultValue = "1") int page,
+							@RequestParam(required = false, defaultValue = "1") int startPage,
+							@RequestParam(required = false, defaultValue = "20") int listRange,
 							Model model
-							) {
-		
+	) {
 		
 		log.info("bookList 호출 성공");
-		log.info(page);
+		log.info("bookList(): page=" + page);
+		log.info(cateOne_num);
+		log.info(cateTwo_num);
 		// Pagination 객체 생성
-		Pagination pagination = new Pagination();
 		int bookLength = bookService.getBookListCnt();
-		pagination.pagantion(bookLength, page, cateOne_num, cateTwo_num);
-
+		log.info(bookLength);
+		Pagination pagination = new Pagination(bookLength, startPage, page, cateOne_num, cateTwo_num, listRange);
 		//얻어낸 pagination객체를 통해 bookList() 호출
-		ArrayList<BookViewVO> bookList = bookService.bookViewList(pagination);
-		
+		ArrayList<BookVO> bookList = bookService.bookViewList(pagination);
+		log.info(bookList.toString());
 		log.info(pagination.toString());
 		
 		// 임시 로그인용. 프로젝트 완료 시 삭제
@@ -55,6 +57,14 @@ public class BookController {
 		model.addAttribute("bookList", bookList);
 
 		return "book/bookList";
+	}
+	
+	@RequestMapping(value="/detail/{b_num}")
+	public String bookDetail(@PathVariable int b_num ,Model model) {
+		BookVO vo = bookService.bookDetail(b_num);
+		log.info(vo.getB_date());
+		model.addAttribute("vo", vo);
+		return "book/bookDetail";
 	}
 
 }

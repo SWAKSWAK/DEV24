@@ -11,4 +11,32 @@
 		ORDER BY b_num
 	</select>
 	
+	<insert id="bookImgInsert" parameterType="bookImg">
+		INSERT INTO
+			bookimg 
+		(
+			b_num 
+		<if test="listcover_imgurl != null and !listcover_imgurl.equals('')">
+			, listcover_imgurl
+		</if>
+		<if test="detailcover_imgurl != null and !detailcover_imgurl.equals('')">
+			, detailcover_imgurl
+		</if>
+		<if test="detail_imgurl != null and !detail_imgurl.equals('')">
+			, detail_imgurl
+		</if>
+		) VALUES (
+			#{b_num}
+		<if test="listcover_imgurl != null and !listcover_imgurl.equals('')">
+			, #{listcover_imgurl,jdbcType=VARCHAR}
+		</if>
+		<if test="detailcover_imgurl != null and !detailcover_imgurl.equals('')">
+			, #{detailcover_imgurl,jdbcType=VARCHAR}
+		</if>
+		<if test="detail_imgurl != null and !detail_imgurl.equals('')">
+			, #{detail_imgurl,jdbcType=VARCHAR}
+		</if>
+		)
+	</insert>
+	
 </mapper>
