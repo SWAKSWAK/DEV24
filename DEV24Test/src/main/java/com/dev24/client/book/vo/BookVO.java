@@ -1,7 +1,5 @@
 package com.dev24.client.book.vo;
 
-import java.util.Map;
-
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Data;

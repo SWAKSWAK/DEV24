@@ -32,7 +32,7 @@ public class CartServiceImpl implements CartService {
 		return result;
 	}
 
-	// 장바구니 상품 삭제
+	// 장바구니 상품 삭제 
 	@Override
 	public int cartDelete(int crt_num) {
 		int result = 0;
@@ -46,5 +46,7 @@ public class CartServiceImpl implements CartService {
 		int result = cartDAO.addToCart(cvoList);
 		return result;
 	}
+	
+	
 
 }

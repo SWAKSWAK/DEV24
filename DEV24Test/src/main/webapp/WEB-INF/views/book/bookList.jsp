@@ -73,7 +73,7 @@
     			/* border: 1px solid;  */
     		}
     		.bookWrap {
-    			width: 100%;
+    			width: 85%;
     			height: 168px;
     			display: inline-block;
     			border: 1px solid lightgray;
@@ -106,7 +106,7 @@
     			/* border: 1px solid; */
     			display: inline-block;
 			    height: 100%;
-			    width: 555px;
+			    width: 400px;
 			    float: left;
 			    padding-left: 25px;
 			    text-align: left;
@@ -117,7 +117,7 @@
        			color: #736794;
        			overflow: hidden;
        			text-overflow: ellipsis;
-       			width: 630px;
+       			width: 390px;
        		}
        		.b_nameText {
     			max-width: 500px;
@@ -260,6 +260,57 @@
 			}
 			.contentFooter {
 				margin-bottom: 150px;
+			}
+
+
+			/*사이드바*/
+			#content_wrap{
+			    width: 1200px;
+			    margin: 0 auto;
+			}
+			
+			#leftmenu{
+			    width: 150px;
+			    background-color: #f4eeff;
+			    border: 2px solid #424874;
+			    padding: 5px 10px;
+			    box-sizing: border-box;
+			    text-align: center;
+			    margin-top: 20px;
+			    border-radius: 10px;
+			    color: #424874;
+			    position: fixed;
+			}
+			
+			#leftmenu .book_cate{
+			    font-size: 17px;
+			    letter-spacing: 3px;
+			    width: 80%;
+			    border-bottom: 1px solid #424874;
+			    margin: 0 auto;
+			    padding-bottom: 5px;
+			    font-weight: bold;
+			}
+			
+			
+			#leftmenu ul{
+			    padding-top: 5px;
+			}
+			
+			#leftmenu .book_cate:nth-child(3){
+			    margin-top: 20px;
+			}
+			
+			#leftmenu ul > li{
+			    line-height: 30px;
+			    cursor: pointer;
+			}
+			
+			
+			#leftmenu ul > li:hover{
+			    background-color: #f4eeff;
+			    font-weight: bold;
+			    color: #424874;
 			}
 
     	</style>
@@ -453,6 +504,16 @@
     										.css("font-weight", "bold")
     										.css("text-decoration", "underline");
     			
+    			$(".b_name").click(function(){
+    				var b_num = $(this).parents(".bookWrap").attr("data-num");
+    				location.href = "http://localhost:8080/book/detail/"+b_num;
+    			});
+
+    			$(".listcover").click(function(){
+    				var b_num = $(this).parents(".bookWrap").attr("data-num");
+    				location.href = "http://localhost:8080/book/detail/"+b_num;
+    			});
+    			
     		});
     		
     		
@@ -557,91 +618,116 @@
 				</div>	
 			</div>
 		</div>
-			<h1 id="listTitle"></h1>
-			<div class="listWrap">
-					<c:choose>
-						<c:when test="${ not empty bookList }">
-							<c:forEach var="bl" items="${ bookList }">
-								<div class="bookWrap" data-num="${ bl.b_num }">
-									<div class="listcoverWrap text-left">
-										<img class="listcover" src="${bl.listcover_imgurl}">
-									</div>
-									<div class="lineDiv"></div>
-									<div class="booktext text-left">
-										<h1 class="b_name" title="${ bl.b_name }">
-											<span class="b_nameText" >${ bl.b_name }</span>
-										</h1>
-										<span class="authorPub">${ bl.b_author } 저 | ${ bl.b_pub }</span>
-										<p class="priceWrap">
-											<span class="b_price" style="display: none" >${ bl.b_price }</span>
-												<fmt:formatNumber value="${ bl.b_price }"/>
-											<span class="won">원</span>
-										</p>
-										<p class="b_rating">
-											<c:set var="avg" value="${(bl.ra_sum/bl.ra_count)}" />
-											<c:set var="devided" value="${(bl.ra_sum/bl.ra_count)/2}" />
-											<c:choose>
-												<c:when test="${ avg != Double.NaN }">
-													<c:forEach var="i" begin="1" end="5" step="1">
-														<c:if test="${ i <= devided }">
-															<i class="fas fa-star"></i>
-														</c:if>
-														<c:if test="${ i > devided }">
+			
+					<div id="content_wrap"> 
+	       
+				       <div id="leftmenu">
+				          <div class="book_cate">일반도서</div>
+				           <ul>
+				               <li class=""><a href="#">프로그래밍 언어</a></li>
+				               <li><a href="#">네트워크/해킹/보안</a></li>
+				               <li><a href="#">웹사이트</a></li>
+				               <li><a href="#">컴퓨터 입문/활용</a></li>
+				                <li><a href="#">OS/데이터베이스</a></li>
+				             </ul>
+				            <div class="book_cate">eBook</div>
+				           <ul>
+				                <li><a href="#">IT전문서</a></li>
+				                <li><a href="#">컴퓨터 수험서</a></li>
+				                <li><a href="#">웹/컴퓨터 입문&활용</a></li>
+				          </ul>
+				       </div>
+				       
+				       <div id="div">
+					       <h1 id="listTitle"></h1>
+							<div class="listWrap">
+									<c:choose>
+										<c:when test="${ not empty bookList }">
+											<c:forEach var="bl" items="${ bookList }">
+												<div class="bookWrap" data-num="${ bl.b_num }">
+													<div class="listcoverWrap text-left">
+														<img class="listcover" src="${bl.listcover_imgurl}">
+													</div>
+													<div class="lineDiv"></div>
+													<div class="booktext text-left">
+														<h1 class="b_name" title="${ bl.b_name }">
+															<span class="b_nameText" >${ bl.b_name }</span>
+														</h1>
+														<span class="authorPub">${ bl.b_author } 저 | ${ bl.b_pub }</span>
+														<p class="priceWrap">
+															<span class="b_price" style="display: none" >${ bl.b_price }</span>
+																<fmt:formatNumber value="${ bl.b_price }"/>
+															<span class="won">원</span>
+														</p>
+														<p class="b_rating">
+															<c:set var="avg" value="${(bl.ra_sum/bl.ra_count)}" />
+															<c:set var="devided" value="${(bl.ra_sum/bl.ra_count)/2}" />
 															<c:choose>
-																<c:when test="${ i>devided && (devided-i+1)>0}">
-																	<i class="fas fa-star-half-alt"></i>
+																<c:when test="${ avg != Double.NaN }">
+																	<c:forEach var="i" begin="1" end="5" step="1">
+																		<c:if test="${ i <= devided }">
+																			<i class="fas fa-star"></i>
+																		</c:if>
+																		<c:if test="${ i > devided }">
+																			<c:choose>
+																				<c:when test="${ i>devided && (devided-i+1)>0}">
+																					<i class="fas fa-star-half-alt"></i>
+																				</c:when>
+																				<c:otherwise>
+																					<i class="far fa-star"></i>
+																				</c:otherwise>
+																			</c:choose>
+																		</c:if>
+																	</c:forEach>
 																</c:when>
 																<c:otherwise>
 																	<i class="far fa-star"></i>
+																	<i class="far fa-star"></i>
+																	<i class="far fa-star"></i>
+																	<i class="far fa-star"></i>
+																	<i class="far fa-star"></i>
 																</c:otherwise>
 															</c:choose>
-														</c:if>
-													</c:forEach>
-												</c:when>
-												<c:otherwise>
-													<i class="far fa-star"></i>
-													<i class="far fa-star"></i>
-													<i class="far fa-star"></i>
-													<i class="far fa-star"></i>
-													<i class="far fa-star"></i>
-												</c:otherwise>
-											</c:choose>
-											<c:if test="${ avg == Double.NaN }">
-												<c:set var="avg" value="0"/>
-											</c:if>
-												<span class="avgVal">${avg}</span>
-										</p>
-									</div>
-									<div class="btnWrap">
-										<div class="cntWrap">
-											<input type="number" value="1" class="crt_qty" min="0" max="99"/>
-											<button type="button" class="upBtn" ><i class="fas fa-caret-up"></i></button>
-											<button type="button" class="downBtn" ><i class="fas fa-caret-down"></i></button>
-										</div>
-										<!-- <input type="number" class="number text-right" name="cartCnt" value="0" min="0"/> -->
-										
-										<button type="button" class="btn text-right cartBtn">장바구니 담기</button>
-										<div class="cartMsg" style="display: none;">
-											<p class="cartMsgText">
-												<span class="cartMsgTextBold">상품이 장바구니에 담겼습니다.</span><br />
-												바로 확인하시겠습니까?
-											</p>
-											<div class="cartBtnWrap">
-												<button type="button" class="btn goCartBtn">예</button>
-												<button type="button" class="btn noCartBtn">아니오</button>
-											</div>											
-										</div>
-										<button type="button" class="btn text-right buyBtn">구매</button>
-										
-									</div>
-									<div class="chkWrap">
-										<input type="checkbox" class="checkbox" value="${ bl.b_num }" />
-									</div>
+															<c:if test="${ avg == Double.NaN }">
+																<c:set var="avg" value="0"/>
+															</c:if>
+																<span class="avgVal">${avg}</span>
+														</p>
+													</div>
+													<div class="btnWrap">
+														<div class="cntWrap">
+															<input type="number" value="1" class="crt_qty" min="0" max="99"/>
+															<button type="button" class="upBtn" ><i class="fas fa-caret-up"></i></button>
+															<button type="button" class="downBtn" ><i class="fas fa-caret-down"></i></button>
+														</div>
+														<!-- <input type="number" class="number text-right" name="cartCnt" value="0" min="0"/> -->
+														
+														<button type="button" class="btn text-right cartBtn">장바구니 담기</button>
+														<div class="cartMsg" style="display: none;">
+															<p class="cartMsgText">
+																<span class="cartMsgTextBold">상품이 장바구니에 담겼습니다.</span><br />
+																바로 확인하시겠습니까?
+															</p>
+															<div class="cartBtnWrap">
+																<button type="button" class="btn goCartBtn">예</button>
+																<button type="button" class="btn noCartBtn">아니오</button>
+															</div>											
+														</div>
+														<button type="button" class="btn text-right buyBtn">구매</button>
+														
+													</div>
+													<div class="chkWrap">
+														<input type="checkbox" class="checkbox" value="${ bl.b_num }" />
+													</div>
+												</div>
+											</c:forEach>
+										</c:when>
+									</c:choose>
 								</div>
-							</c:forEach>
-						</c:when>
-					</c:choose>
-				</div>
+						</div> <!-- 여기에 도서 리스트 넣으세요. 이름바꿔도됨 -->
+				        
+				    </div> <!-- content_wrap -->
+
 				<div></div>
 				<div class="contentFooter">
 					<div class="top">
