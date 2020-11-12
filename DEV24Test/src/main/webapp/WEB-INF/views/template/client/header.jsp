@@ -26,7 +26,7 @@
                       <li><a href="#">웹/컴퓨터 입문&활용</a></li>
                 </ul> <!-- dropmenu for ebook -->      
 		      </li>
-		        <li><a href="/freeboard/freeboardList">커뮤니티</a></li> <!-- 자유게시판, 공지사항/이벤트 -->
+		        <li><a href="freeboard/freeboardList">커뮤니티</a></li> <!-- 자유게시판, 공지사항/이벤트 -->
 		        <li><a href="#">고객지원</a></li> <!-- 주문내역/배송조회, QnA, FAQ -->
 		      </ul> <!-- gnb -->
 		      

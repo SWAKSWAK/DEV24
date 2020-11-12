@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 	<h1 class="page-header">오늘의 DEV24 현황</h1>
 	<h3 class="date"></h3>
@@ -37,7 +37,6 @@
 			<span class="text-muted">오늘 구매 현황</span>
 		</div>
 		<div class="col-xs-6 col-sm-3 placeholder">
-			<c:set var="refund" scope="session" value="50" />
 			<img data-src="holder.js/200x200?theme=red&text= ${admin.rf_cnt}건"
 				class="img-responsive">
 			<h4>환불신청수</h4>
@@ -45,7 +44,6 @@
 		</div>
 
 		<div class="col-xs-6 col-sm-3 placeholder">
-			<c:set var="sales" scope="session" value="50000000" />
 
 
 			<%--
@@ -89,7 +87,6 @@
                select count(re_num) from review where trunc(re_writedate) = to_date(sysdate, 'yy/mm/dd');
             select count(re_num) from review where trunc(re_writedate) = to_date('20/10/29', 'yy/mm/dd');
              --%>
-			<c:set var="review" scope="session" value="458" />
 			<img
 				data-src="holder.js/200x200?theme=blue&text=${adminIndex.rev_cnt}개"
 				class="img-responsive" alt="Generic placeholder thumbnail">
@@ -100,7 +97,6 @@
 
 		<div class="col-xs-6 col-sm-3 placeholder">
 			<%-- select count(q_num) from qna where trunc(q_writedate) = TO_DATE(sysdate,'yy/mm/dd'); --%>
-			<c:set var="qna" scope="session" value="17" />
 			<img
 				data-src="holder.js/200x200?theme=green&text=${adminIndex.qna_cnt}개"
 				class="img-responsive" alt="Generic placeholder thumbnail">

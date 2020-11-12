@@ -10,27 +10,58 @@
 		<script type="text/javascript" src="/resources/include/js/common.js"></script>
 		
 		<script type="text/javascript">
-			
+			$(function(){
+				$("#freeboardInsert").click(function(){
+					if(!chkSubmit($('#fb_title'), "제목을")) return;
+					if(!chkSubmit($('#fb_content'), "내용을")) return;
+					else{
+						$("#f_writeForm").attr({
+							"method":"post", 
+							"action":"/freeboard/freeboardInsert"
+						});
+						$("#f_writeForm").submit();
+					}
+					
+					/*else{
+						$.ajax({
+							url:"/freeboard/freeboardInsert", 
+							type:"post", 
+							data:{
+								
+								c_num: $("#c_num").val(), 
+								
+							}
+						});
+					}*/
+				});
+			});
 		</script>
+		
+		<style type="text/css">
+			#content{width:1000px;}
+		</style>
 		
 		<title>freeboardWriteForm.jsp</title>
 		
 	</head>
 	
 	<body>
-		<div class="container">
+		<div id="content">
+			
 			<form id="f_writeForm" name="f_writeForm" class="form-horizontal">
+			<input type="hidden" name="c_num" id="c_num" value="${c_num}"/>
+			<input type="hidden" name="fb_author" id="fb_author" value="${c_nickname}"/>
 				<table class="table table-bordered">
-					<colgroup>
+				<%--<colgroup>
 						<col width="20%"/>
 						<col width="80%"/>
-					</colgroup>
+					</colgroup>--%>
 					
 					<tbody>
-					<tr>
+					<%-- <tr>
 						<td>작성자</td>
-						<td class="text-left"><input type="text" name="b_name" id="b_name" class="form-control"/></td>
-					</tr>
+						<td class="text-left"><input type="text" name="fbc_author" id="fbc_author" class="form-control"/></td>
+					</tr> --%>
 					
 					<tr>
 						<td>글제목</td>
@@ -39,19 +70,18 @@
 					
 					<tr>
 						<td>글내용</td>
-						<td><textarea rows="10" cols="100" name="b_content" id="b_content" class="form-control" rows="8" style="resize:none"></textarea></td>
+						<td><textarea rows="10" cols="100" name="fb_content" id="fb_content" class="form-control" rows="8" style="resize:none"></textarea></td>
 					</tr>
 				
-					<tr>
+					<%--<tr>
 						<td>비밀번호</td>
-						<td><input type="password" name="b_pwd" id="b_pwd" maxlength="16"/></td>
-					</tr>
-					
-					
+						<td><input type="password" name="fb_pwd" id="fb_pwd" maxlength="16"/></td>
+					</tr>  --%>
 					
 					</tbody>		
 				</table>	
 			</form>
+			<input type="button" value="글 등록" class="btn btn-success" id="freeboardInsert"/>
 		</div>
 		
 		<br/>

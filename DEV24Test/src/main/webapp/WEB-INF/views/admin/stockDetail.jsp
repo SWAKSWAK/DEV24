@@ -73,12 +73,21 @@
 			} 
 			
 			td{ text-align: left;}
+			
+			#bodydiv{
+				margin:20px;
+				width:1200px;
+				float:right;
+			}
+			
       </style>
       
       
       
    </head>
    <body>
+   		
+   		<div id="bodydiv">
    		
    		<form id="detailForm" name="detailForm">
 			<input type="hidden" id="stk_incp" name="stk_incp"/>
@@ -175,6 +184,8 @@
 					</tbody>
 				</table>
 			</div>
+		</div>
+		
 		</div>
 	
    </body>

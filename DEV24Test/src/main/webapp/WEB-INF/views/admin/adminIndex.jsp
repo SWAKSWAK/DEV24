@@ -95,7 +95,7 @@
     </script>
     
     <style type="text/css">
-         .circle{
+    /*     .circle{
             display: inline-block;
             border: 1px solid;
             border-radius: 150.1px !important;
@@ -104,7 +104,7 @@
             background-color: blue;
             text-align: center;
             color:white;
-        }
+        }*/
     </style>
     
   </head>
@@ -115,7 +115,7 @@
       <div class="container-fluid">
         <div class="navbar-header">
          
-          <a class="navbar-brand" href="/admin/adminIndex.jsp">DEV24 관리자 페이지</a>
+          <a class="navbar-brand" href="/admin/adminIndex">DEV24 관리자 페이지</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
          

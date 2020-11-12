@@ -47,6 +47,24 @@
             $("#boardListBtn").click(function(){
             	location.href="/freeboard/freeboardList"
             });
+            
+            
+            $("#boardDeleteBtn").click(function(){
+            	$.ajax({
+            		url:"/freeboard/freeboardDelete", 
+            		type:"post",
+            		data:"fb_num="+$("#fb_num").val(), 
+            		dataType:"text", 
+            		error: function(){
+            			alert("시스템 오류, 관리자에게 문의해주세요");
+            		},
+            		success: function(){
+            			alert("글 삭제 완료");
+            			$("#fb_num").submit();
+            			location.href="/freeboard/freeboardList";
+            		}
+            	});
+            });
           
         });
         
@@ -57,7 +75,14 @@
 <body>
     <!--*************************************************************-->
     
+    <form name="">
+    
+    </form>
+    
     <div id="content_wrap">
+    	<c:set var="detail" value="${freeDetail}"/>
+    	<input type="hidden" id="fb_num" name="fb_num" value="${detail.fb_num}"/>
+    	
         <%-- <div id="pwdChk" class="authArea">
 			<form name="f_pwd" id="f_pwd">
 				<!--<input type="hidden" name="num" id="num" value="${detail.num}" />-->
@@ -76,8 +101,7 @@
             <input type="button" id="boardReplyBtn" value="글답변" class="btn btn-success" />
             <input type="button" id="boardListBtn" value="글목록" class="btn btn-primary" />
 		</div>
-		
-		<c:set var="detail" value="${freeDetail}"/>
+	
 		
 		<table summary="게시판 상세 페이지" class="table" border="0">
 			<tr>

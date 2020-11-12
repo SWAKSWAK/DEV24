@@ -47,4 +47,11 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 		return result;
 	}
 
+	@Override
+	public int freeboardDelete(FreeBoardVO fbvo) {
+		int result = 0; 
+		result = freeboardDAO.freeboardDelete(fbvo);
+		return result;
+	}
+
 }

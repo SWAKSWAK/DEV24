@@ -8,10 +8,20 @@
 		
 		 <link rel="stylesheet" type="text/css" href="/resources/include/dist/css/bootstrap.min.css" />
          <link rel="stylesheet" type="text/css" href="/resources/include/dist/css/bootstrap-theme.css" />
-    
+    	<link rel="stylesheet" href="/resources/include/css/adminPage.css">
          <script type="text/javascript" src="/resources/include/js/jquery-1.12.4.min.js"></script>
          <script type="text/javascript" src="/resources/include/dist/js/bootstrap.js"></script>
          <script type="text/javascript" src="/resources/include/js/common.js"></script>
+         
+         <style type="text/css">
+         	
+         	#content_wrap{
+         		width: 1200px;
+    			float: left;
+    			margin:10px;
+         	}
+         	
+         </style>
          
          <script type="text/javascript">
          	$(function(){
@@ -50,7 +60,7 @@
          		
          		$("#bstatebtn").click(function(){
          			
-         			console.log("에라이 씨팔");
+         			//console.log("에라이 씨팔");
          			console.log($("#b_state").val());
          			
          			var b_state;
@@ -79,24 +89,30 @@
          	});
          	
          </script>
+         
+        
 		
 	</head>
 	
 	<body>
-		<div class="container">
-			<h1>재고등록 화면</h1>
-			<form id="hiddenForm">
-				<input type="hidden" name="b_state" id="b_state" value="" />
-			</form>
+	<!-- <div class="container-fluid"> -->
+		<!-- <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main"> -->
+	<div id="container"> 
+		<div id="content_wrap">
+		<%-- <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main"> --%>
+		<form id="hiddenForm">
+			<input type="hidden" name="b_state" id="b_state" value="" />
+		</form>
+		
+			
 			<form role="form" name="stockInsertForm" >
+					<h1>재고등록 화면</h1>
 				<div class="form-group">
-					<label>상품상태</label> <select class="form-control" name="b_stateSelect" id="b_stateSelect">
+					<label>상품정보 등록 상태</label> <select class="form-control" name="b_stateSelect" id="b_stateSelect">
 						<option value="all">등록</option>
 						<option value="unreg" id="unreg">미등록</option>
 					</select> 
-					<br /> 
 					<input type="button" value="선택" id="bstatebtn" name="bstatebtn" class="btn btn-default" /> 
-					<br/><br/> 
 					
 					<label>상품코드</label>
 					<select class="form-control" name="b_num" id="b_num">
@@ -110,13 +126,14 @@
 						</c:choose>
 					</select>
 				</div>
+				
 				<div class="form-group">
 					<label>입고수량</label> <input class="form-control" placeholder="재고수량 입력"
 						type="number" min="1" name="stk_qty" id="stk_qty">
 				</div>
+				
 				<div class="form-group">
-					<label for="exampleInputFile">재고 등록자명</label> <input type="hidden"
-						value="${adm_num}" name="adm_num" id="adm_num" />
+					<label for="exampleInputFile">재고 등록자명</label> <input type="hidden"value="${adm_num}" name="adm_num" id="adm_num" />
 					<p>${adm_name}관리자</p>
 					<p class="help-block" style="color: red;">도서의 재고는 한번 입력시 수정이
 						불가합니다. 신중히 등록을 해주세요</p>
@@ -134,6 +151,10 @@
 				<input type="button" class="btn btn-default" value="도서등록"
 					name="submitBtn" id="submitBtn" />
 			</form>
-		</div>
+			</div>
+	</div>
+			
+			
+<!-- 		</div> -->
 	</body>
 </html>

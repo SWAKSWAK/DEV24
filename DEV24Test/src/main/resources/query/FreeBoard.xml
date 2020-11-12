@@ -13,4 +13,16 @@
 	<select id="freeboardDetail" parameterType="freeboard" resultType="freeboard">
 		select fb_num, fb_author, fb_title, fb_content, fb_img_url from freeboard where fb_num=#{fb_num}
 	</select>
+	
+	<insert id="freeboardInsert" parameterType="freeboard">
+		insert into freeboard 
+		(fb_num, fb_author, fb_title, fb_readcnt, fb_content, fb_writeday, c_num)
+		values 
+		(fb_num_seq.nextval, #{fb_author}, #{fb_title}, 0, #{fb_content}, sysdate, #{c_num})
+	</insert>
+	
+	<delete id="freeboardDelete" parameterType="freeboard">
+		delete from freeboard where fb_num=#{fb_num}
+	</delete>
+	
 </mapper>

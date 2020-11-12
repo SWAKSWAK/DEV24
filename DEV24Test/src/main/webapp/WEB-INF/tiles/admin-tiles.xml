@@ -13,17 +13,17 @@
 		<put-attribute name="adminbody" value="/WEB-INF/views/template/admin/adminMain.jsp" />
 	</definition>
 	
-	<!-- 일반페이지 
-	<definition name="content" template="/WEB-INF/views/template/admin/adminContentLayout.jsp">
+	<!-- 일반페이지  -->
+	<definition name="adminContent" template="/WEB-INF/views/template/admin/adminContentLayout.jsp">
 		<put-attribute name="title" value="DEV24Admin page" />
 		<put-attribute name="header" value="/WEB-INF/views/template/admin/header.jsp" />
 		<put-attribute name="body" value="" />
 		<put-attribute name="body" value="/WEB-INF/views/template/admin/menu.jsp" />
-	</definition> -->
+	</definition>
 	
-	<!-- <definition name="admin/*" extends="adminIntro">
+	<definition name="/admin/*" extends="adminIntro">
 		<put-attribute name="title" value="DEV24 관리자페이지 " />
-		<put-attribute name="adminbody"  value="/WEB-INF/views/admin/{1}.jsp" /> 
-	</definition> -->
+		<put-attribute name="adminbody" value="/WEB-INF/views/admin/{1}.jsp" /> 
+	</definition>
 		
 </tiles-definitions>

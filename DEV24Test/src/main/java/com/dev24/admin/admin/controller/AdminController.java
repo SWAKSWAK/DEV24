@@ -31,7 +31,7 @@ public class AdminController {
 	
 	@RequestMapping(value="/admin/adminLoginForm")
 	public String adminLoginForm() {
-		return "/admin/adminLoginForm";
+		return "admin/adminLoginForm";
 	}
 	
 	@ResponseBody
@@ -73,7 +73,7 @@ public class AdminController {
 		
 		
 		
-		return "/admin/adminIndex";
+		return "admin/adminIndex";
 	}
 	
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dev24.client.freeboard.service.FreeBoardService;
 import com.dev24.client.freeboard.vo.FreeBoardVO;
@@ -69,6 +70,21 @@ public class FreeBoardController {
 		}else {
 			url="/freeboard/freeboardWriteForm";
 		}
-		return url;
+		return "redirect:"+url;
+	}
+	
+	@RequestMapping(value="/freeboardDelete")
+	public String freeboardDelete(@ModelAttribute("data") FreeBoardVO fbvo, RedirectAttributes ras) {
+		log.info("freeboardDelete 호출 성공!");
+		int result = 0; 
+		String url="";
+		
+		result = freeboardService.freeboardDelete(fbvo);
+		if(result == 1) {
+			url="/freeboard/freeboardList"; 
+		}else {
+			url="/freeboard/freeboardDetail";
+		}
+		return "redirect:"+url;
 	}
 }

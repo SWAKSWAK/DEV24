@@ -96,7 +96,7 @@
     </script>
     
     <style type="text/css">
-         .circle{
+       /*  .circle{
             display: inline-block;
             border: 1px solid;
             border-radius: 150.1px !important;
@@ -105,7 +105,8 @@
             background-color: blue;
             text-align: center;
             color:white;
-        }
+        }*/
+        
     </style>
     
   </head>
@@ -117,13 +118,10 @@
     </nav>
 
     <div class="container-fluid">
-      <div class="row">
+     <%--  <div class="row"> --%>
     	<tiles:insertAttribute name="menu" />
     	<tiles:insertAttribute name="adminbody" />
-    	
-
-        
-      </div>
+      <%-- </div> --%>
     </div>
 
     <!-- Bootstrap core JavaScript
