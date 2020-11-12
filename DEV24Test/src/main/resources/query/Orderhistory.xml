@@ -113,13 +113,11 @@
 	</select>
 	
 	
-	<!-- 구매확정, 구매취소 => 주문상태 수정 -->
+	<!-- 주문상태 수정 -->
 	<update id="orderstateUpdate" parameterType="orderhistory">
-		update pdetail
-		set pd_orderstate =
-		<if test="#{pd_orderstate}">  </if>
-		 
-		  
+		update pdetail		
+		set pd_orderstate = #{pd_orderstate}
+		where b_num = #{b_num}
 	</update>
 	
 

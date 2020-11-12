@@ -44,13 +44,18 @@ public class OrderhistoryController {
 	 * @ResponseBody */
 	@ResponseBody
 	@RequestMapping(value="/orderstateUpdate", method= {RequestMethod.GET})
-	public String orderstateUpdate(@ModelAttribute("data") OrderhistoryVO ohvo, Model model, HttpSession session) {
+	public String orderstateUpdate(@ModelAttribute("data") OrderhistoryVO ohvo) {
 		log.info("orderHistory 호출 성공");
 		
-		String result = "";
+		String resultData = "";
+		int result = 0;
+		result = orderhistoryService.orderstateUpdate(ohvo);
+		if(result == 0) {
+			resultData = "FAIL";
+		}else {
+			resultData = "SUCCESS";
+		}
 		
-		
-		
-		return result;
+		return resultData;
 	}
 }

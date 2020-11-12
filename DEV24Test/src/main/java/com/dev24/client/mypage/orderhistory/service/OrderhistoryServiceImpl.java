@@ -24,4 +24,12 @@ public class OrderhistoryServiceImpl implements OrderhistoryService {
 		return list;
 	}
 
+	// 주문상태 수정
+	@Override
+	public int orderstateUpdate(OrderhistoryVO ohvo) {
+		int result = 0;
+		result = orderhistoryDAO.orderstateUpdate(ohvo);
+		return result;
+	}
+
 }

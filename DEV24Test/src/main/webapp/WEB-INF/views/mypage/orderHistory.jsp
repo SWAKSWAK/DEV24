@@ -152,26 +152,19 @@
 				
 				/* 구매확정 버튼 처리 */
 				$(".pConfirmBtn").click(function(){
-					var state = "pConfirm";
+					var pd_orderstate = "pConfirm";
+					var b_num = $(this).parents("tr").attr("data-num");
 					
-					$.ajax({
-						url:"/mypage/orderstateUpdate",
-						type:"get",
-						data : state,
-						dataType:"text",
-						error:function(){
-							alert("시스템 오류. 관리자에게 문의하세요.");
-						},
-						success:function(result){
-							console.log(result);
-							
-						}
-					});
+					updateState(b_num, pd_orderstate);
+					
 				});
 				
 				/* 구매취소 버튼 처리 */
 				$(".orderCancelBtn").click(function(){
-					var state = "cancel";
+					var pd_orderstate = "cancel";
+					var b_num = $(this).parents("tr").attr("data-num");
+					
+					updateState(b_num, pd_orderstate);
 				});
 				
 			}); // 최상위 종료
@@ -187,6 +180,24 @@
 					"action" : "/mypage/orderHistory"
 				});
 				$("#f_search").submit();
+			}
+			
+			
+			/* 주문상태 수정 ajax처리 함수 */
+			function updateState(b_num, pd_orderstate){
+				$.ajax({
+					url:"/mypage/orderstateUpdate",
+					type:"get",
+					data : "b_num="+b_num+"&pd_orderstate="+pd_orderstate,
+					dataType:"text",
+					error:function(){
+						alert("시스템 오류. 관리자에게 문의하세요.");
+					},
+					success:function(result){
+						console.log("result => "+result);
+						location.href="/mypage/orderHistory";
+					}
+				});
 			}
 			
 		</script>
@@ -269,7 +280,7 @@
                     	<c:choose>
                     		<c:when test="${not empty ohvo}">
                     			<c:forEach var="ohvo" items="${ohvo}">
-                    				<tr>
+                    				<tr data-num="${ohvo.b_num}">
 			                            <td class="td_num">${ohvo.p_num}</td>
 			                            <td>${ohvo.p_buydate}</td>
 			                            <td class="td_title">${ohvo.b_name}</td>
@@ -303,7 +314,9 @@
 			                            <td>${ohvo.p_sender}</td>
 			                            <td>${ohvo.p_receiver}</td>
 			                            <td class="td_buttons">
-			                                <input type="button" class="btn btn-info reviewInsertFormBtn" value="리뷰작성" /> <!--구매확정 시에만 가능-->
+			                            	<c:if test="${ohvo.pd_orderstate == 'pConfirm'}">
+			                            		<input type="button" class="btn btn-info reviewInsertFormBtn" value="리뷰작성" /> <!--구매확정 시에만 가능-->
+			                            	</c:if>
 			                            </td>
 			                        </tr>
                     			</c:forEach>

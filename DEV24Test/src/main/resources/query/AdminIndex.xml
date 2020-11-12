@@ -8,34 +8,34 @@
 	</select>
 	
 	<select id="stkCount" resultType="int">
-		select sum(stk_qty) from stock
+		select nvl(sum(stk_qty), 0) from stock
 	</select>
 	
 	<select id="rfCount" resultType="int">
-		select count(rf_num) from refund_view where pd_orderstate!='rfconfirm' 
+		select nvl(count(rf_num),0) from refund_view where pd_orderstate!='rfconfirm' 
 		and rf_confirmdate>=(select to_date(sysdate, 'YY/MM/DD') from dual)
 	</select>
 	
 	<select id="salCount" resultType="int">
 		select nvl ((select sum(pd_price) from (select pdetail.pd_price, purchase.p_buydate from purchase inner 
-		join pdetail on pdetail.c_num=purchase.c_num and purchase.p_num=pdetail.p_num where trunc(p_buydate) 
-		= to_date(sysdate, 'yy/mm/dd') and pdetail.pd_orderstate='confirm')), 0) as state from dual
+      join pdetail on pdetail.c_num=purchase.c_num and purchase.p_num=pdetail.p_num where trunc(p_buydate) 
+      = to_date(sysdate, 'yy/mm/dd') and pdetail.pd_orderstate='pConfirm')),0) as state from dual
 	</select>
 	
 	<select id="revCount" resultType="int">
-		select count(re_num) from review where trunc(re_writedate) = to_date(sysdate, 'yy/mm/dd')
+		select nvl(count(re_num),0) from review where trunc(re_writedate) = to_date(sysdate, 'yy/mm/dd')
 	</select>
 	
 	<select id="qnaCount" resultType="int">
-		select count(q_num) from qna where trunc(q_writedate) = TO_DATE(sysdate,'yy/mm/dd')
+		select nvl(count(q_num),0) from qna where trunc(q_writedate) = TO_DATE(sysdate,'yy/mm/dd')
 	</select>
 	
 	<select id="neCount" resultType="int">
-		select count(ne_num) from neboard where trunc(ne_date) = TO_DATE(sysdate,'yy/mm/dd')
+		select nvl(count(ne_num),0) from neboard where trunc(ne_date) = TO_DATE(sysdate,'yy/mm/dd')
 	</select>
 	
 	<select id="fbCount" resultType="int">
-		select count(fb_num) from freeboard where trunc(fb_writeday) = TO_DATE(sysdate,'yy/mm/dd')
+		select nvl(count(fb_num),0) from freeboard where trunc(fb_writeday) = TO_DATE(sysdate,'yy/mm/dd')
 	</select>
 	
 </mapper>
