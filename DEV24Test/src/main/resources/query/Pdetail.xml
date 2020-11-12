@@ -7,7 +7,7 @@
 		select pd_num_seq.nextval, c.* from (
 		<foreach collection="list" item="item" separator="union all"> 
 		select
-			#{item.pd_price} pd_price, '배송예정' pd_orderstate, #{item.p_num} p_num, #{item.c_num} c_num, #{item.b_num} b_num
+			#{item.pd_price} pd_price, 'preShipping' pd_orderstate, #{item.p_num} p_num, #{item.c_num} c_num, #{item.b_num} b_num
 		from dual
 		</foreach>) c
 	</insert>

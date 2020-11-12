@@ -59,7 +59,7 @@ public class PurchaseController {
 	
 	
 	/****************************
-	 * 
+	 * after payment, pdetail automatically insert according to purchase
 	 * **********/
 	@ResponseBody
 	@PostMapping(value="/purchaseItems", produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})

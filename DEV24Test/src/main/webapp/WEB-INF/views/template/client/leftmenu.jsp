@@ -13,9 +13,9 @@
                <div class="info">
                   <p class="tit">주문내역</p>
                    <ul>
-                       <li><a href="#">주문내역조회</a></li>
-                       <li><a href="#">환불신청/취소내역조회</a></li>
-                       <li><a href="#">장바구니 바로가기</a></li>
+                       <li><a href="/mypage/orderHistory">주문내역조회</a></li>
+                       <li><a href="/mypage/refundHistory">환불신청/취소내역조회</a></li>
+                       <li><a href="/cart/cartList">장바구니 바로가기</a></li>
                    </ul>
                </div>
 

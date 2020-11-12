@@ -22,11 +22,6 @@ public class BookMapperTest {
 	private BookDAO bookDAO;
 	
 	@Test
-<<<<<<< HEAD
-	public void testBookInsert() {
-		BookViewVO bvo = new BookViewVO();
-
-=======
 	public void testBookList() {
 		BookViewVO bvo;
 //		ArrayList<BookViewVO> bookList = bookDAO.bookViewList();
@@ -45,7 +40,6 @@ public class BookMapperTest {
 //		
 //		log.info(first);
 //		log.info(last);
->>>>>>> branch 'master' of https://github.com/SWAKSWAK/dev24test2.git
 		
 	}
 	

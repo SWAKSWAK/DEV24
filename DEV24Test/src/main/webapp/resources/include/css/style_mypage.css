@@ -91,6 +91,7 @@
 #content_mypage{
     float: right;
     margin: 40px 0px;
+    width: 81%;
 }
 
 .contentArea{
@@ -221,22 +222,21 @@
     font-size: 14px;
 }
 
-#orderdate_row2 #order_searchmenu{
+#orderdate_row2 #search{
     font-size: 14px;
     height: 100%;
     width: 12%;
 }
 
-#orderdate_row2 #purchaseSearchbox{
+#orderdate_row2 #keyword{
     width: 65%;
     height: 100%;
     text-indent: 5px;
 }
 
-#orderdate_row2 #purchaseSearchBtn{
-    width: 12%;
+.searchBtn{
+	width:12%;
 }
-
 
 /***************************** orderby area **********************************/
 
@@ -322,4 +322,6 @@
     color: rgba(255,255,255,0.8);
 }
 
-
+#refundHistory{
+    clear: both;
+}
