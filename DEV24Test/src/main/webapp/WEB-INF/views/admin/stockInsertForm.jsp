@@ -36,6 +36,10 @@
          <script type="text/javascript">
          	$(function(){
          		
+       	       var date = new Date();
+    	       $(".date").text(date);   
+         	   $("#today").text(date);   
+         		
          		/*재고 등록 버튼 기능*/
          		$("#submitBtn").click(function(){
    	    		 console.log($("#b_num").val()); 
@@ -152,7 +156,7 @@
 			
 					<div class="form-group">
 						<label>등록일자</label>
-						<p id="date"></p>
+						<p class="date"></p>
 					</div>
 			
 					<div class="form-group">

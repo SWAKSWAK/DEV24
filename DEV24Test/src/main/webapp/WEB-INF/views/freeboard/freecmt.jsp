@@ -148,8 +148,10 @@
 			}*/
 			
 			#reviewList{
-				margin:20px;
+				margin:30px;
 			}
+			
+			#replyContainer{margin-bottom:20px;}
 			
 			#replyInsertFormBtn{margin-top:-30px;}
 			

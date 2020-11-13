@@ -44,6 +44,9 @@
 		
     </script>
     
+    <style>
+    	.cnt{margin:5px;}
+    </style>
     
 	</head>
 	<body>
@@ -92,7 +95,10 @@
                       	<c:forEach var="free" items="${freeboardList}" varStatus="status">
                       		<tr class="text_center" data-num="${free.fb_num}">
                       			<td>${free.fb_num}</td>
-                      			<td class="goDetail">${free.fb_title}</td>
+                      			<td class="goDetail">
+                      				${free.fb_title}
+                      				<c:if test="${free.r_cnt>0}"><span class="cnt" style="color:red">[${free.r_cnt}]</span></c:if>
+                      			</td>
                       			<td>${free.fb_author }</td>
                       			<td>${free.fb_writeday}</td>
                       			<td>${free.fb_readcnt}</td>
