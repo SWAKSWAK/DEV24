@@ -42,7 +42,7 @@ public class StockController {
 		StockDetailVO stockDetail = stockService.getStockDetail(sdvo);
 		model.addAttribute("stockDetail", stockDetail);
 		
-		return "/admin/stockDetail";
+		return "admin/stockDetail";
 	}
 	
 	@RequestMapping(value="/stockInsertForm", method = RequestMethod.GET)
@@ -59,7 +59,7 @@ public class StockController {
 		model.addAttribute("bookstockList", bookstockList);
 
 		
-		return "/admin/stockInsertForm";
+		return "admin/stockInsertForm";
 	}
 	
 	@RequestMapping(value="/stockInsert", method=RequestMethod.POST)
@@ -71,9 +71,9 @@ public class StockController {
 		
 		result=stockService.stockInsert(svo);
 		if(result==1) {
-			url="/admin/stockList";
+			url="admin/stockList";
 		}else {
-			url="/admin/stockList";
+			url="admin/stockList";
 		}
 		return "redirect:"+url;
 	}
