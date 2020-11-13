@@ -22,9 +22,8 @@
 /*********************************upper*********************************/
 
 .center{
-    width: 1200px;
-    margin: 0 auto;
-    margin-left:13%;
+    margin-left:300px;
+    padding-right:30px;
 }
 
 #upper{
@@ -37,13 +36,9 @@
     top: 50px;
 }
 
-#admin_search > form{
+#admin_search > form > div{
     float: left;
-    margin-right: 60px;
-}
-
-#admin_search > form:last-child{
-    margin-right: 0;
+    margin-right: 30px;
 }
 
 #admin_search:after{
@@ -52,23 +47,19 @@
     display: block;
 }
 
-#f_searchDate input[type="radio"]{
-    margin-left: 10px;
-}
 
 #btnArea{
     display: inline-block;
     position: absolute;
     top: 10px;
-    right: 10%;
+    right: 20px;
 }
 
 
 /*********************************listTable*********************************/
 
 #content_wrap{
-    width: 1200px;
-    margin: 0 auto;
+	margin-left:270px;
 }
 
 

@@ -189,7 +189,7 @@
 	                </div><!-- admin_search -->
 	
 	                <div id="btnArea">
-	                   <input type="button" class="btn btn-success" id="goMainBtn" value="메인으로 이동" />
+	                   <input type="button" class="btn btn-success" id="goMainBtn" value="관리자페이지" />
 	                </div><!--btnArea-->
 	            </div><!--center-->
 	        </div><!--upper-->

@@ -17,6 +17,7 @@
 
     <!-- Custom styles for this template -->
     <link href="/resources/include/dist/css/dashboard.css" rel="stylesheet">
+	<link rel="stylesheet" href="/resources/include/css/adminPage.css">
 
     <script src="/resources/include/dist/js/ie-emulation-modes-warning.js"></script>
 
@@ -28,6 +29,11 @@
     
     <script type="text/javascript" src="/resources/include/js/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="/resources/include/js/holder.js"></script>
+    <style type="text/css">
+    	div.sidebar{
+    		width:260px;
+    	}
+    </style>
     
     <script> 
        Holder.addTheme("blue", {
@@ -53,37 +59,7 @@
            font: "Helvetica Neue, Helvetica, Arial, sans-serif",
            fontweight: "normal"
         });
-       
-       
-       <%--
-       
-       #content_wrap {
-            height: 1000px;
-            text-align: left;
-        }
-        #circle{
-            display: inline-block;
-            border: 1px solid;
-            border-radius: 150.1px !important;
-            width: 200px;
-            height: 200px;
-            background-color: blue;
-         /*text-align: center;*/
-            font-size: 1.7rem;
-            color: antiquewhite;
-            vertical-align: middle;
-        }
-       
-       <div id="content_wrap">
-        <div id="circle">
-            <br/><br/>가즈아~~~!!
-        </div>
-        
-          </div>
-       
-       --%>
-       
-       
+
    </script>
     
     <script type="text/javascript">
@@ -94,20 +70,6 @@
        });
        
     </script>
-    
-    <style type="text/css">
-       /*  .circle{
-            display: inline-block;
-            border: 1px solid;
-            border-radius: 150.1px !important;
-            width: 200px;
-            height: 200px;
-            background-color: blue;
-            text-align: center;
-            color:white;
-        }*/
-        
-    </style>
     
   </head>
 

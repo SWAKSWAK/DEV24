@@ -11,9 +11,57 @@
 	    
 		<title>DEV24 Admin Login</title>
 		
-		 <link href="/resources/include/dist/css/bootstrap.css" rel="stylesheet">
+		 <link rel="stylesheet" type="text/css" href="/resources/include/css/style_boot.css" />
 		 <script type="text/javascript" src="/resources/include/js/jquery-1.12.4.min.js"></script>
 		 <script type="text/javascript" src="/resources/include/js/common.js"></script>
+		 
+		 <style>
+			 body{
+			 	width:100%;
+			 	height:100vh;
+			 	font-size:20px;
+			 	text-align: center;
+			 	background-color: #f4eeff;
+			 }
+		 	#wrap{
+		 		width:50%;
+		 		position: absolute;
+			    top: 50%;
+			    left: 50%;
+			    transform: translate(-50%, -50%);
+		 	}
+		 	table.table{
+		 		width:100%;
+		 		border: 3px solid #ccc;
+		 		border-radius: 10px;
+		 		padding:10px;
+			    background-color: #fff;
+		 	}
+		 	
+		 	.table tr td.h{
+		 		text-align: right;
+		 	}
+		 	
+		 	.table tr{
+		 		height: 60px;
+		 	}
+		 	
+		 	.table tr td{
+		 		line-height: 60px;
+		 	}
+		 	
+		 	.table tr td input.form-control{
+		 		width:80%;
+		 		height:40px;
+		 		font-size:20px;
+		 	}
+		 	
+		 	button.btn{
+		 		width:100px;
+		 		font-size:20px;
+		 	}
+		 	
+		 </style>
 		 
 		 <script type="text/javascript">
 		 
@@ -55,23 +103,26 @@
 		 
 	</head>
 	<body>
-		<h3>DEV24 관리자 로그인</h3>
-		<form id="f_pwd">
-			<table  class="table table-striped">
-				<tr>
-					<td>아이디</td>
-					<td><input type="text" name="adm_id" id="adm_id"></td>
-				</tr>
-				<tr>
-					<td>비밀번호</td>
-					<td><input type="password" name="adm_passwd" id="adm_passwd"></td>
-				</tr>
-				<tr>
-					<td><input type="button" name="login" id="login" value="로그인"/></td>
-					<td><input type="button" name="cancel" id="cancel" value="취소"/></td>
-				</tr>
-			</table>
-		</form>
-		
+		<div id="wrap">
+			<h3>DEV24 관리자 로그인</h3>
+			<form id="f_pwd">
+				<table class="table">
+					<tr>
+						<td class="h">아이디</td>
+						<td><input type="text" name="adm_id" id="adm_id" class="form-control"></td>
+					</tr>
+					<tr>
+						<td class="h">비밀번호</td>
+						<td><input type="password" name="adm_passwd" id="adm_passwd" class="form-control"></td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<button type="button" name="login" id="login" class="btn btn-success">로그인</button>
+							<button type="button" name="cancel" id="cancel" class="btn btn-default">취소</button>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
 	</body>
 </html>

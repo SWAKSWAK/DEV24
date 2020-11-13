@@ -16,6 +16,7 @@
 
     <!-- Custom styles for this template -->
     <link href="/resources/include/dist/css/dashboard.css" rel="stylesheet">
+    <link rel="stylesheet" href="/resources/include/css/adminPage.css">
 
     <script src="/resources/include/dist/js/ie-emulation-modes-warning.js"></script>
 
@@ -125,7 +126,7 @@
 
     <div class="container-fluid">
       <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
+        <!-- <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
             <li class="active"><a href="../jsp/booksAdmin.jsp">도서정보관리<span class="sr-only">(current)</span></a></li>
             <li><a href="/admin/stockList">재고관리 </a></li>
@@ -143,7 +144,7 @@
             <li><a href="/admin/refundList">환불처리</a></li>
           </ul>
         
-        </div>
+        </div> -->
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h1 class="page-header"> 오늘의 DEV24 현황 </h1> <h3 class="date"></h3>
         <br/>

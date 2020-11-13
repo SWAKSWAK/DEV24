@@ -27,6 +27,7 @@
 	
 	    <!-- Custom styles for this template -->
 	    <link href="/resources/include/css/sticky-footer-navbar.css" rel="stylesheet">
+	    <link rel="stylesheet" href="/resources/include/css/adminPage.css">
 		
 		<script type="text/javascript" src="/resources/include/js/jquery-1.12.4.min.js"></script>
 		<script type="text/javascript" src="/resources/include/dist/js/bootstrap.min.js"></script>
@@ -39,6 +40,8 @@
 		<script src="/resources/include/js/jquery-1.12.4.min.js"></script>
     	<script src="/resources/include/js/jquery-3.5.1.min.js"></script>
     	<style>
+    		#content_wrap{padding-top:30px;}
+    	
     		.contentHeaderCartMsg > *{
     			display: inline-block;
     		}
@@ -349,7 +352,7 @@
 		</script>
 	</head>
 	<body>
-		<div class="contentWrap">
+		<div id="content_wrap">
 		<div class="contentHeader">
 			<div class="top">
 				<div class="topRightDiv">
@@ -383,7 +386,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> <!-- contentHeader -->
 			<h1 id="listTitle"></h1>
 			<table class="listWrap table table-hover">
 				<tr>
@@ -418,6 +421,6 @@
 					</c:when>
 				</c:choose>
 			</table><!-- .listWrap -->
-		</div>
+		</div><!-- content_wrap -->
 	</body>
 </html>

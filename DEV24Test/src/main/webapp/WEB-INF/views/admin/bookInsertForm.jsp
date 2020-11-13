@@ -15,7 +15,7 @@
 	    <!-- Bootstrap core CSS -->
 	    <link href="/resources/include/dist/css/bootstrap.min.css" rel="stylesheet">
 	    <link href="/resources/include/dist/css/bootstrap-theme.min.css" rel="stylesheet">
-    	<link rel="stylesheet" href="/resources/include/css/style_boot.css" />
+    	<link rel="stylesheet" href="/resources/include/css/adminPage.css">
     	<!-- font -->
 		<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
 		<script src="/resources/include/js/jquery-1.12.4.min.js"></script>
@@ -82,10 +82,10 @@
 		</script>
 	</head>
 	<body>
-		<div class="contentWrap">
+		<div id="content_wrap">
 			<form action="" class="form-group" id="f_bookInsert">
 				<div class="container-fluid">
-					<h1>도서 등록</h1>
+					<h2 id="tit">도서 등록</h2>
 					<table class="table table-condensed">
 						<%-- <colgroup>
 							<col width="20%" />
@@ -338,6 +338,6 @@ ____7.4.4 인기 제품의 데이터 시각화
 					</div>
 				</div>
 			</form>
-		</div>
+		</div><!-- content_wrap -->
 	</body>
 </html>

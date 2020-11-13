@@ -16,11 +16,21 @@
          <style type="text/css">
          	
          	#content_wrap{
-         		width: 1200px;
-    			float: left;
-    			margin:10px;
+         		width:50%;
+         		margin-left:300px;
          	}
          	
+         	.content{
+         		margin-top:20px;
+         	}
+         	
+         	.content label{
+         		display : block;
+         		margin-top:20px;
+         	}
+         	#bstatebtn{margin-top:-5px;}
+         	#b_stateSelect, #stk_qty, #admin_name{width:200px; display : inline;}
+         	#stk_qty, #admin_name{margin-left:10px;}
          </style>
          
          <script type="text/javascript">
@@ -95,66 +105,66 @@
 	</head>
 	
 	<body>
-	<!-- <div class="container-fluid"> -->
+		<!-- <div class="container-fluid"> -->
 		<!-- <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main"> -->
-	<div id="container"> 
-		<div id="content_wrap">
-		<%-- <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main"> --%>
-		<form id="hiddenForm">
-			<input type="hidden" name="b_state" id="b_state" value="" />
-		</form>
-		
+		<div id="container"> 
+			<div id="content_wrap">
+				<%-- <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main"> --%>
+				<form id="hiddenForm">
+					<input type="hidden" name="b_state" id="b_state" value="" />
+				</form>
 			
-			<form role="form" name="stockInsertForm" >
-					<h1>재고등록 화면</h1>
-				<div class="form-group">
-					<label>상품정보 등록 상태</label> <select class="form-control" name="b_stateSelect" id="b_stateSelect">
-						<option value="all">등록</option>
-						<option value="unreg" id="unreg">미등록</option>
-					</select> 
-					<input type="button" value="선택" id="bstatebtn" name="bstatebtn" class="btn btn-default" /> 
+				
+				<form role="form" name="stockInsertForm" >
+						<h2>재고등록 화면</h2>
+					<div class="form-group content">
+						<label>상품정보 등록 상태</label>
+						<select class="form-control" name="b_stateSelect" id="b_stateSelect">
+							<option value="all">등록</option>
+							<option value="unreg" id="unreg">미등록</option>
+						</select>
+						<input type="button" value="선택" id="bstatebtn" name="bstatebtn" class="btn btn-default" /> 
+						
+						<label>상품코드</label>
+						<select class="form-control" name="b_num" id="b_num">
+							<c:choose>
+								<c:when test="${not empty bookstockList}">
+									<c:forEach var="bookinfo" items="${bookstockList}">
+										<option value="${bookinfo.b_num}">${bookinfo.b_name} /
+											${bookinfo.b_author} / ${bookinfo.b_pub}</option>
+									</c:forEach>
+								</c:when>
+							</c:choose>
+						</select>
+					</div>
 					
-					<label>상품코드</label>
-					<select class="form-control" name="b_num" id="b_num">
-						<c:choose>
-							<c:when test="${not empty bookstockList}">
-								<c:forEach var="bookinfo" items="${bookstockList}">
-									<option value="${bookinfo.b_num}">${bookinfo.b_name} /
-										${bookinfo.b_author} / ${bookinfo.b_pub}</option>
-								</c:forEach>
-							</c:when>
-						</c:choose>
-					</select>
-				</div>
-				
-				<div class="form-group">
-					<label>입고수량</label> <input class="form-control" placeholder="재고수량 입력"
-						type="number" min="1" name="stk_qty" id="stk_qty">
-				</div>
-				
-				<div class="form-group">
-					<label for="exampleInputFile">재고 등록자명</label> <input type="hidden"value="${adm_num}" name="adm_num" id="adm_num" />
-					<p>${adm_name}관리자</p>
-					<p class="help-block" style="color: red;">도서의 재고는 한번 입력시 수정이
-						불가합니다. 신중히 등록을 해주세요</p>
-				</div>
-		
-				<div class="form-group">
-					<label>등록일자</label>
-					<p id="date"></p>
-				</div>
-		
-				<div class="form-group">
-					<label>입고가격</label> <input type="number" class="form-control"
-						placeholder="판매가격 입력 " name="stk_salp" id="stk_salp" />
-				</div>
-				<input type="button" class="btn btn-default" value="도서등록"
-					name="submitBtn" id="submitBtn" />
-			</form>
-			</div>
-	</div>
+					<div class="form-group">
+						<label>입고수량</label> <input class="form-control" placeholder="재고수량 입력"
+							type="number" min="1" name="stk_qty" id="stk_qty">
+					</div>
+					
+					<div class="form-group">
+						<label for="exampleInputFile">재고 등록자명</label> <input type="hidden"value="${adm_num}" name="adm_num" id="adm_num" />
+						<p id="admin_name">${adm_name}관리자</p>
+						<p class="help-block" style="color: red;">도서의 재고는 한번 입력시 수정이
+							불가합니다. 신중히 등록을 해주세요</p>
+					</div>
 			
+					<div class="form-group">
+						<label>등록일자</label>
+						<p id="date"></p>
+					</div>
 			
-<!-- 		</div> -->
+					<div class="form-group">
+						<label>입고가격</label> <input type="number" class="form-control"
+							placeholder="판매가격 입력 " name="stk_salp" id="stk_salp" />
+					</div>
+					<input type="button" class="btn btn-default" value="도서등록"
+						name="submitBtn" id="submitBtn" />
+				
+				</form>
+			</div><!-- content_wrap -->
+		</div><!-- container -->
+				
 	</body>
 </html>

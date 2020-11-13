@@ -197,48 +197,18 @@
       
       
       <style type="text/css">
-		/* 	.panel-body{background-color: white;}     */
-			#keyword, #search, #searchTerm, #searchData, #searchTerm, #category, #stk_regdate {height:33px;}
-			
-			
 			#table{ padding:10px;}
-			
-			
-			#title{
-				text-align: center;
-			}
-			
+
 			.stkDetail {
             cursor:pointer;
          	}
-			  
-			/*#searchArea{
-			width:1300px;
-			height:200px;
-			display: inline-block;
-			} */
-			
-			#searchArea{
-				/*float:left;*/
-				display:inline-block;
-			}
 			
 			td{ text-align: left;}
 			
-			#container{
-				width: 1200px;
-    			float: right;
-    			margin:10%;
+			#admin_search > div{
+				float: left;
+    			margin-right: 30px;
 			}
-			
-			
-			/*#search{width:100px;}*/
-			
-			#formwrapper{
-				display: inline-block;
-				text-align: center;
-			}
-			
 			
       </style>
       
@@ -247,37 +217,34 @@
    </head>
    <body>
 	 <!-- 여기서부터가 우리가 입력할 body 부분 시작. 재고 리스트를 여기에 출력 -->
-	<div class="container"> 
-		<div>
+	<div id="content_wrap"> 
+		<div id="upper">
 			<div class="center">
 			
-			<div id="formwrapper">
-		   		<form id="detailForm" name="detailForm">
-					<input type="hidden" id="stk_incp" name="stk_incp"/>
-				</form>
-
-				<input type="button" value="재고등록" id="stockInsertBtn" class="btn btn-s btn-success"/>
-			 	<input type="button" name="goHome" id="goHome" class="btn btn-s btn-success" value="관리자페이지 "/>
-				
-				<div class="searchCategory">
-					<form name="searchForm" id="searchForm">
-						
-						<label>검색조건</label>
-						<select id="search" name="search" class="form-control">
-							<option value="all">전체</option>
-							<option value="b_name">도서명</option>
-							<option value="b_author">작가</option>
-							<option value="stk_incp">도서코드</option>
-						</select> 
-						<input type="text" id="keyword" name="keyword" placeholder="검색어/코드 를 입력해주세요" class="form-control"/>
-						<button type="button" class="btn btn-primary btn-sm" id="searchData">검색</button>
+				<h2 id="tit">도서재고관리</h2>
+			
+				<div id="admin_search">
+			   		<form id="detailForm" name="detailForm">
+						<input type="hidden" id="stk_incp" name="stk_incp"/>
 					</form>
-				</div> <!-- searchCategory -->
+	
+					<div class="searchCategory form-inline">
+						<form name="searchForm" id="searchForm" class="form-group">
+							
+							<label>검색조건</label>
+							<select id="search" name="search" class="form-control">
+								<option value="all">전체</option>
+								<option value="b_name">도서명</option>
+								<option value="b_author">작가</option>
+								<option value="stk_incp">도서코드</option>
+							</select> 
+							<input type="text" id="keyword" name="keyword" placeholder="검색어/코드 를 입력해주세요" class="form-control"/>
+							<button type="button" class="btn btn-primary btn-sm" id="searchData">검색</button>
+						</form>
+					</div> <!-- searchCategory -->
 						
-						
-						
-					<div class="searchCategory">
-						<form id="categorySearch" name="categorySearch">
+					<div class="searchCategory form-inline">
+						<form id="categorySearch" name="categorySearch" class="form-group">
 							<label for="category">도서 카테고리</label>
 								<select name="category" id="category" class="form-control">
 									<option value="pl">프로그래밍 언어</option>
@@ -292,8 +259,13 @@
 							<input type="button" name="searchStkCate" id="searchStkCate" value="검색" class="btn btn-info" />
 						</form>
 					</div>
+					
+					<div id="btnArea">
+						<input type="button" value="재고등록" id="stockInsertBtn" class="btn btn-s btn-success"/>
+					 	<input type="button" name="goHome" id="goHome" class="btn btn-s btn-success" value="관리자페이지 "/>
+					</div> <!--btnArea-->	
 				
-				</div> <!-- formwrapper -->
+				</div> <!-- admin_search -->
 						
 				</div><!-- center -->	
 			</div> 
@@ -303,8 +275,7 @@
 			<%-- 도서 재고 현황 테이블 시작 --%>
 			
 		<div id="table">			 			 
-			<h1>도서재고 현황</h1>
-				<table class="table table-striped">
+				<table class="table table-striped listTable" border="1">
 					<thead>
 					    <tr>
 					    	<th>도서코드</th>
