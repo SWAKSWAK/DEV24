@@ -32,7 +32,7 @@
 				
 				/* 취소 버튼 처리 */
 				$("#refundCancelBtn").click(function(){
-					location.href="/mypage/mypage";
+					location.href="/mypage/orderHistory";
 				});
 				
 				/* 환불신청 버튼 처리 */
@@ -41,9 +41,30 @@
 					if(!chkData("#bank_name", "은행명을")) return;
 					if(!chkData("#accountname", "예금주명을")) return;
 					if(!chkData("#accountnumber", "계좌번호를")) return;
-           			if(!chkData("#rf_reason", "환불사유를")) return;
+           			if(!chkData("#rf_reason_area", "환불사유를")) return;
            			
+           			// 전달 값 form에 저장
+           			var rf_price = $(".lastrow td span").text();
+           			rf_price = parseInt(unComma(rf_price));
+           			var p_num = "${pvo.p_num}";
+           			var b_num = $(".t_refundItem tbody tr").attr("data-num");
+           			var rf_reason = $("#rf_reason_area").val();
+           			/* console.log(typeof(rf_price));
+           			console.log(rf_price);
+           			console.log(p_num);
+           			console.log(b_num);
+           			console.log(rf_reason); */
            			
+           			$("#rf_price").val(rf_price);
+           			$("#rf_reason").val(rf_reason);
+           			$("#p_num").val(p_num);
+           			$("#b_num").val(b_num);
+
+           			$("#f_refund").attr({
+        				"action" : "/refund/refundInsert",
+        				"method" : "post"
+        			});
+        			$("#f_refund").submit();
            			
 				});
 				
@@ -56,6 +77,13 @@
 	      <div id="refund_wrap">
 	          <div class="tit_refund"><h3>환불신청</h3></div>
 	          
+	         <form name="f_refund" id="f_refund">
+	         	<input type="hidden" name="rf_price" id="rf_price" />
+	         	<input type="hidden" name="p_num" id="p_num" />
+	         	<input type="hidden" name="b_num" id="b_num" />
+	         	<input type="hidden" name="rf_reason" id="rf_reason" />
+ 			</form>
+ 			
 	          <!--구매내역 정보 가져오기-->
 	          <table class="table t_refundForm" border="1">
 	              <tr>
@@ -101,11 +129,14 @@
 	              <tr>
 	                  <th>환불사유</th>
 	                  <td colspan="3">
-	                      <textarea rows="10" cols="100" class="form-control" id="rf_reason"></textarea>
+	                      <textarea rows="10" cols="100" class="form-control" id="rf_reason_area"></textarea>
 	                  </td>
 	              </tr>
 	              
 	          </table>
+	          
+	         
+	          
 	          
 	          <!--환불신청할 도서 선택-->
 	          <table class="table t_refundItem" border="1">
@@ -124,7 +155,7 @@
 	                    </tr>
 	                </thead>
 	                <tbody>
-	                    <tr>
+	                    <tr data-num="${ohvo.b_num}">
 	                        <td class="td_book">
 	                            <span class="td_bookimg"><img src="${ohvo.listcover_imgurl}"/></span>
 	                            <span class="td_bookname">${ohvo.b_name}</span>
@@ -139,7 +170,7 @@
 	                    </tr>
 	                </tbody>
 	            </table>
-	            
+	          
 	            <p class="info">주문자 조회를 위해 빈칸을 모두 작성해 주셔야 하며, 신원 확인 안 되는 상품은 처리가 안 된입니다. 고객 변심으로 인한 환불은 왕복 택배비 고객님 부담이며, 재포장하여 상품 판매 가능한 경우에만 가능합니다. 상품 수령 후 3일 이내에만 환불 신청이 가능합니다.<br/>
 	            포장 파손, 오염, 향수, 택 제거 등 상품 사용 흔적이 있거나 이벤트, 특가 할인, 세일 상품의 경우는 환불승인이 어려울 수 있습니다.</p>
 	            

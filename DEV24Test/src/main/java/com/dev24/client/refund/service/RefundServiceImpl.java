@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import com.dev24.client.mypage.orderhistory.vo.OrderhistoryVO;
 import com.dev24.client.purchase.vo.PurchaseVO;
 import com.dev24.client.refund.dao.RefundDAO;
+import com.dev24.client.refund.vo.RefundVO;
 
 import lombok.AllArgsConstructor;
 
@@ -28,6 +29,14 @@ public class RefundServiceImpl implements RefundService {
 		OrderhistoryVO vo = null;
 		vo = refundDAO.getRefundItems(ohvo);
 		return vo;
+	}
+
+	// refund insert
+	@Override
+	public int refundInsert(RefundVO rfvo) {
+		int result = 0;
+		result = refundDAO.refundInsert(rfvo);
+		return result;
 	}
 
 }

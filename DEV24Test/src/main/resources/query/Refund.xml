@@ -22,14 +22,9 @@
 	</select>
 	
 	<!-- 환불완료 -->
-	<insert id="refundInsert" parameterType="java.util.List">
-		insert into refund(rf_num, rf_reason, rf_price, rf_confirmdate, pd_num, c_num, b_num)
-		select rf_num_seq.nextval, rf.* from (
-			<foreach collection="list" item="rfvo" separator="union all"> 
-			select
-				#{rfvo.rf_reason} rf_reason, #{rfvo.rf_price} rf_price, sysdate, #{rfvo.pd_num} pd_num, #{rfvo.c_num} c_num, #{rfvo.b_num} b_num
-			from dual
-			</foreach>) rf
+	<insert id="refundInsert" parameterType="refund">
+		insert into refund(rf_num, rf_reason, rf_price, rf_confirmdate, p_num, c_num, b_num)
+		values (rf_num_seq.nextval, #{rf_reason}, #{rf_price}, sysdate, #{p_num}, #{c_num}, #{b_num})
 	</insert>
 	
 </mapper>
