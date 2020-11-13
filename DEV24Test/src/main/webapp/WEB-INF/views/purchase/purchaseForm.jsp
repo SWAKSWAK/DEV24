@@ -180,6 +180,63 @@
     	            
     	            order(data);
            		}); // 결제 버튼 이벤트 종료
+           		
+           		
+           		//결제 페이지에서 나올 경우 cart데이터 삭제
+           	 	$(window).on('beforeunload', function() {
+       	    		var crtnumList = new Array();
+           			var l = $(".t_orderItems tbody tr").length;
+            	   for(var i=0; i<l; i++){ // crt_num
+        				var crt_num = $(".t_orderItems tbody tr").eq(i).attr("data-num");
+        				var c = {"crt_num":crt_num};
+        				crtnumList.push(c);
+        			} 
+            	   var cartNum = JSON.stringify(crtnumList);
+					
+	            	   $.ajax({
+    	               url : "/purchase/purchasedItemDelete",
+    	               type : "post",
+    	               data : cartNum,
+    	               headers : {
+    	                  "Content-Type" : "application/json",
+    	                  "X-HTTP-Method-Override" : "POST"
+    	               }, 
+    	               dataType : "text",
+    	               success: function (result) {},
+    	               error : function(){
+    	                  alert("페이지를 나가는 중 오류 발생. \n관리자에게 문의해 주세요.");
+    	               }
+    	            });
+           	    });
+           		
+           	    /* $(window).on("beforeunload", function({
+					if(confirm("구매 페이지에서 나가시겠습니까?")){
+						
+            			var crtnumList = new Array();
+            			var l = $(".t_orderItems tbody tr").length;
+	            	   for(var i=0; i<l; i++){ // crt_num
+	        				var crt_num = $(".t_orderItems tbody tr").eq(i).attr("data-num");
+	        				var c = {"crt_num":crt_num};
+	        				crtnumList.push(c);
+	        			} 
+	            	   var cartNum = JSON.stringify(crtnumList);
+						
+ 	            	   $.ajax({
+	    	               url : "/purchase/purchasedItemDelete",
+	    	               type : "post",
+	    	               data : cartNum,
+	    	               headers : {
+	    	                  "Content-Type" : "application/json",
+	    	                  "X-HTTP-Method-Override" : "POST"
+	    	               }, 
+	    	               dataType : "text",
+	    	               success: function (result) {},
+	    	               error : function(){
+	    	                  alert("페이지를 나가는 중 오류 발생. \n관리자에게 문의해 주세요.");
+	    	               }
+	    	            });
+					}           	    	
+           	    }); */
     			
     		}); // 최상위 종료
     		

@@ -395,8 +395,46 @@
     				}
     			});
     			
+    			/*구매버튼 클릭시 이벤트*/
+    			$(".buyBtn").click(function(){
+    				
+    				var index = $(".buyBtn").index(this);
+    				
+    				if(!crt_qtyRange(".crt_qty:eq("+index+")")) return;
+    				
+    				if ($(".crt_qty:eq("+index+")").val() == 0){
+    					alert("수량을 입력해 주세요.");
+    					$(".crt_qty:eq("+index+")").val(0);
+    					return;
+    				}
+    				
+    				var b_num = $("#b_num").val();
+    				var crt_qty = $(".crt_qty").val();
+    				var b_price = $("#b_price").html().replace(",", "");
+    				
+    				var cvo = {
+		    				"b_num" : b_num,
+		    				"crt_qty" : crt_qty,
+		    				"crt_price" : b_price * crt_qty
+					};
+    				
+    				var cvoToJSON = JSON.stringify(cvo);
+    				var crt_num = buySingleItem(cvoToJSON);
+    				if(cvo.crt_num == -1) return; 
+    				
+    				cvo = {
+		    				"b_num" : b_num,
+		    				"crt_qty" : crt_qty,
+		    				"crt_price" : b_price * crt_qty,
+    						"crt_num" : crt_num
+					};
+    				
+    				cvoToJSON = JSON.stringify(cvo);
+    				order(cvoToJSON); 
+    			});
     			
-    		});
+    			
+    		});//onload
     		
     		//false : range에서 벗어남
     		function crt_qtyRange(selector) {
@@ -439,6 +477,54 @@
 				console.log(returnVal);
 				return returnVal;
 			};
+			
+			/*cart테이블에 데이터를 올리고 crt_num을 가져오기 위한 ajax 함수*/
+			function buySingleItem(data) {
+				var returnVal = 0;
+	            $.ajax({
+					url : "/cart/buySingleItem",
+					type : "POST",
+					data : data,
+					async: false,
+					headers : {
+						"Content-Type" : "application/json",
+						"X-HTTP-Method-Override" : "POST"
+					},
+					success : function(result) {
+						returnVal = result;
+						console.log("success: "+returnVal)
+						return result;
+					},
+					error : function(){
+						alert("구매화면으로 이동이 실패했습니다.\n관리자에게 문의해 주세요.");
+						returnVal = -1;
+						console.log("error: "+returnVal)
+					}
+	            });
+				return returnVal;
+			};
+			
+    		/* 체크된 상품 주문하기 눌렀을 때 */
+    		 function order(data){
+    			console.log("order 호출");
+	            $.ajax({
+	               url : "/purchase/purchaseSingleItem.json",
+	               type : "post",
+	               data : data,
+	               async: false,
+	               headers : { 
+	                  "Content-Type" : "application/json",
+	                  "X-HTTP-Method-Override" : "POST"
+	               }, 
+	               dataType : "text",
+	               success: function (result) {
+	            	   location.href="/purchase/purchaseForm";
+	               },
+	               error : function(){
+	                  alert("시스템 오류 발생. \n관리자에게 문의해 주세요.");
+	               }
+	            });
+	         };
     	</script>
 	</head>
 	<body>

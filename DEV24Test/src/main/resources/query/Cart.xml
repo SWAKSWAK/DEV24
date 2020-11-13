@@ -90,5 +90,25 @@
 				 #{cart.crt_num}
 			</foreach>
 	</delete>
+	
+	<select id="getCrtNum" resultType="int">
+		select crt_num_seq.nextval from dual
+	</select>
+	
+	<insert id="buySingleItem" parameterType="cart">
+		INSERT INTO cart (
+		 	  crt_num
+			, b_num
+			, crt_price
+			, c_num
+			, crt_qty
+		) VALUES (
+			 #{crt_num}
+			,#{b_num}
+			,#{crt_price}
+			,#{c_num}
+			,#{crt_qty}
+		)
+	</insert>
 
 </mapper>

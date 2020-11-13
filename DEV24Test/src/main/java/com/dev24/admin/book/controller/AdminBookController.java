@@ -55,8 +55,12 @@ public class AdminBookController {
 		int cateOne_num = Integer.parseInt(category.charAt(0)+"");
 		int cateTwo_num = Integer.parseInt(category.charAt(1)+"");
 
+		BookVO bvo = new BookVO();
+		bvo.setCateOne_num(cateOne_num);
+		bvo.setCateTwo_num(cateTwo_num);
+		
 		// Pagination 객체 생성
-		int bookLength = bookService.getBookListCnt();
+		int bookLength = bookService.getBookListCnt(bvo);
 		Pagination pagination = new Pagination(bookLength, startPage, page, cateOne_num, cateTwo_num, listRange, sort);
 
 		// 얻어낸 pagination객체를 통해 bookList() 호출

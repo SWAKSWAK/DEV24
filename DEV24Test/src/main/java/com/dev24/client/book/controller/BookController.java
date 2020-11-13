@@ -28,25 +28,33 @@ public class BookController {
 	
 	@RequestMapping(value = {"/{category}"}, method = RequestMethod.GET)
 	public String bookList(
-							@PathVariable("category") String category,
-							@RequestParam(required = false, defaultValue = "1") int page,
-							@RequestParam(required = false, defaultValue = "1") int startPage,
-							@RequestParam(required = false, defaultValue = "20") int listRange,
-							@RequestParam(required = false, defaultValue = "best") String sort,
-							Model model
+						@PathVariable("category") String category,
+						@RequestParam(required = false, defaultValue = "1") int page,
+						@RequestParam(required = false, defaultValue = "1") int startPage,
+						@RequestParam(required = false, defaultValue = "20") int listRange,
+						@RequestParam(required = false, defaultValue = "best") String sort,
+						Model model
 	) {
+		int cateOne_num = 0;
+		int cateTwo_num = 0;
 		
 		log.info("bookList 호출 성공");
 		log.info("bookList(): page=" + page);
-		
-		int cateOne_num = Integer.parseInt(category.charAt(0)+"");
-		int cateTwo_num = Integer.parseInt(category.charAt(1)+"");
+				
+		if (!category.substring(0, 1).isEmpty())
+			cateOne_num = Integer.parseInt(category.substring(0, 1));
+		if (!category.substring(1).isEmpty())
+			cateTwo_num = Integer.parseInt(category.substring(1, 2));
 
 		log.info(cateOne_num);
 		log.info(cateTwo_num);
 		
+		BookVO bvo = new BookVO();
+		bvo.setCateOne_num(cateOne_num);
+		bvo.setCateTwo_num(cateTwo_num);
+		
 		// Pagination 객체 생성
-		int bookLength = bookService.getBookListCnt();
+		int bookLength = bookService.getBookListCnt(bvo);
 		log.info(bookLength);
 		Pagination pagination = new Pagination(bookLength, startPage, page, cateOne_num, cateTwo_num, listRange, sort);
 		//얻어낸 pagination객체를 통해 bookList() 호출

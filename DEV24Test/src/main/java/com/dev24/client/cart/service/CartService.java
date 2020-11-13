@@ -10,4 +10,6 @@ public interface CartService {
 	public int cartUpdate(CartVO cvo);
 	public int cartDelete(int crt_num);
 	public int addToCart(List<CartVO> cvoList);
+	public int getCrtNum();
+	public int buySingleItem(CartVO cvo);
 }

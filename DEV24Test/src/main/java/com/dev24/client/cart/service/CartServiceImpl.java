@@ -47,6 +47,16 @@ public class CartServiceImpl implements CartService {
 		return result;
 	}
 	
+	@Override
+	public int getCrtNum() {
+		int result = cartDAO.getCrtNum();
+		return result;
+	}
 	
+	@Override
+	public int buySingleItem(CartVO cvo) {
+		int result = cartDAO.buySingleItem(cvo);
+		return result;
+	}
 
 }

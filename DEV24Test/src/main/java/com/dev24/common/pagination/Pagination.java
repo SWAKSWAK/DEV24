@@ -6,13 +6,12 @@ import lombok.Data;
 public class Pagination {
 
 	private int listRange 		= 20;	// 한페이지에 출력될 도서의 개수
-	private int range 			= 4;	// 한번에 숫자로 보여질 페이지 범위 -1(기본값 5)
+	private int range 			= 10;	// 한번에 숫자로 보여질 페이지 범위 -1(기본값 5)
 	private int page; 					// 현재 목록의 페이지 번호
 	private int startPage 		= 1;	// 각 페이지 범위 시작 번호 (기본값 1)
 	private int endPage; 				// 각 페이지 범위 끝 번호 (기본값 5)
 	private int pageLength; 			// 총 페이지 개수 (where절에 따라 가변)
 	private int bookLength; 			// 전체 도서 개수 (where절에 따라 가변)
-	private int listLength 		= 15; 	// 한 페이지당 보여질 리스트의 개수. 초기값으로 목록개수를 15로 셋팅
 	private int startRownum; 			// 한페이지에 출력되는 첫번째 상품의 rownum
 	private int lastRownum; 			// 한페이지에 출력되는 마지막 상품의 rownum
 	private boolean prev; 				// 이전 페이지 여부
@@ -52,9 +51,9 @@ public class Pagination {
 
 		// 페이지 길이
 		if (bookLength%10 > 0)
-			this.pageLength = bookLength / 10 + 1;
+			this.pageLength = bookLength / listRange + 1;
 		else
-			this.pageLength = bookLength / 10;
+			this.pageLength = bookLength / listRange;
 
 		// QuerySring으로 startPage 값을 받았다면
 		if (startPage != 0) {
@@ -62,7 +61,7 @@ public class Pagination {
 		}
 		
 		if(startPage + range <= pageLength)
-			this.endPage = startPage + range;
+			this.endPage = startPage + range -1;
 		else
 			this.endPage = pageLength;
 		

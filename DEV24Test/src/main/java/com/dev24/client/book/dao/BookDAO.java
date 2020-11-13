@@ -10,7 +10,7 @@ public interface BookDAO {
 	
 	//select
 	public ArrayList<BookVO> bookViewList(Pagination pagination);
-	public int getBookListCnt();
+	public int getBookListCnt(BookVO bvo);
 	public BookVO bookDetail(int b_num);
 	
 	//insert

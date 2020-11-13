@@ -34,8 +34,19 @@
     		.topLeftDiv, .topRightDiv {
     			display: inline-block;
     		}
-    		.selectedCartBtn, .selectedBuyBtn {
-    			width: 110px;
+    		.selectedCartBtn {
+    			width: 120px;
+				color : #dcd6f7;
+				font-size: 14px;
+				margin-top: 5px;
+				background-color: #D0B7DA;
+				color:  #424874;
+    		}
+    		.bottom > div {
+    			display: inline-block;
+    		}
+    		.bottomLeftDiv{
+    			margin-top: 10px;
     		}
     		.bottomRightDiv > button:hover{
     			opacity: 0.8;
@@ -322,6 +333,17 @@
     	<script src="/resources/include/js/jquery-3.5.1.min.js"></script>
     	<script>
     		$(function() {
+    			
+    			//pagination 정보  변수에 담기
+    			var page = parseInt(${pagination.page});//현재페이지
+    			var startPage = parseInt(${pagination.startPage});//지금 길이의 시작페이지
+    			var endPage = parseInt(${pagination.endPage});
+    			var pageLength = parseInt(${pagination.pageLength});
+    			var cateOne_num = parseInt(${pagination.cateOne_num});
+    			var cateTwo_num = parseInt(${pagination.cateTwo_num});
+    			var range = parseInt(${pagination.range});
+    			var listRange = $("#listRange").select().val();
+    			
     			$("#listRange").find("option").each(function(){
 	    			if (this.value == ${pagination.listRange})
 	    				$(this).attr("selected", "true");
@@ -364,8 +386,9 @@
     				var data = JSON.stringify(cvoList);
     				
     				var result = addCart(data);
-    				if(result == 'SUCCESS')
+    				if(result == 'SUCCESS'){
 						$(".cartMsg:eq("+index+")").css("display", "block");
+    				}
     			});
     			
     			$(".selectedCartBtn").click(function(){
@@ -432,74 +455,51 @@
     			});
 				
     			
-    			//pagination 정보  변수에 담기
-    			var page = parseInt(${pagination.page});//현재페이지
-    			var startPage = parseInt(${pagination.startPage});//지금 길이의 시작페이지
-    			var endPage = parseInt(${pagination.endPage});
-    			var pageLength = parseInt(${pagination.pageLength});
-    			var cateOne_num = parseInt(${pagination.cateOne_num});
-    			var cateTwo_num = parseInt(${pagination.cateTwo_num});
-    			var range = parseInt(${pagination.range});
+
     			
     			if (page > pageLength){
-    				
     				page = pageLength;
-    				
     			}
     			
-    			if (startPage-1 <= 0)
+    			if (startPage-1 <= 0){
     				$(".prevBtn").css("cursor", "default");
-
-				if(page+1 > pageLength)
-					$(".nextBtn").css("cursor", "default");
-				
-				if (startPage-5 <= 0)
 					$(".prevRangeBtn").css("cursor", "default");
-					
-				if(startPage+1 > pageLength)
+    			}
+
+				if(startPage+10 > pageLength){
+					$(".nextBtn").css("cursor", "default");
 					$(".nextRangeBtn").css("cursor", "default");
+				}
 				
 				var uri = "/book/"+cateOne_num+cateTwo_num+"?page=";
 				
     			$(".prevBtn").click(function(){
-    				if (startPage-1 > 0){
-    					if(page-1 != startPage-1){
-    						location.href = uri+(page-1);
-    					} else {
-    						location.href = uri+(startPage-1)+"&startPage="+(startPage-5);
-    					}
+    				if (startPage-1 <= 0){
+    					startPage = (startPage-10);
+   						location.href = uri+(startPage)+"&startPage="+(startPage)+"&listRange="+listRange;
     				}
     			});
 
     			$(".nextBtn").click(function(){
-    				if(endPage+1 <= pageLength){
-    					if(page+1 != startPage +5){
-    						location.href = uri+(page+1);
-    					}else{
-	    					location.href = uri+(page+1)+"&startPage="+(startPage+5);
-    					}
+    				if(startPage+10 <= pageLength){
+    					startPage = (startPage+10);
+    					location.href = uri+(startPage)+"&startPage="+(startPage)+"&listRange="+listRange;
     				}
     			});
 
     			$(".prevRangeBtn").click(function(){
-    				if ((startPage-5) > 0)
-    					location.href = uri+(page-5)+"&startPage="+(startPage-5);
+    				if (startPage-1 <= 0){
+    					location.href = uri+"1&startPage=1&listRange="+listRange;
+    				}
     			});
 
     			$(".nextRangeBtn").click(function(){
-    				console.log("(startPage+5) : " + (startPage+5));
-    				console.log("pageLength : " + pageLength);
-    				if((endPage+5) < pageLength){
-    					location.href = uri+(page+5)+"&startPage="+(startPage+5);
-    				} else {
-    					range = pageLength - (startPage+5);
-    					
-    					location.href = uri+(page+range+1)+"&startPage="+(startPage+5)+"&endPage="+(pageLength);
-    				}
+    				if(startPage+10 <= pageLength)
+    					location.href = uri+(pageLength-9)+"&startPage="+(pageLength)+"&listRange="+listRange;
     			});
     			
     			$(".pageNumBtn").click(function(){
-    				location.href = uri+$(this).html()+"&startPage="+startPage;
+    				location.href = uri+$(this).html()+"&startPage="+startPage+"&listRange="+listRange;
     			});
     			
     			$(".pageNum[data-num='"+page+"'] > a.pageNumBtn")
@@ -523,55 +523,139 @@
     			
     			// #listRange 값이 바뀔 때마다 맞춰 출력
     			$("#listRange").change(function(){
-    				location.href="/book/"+category+"?listRange="+$("#listRange").select().val();
+    				listRange = $("#listRange").select().val();
+    				location.href="/book/"+category+"?listRange="+listRange;
     			});
     			
-    			
-    			
-    		});
+    			/*구매버튼 클릭시 이벤트*/
+    			$(".buyBtn").click(function(){
+    				
+    				var index = $(".buyBtn").index(this);
+    				
+    				if(!crt_qtyRange(".crt_qty:eq("+index+")")) return;
+    				
+    				if ($(".crt_qty:eq("+index+")").val() == 0){
+    					alert("수량을 입력해 주세요.");
+    					$(".crt_qty:eq("+index+")").val(0);
+    					return;
+    				}
+    				
+    				var b_num = $(".bookWrap:eq("+index+")").attr("data-num");
+    				var crt_qty = $(".crt_qty:eq("+index+")").val();
+    				var b_price = $(".b_price:eq("+index+")").html();
+    				
+    				var cvo = {
+		    				"b_num" : b_num,
+		    				"crt_qty" : crt_qty,
+		    				"crt_price" : b_price * crt_qty
+					};
+    				
+    				var cvoToJSON = JSON.stringify(cvo);
+    				var crt_num = buySingleItem(cvoToJSON);
+    				if(cvo.crt_num == -1) return; 
+    				
+    				cvo = {
+		    				"b_num" : b_num,
+		    				"crt_qty" : crt_qty,
+		    				"crt_price" : b_price * crt_qty,
+    						"crt_num" : crt_num
+					};
+    				
+    				cvoToJSON = JSON.stringify(cvo);
+    				order(cvoToJSON); 
+    			});
     		
     		
-    		//false : range에서 벗어남
-    		function crt_qtyRange(selector) {
-
-				if ($(selector).val() < 0) {
-					alert("수량은 1개부터 99개 까지 입력 가능합니다."); 
-					$(selector).val("0");
-					return false;
-				}
-				if ($(selector).val() > 99) {
-					alert("수량은 1개부터 99개 까지 입력 가능합니다."); 
-					$(selector).val("99");
-					return false;
-				}
-				return true;
-			};
-			
-			//장바구니 추가 함수
-			function addCart(data){
-				var returnVal = "";
-				
-				$.ajax({
-					url : "/cart/addToCart",
-					type : "POST",
-					data : data,
-					async: false,
-					headers : {
-						"Content-Type" : "application/json",
-						"X-HTTP-Method-Override" : "POST"
-					},
-					dataType : "text",
-					success: function (result) {
-						returnVal = 'SUCCESS';
-					},
-					error : function(){
-						alert("장바구니 담기에 실패했습니다.\n관리자에게 문의해 주세요.");
-						returnVal = 'FAIL';
+	    		//false : range에서 벗어남
+	    		function crt_qtyRange(selector) {
+	
+					if ($(selector).val() < 0) {
+						alert("수량은 1개부터 99개 까지 입력 가능합니다."); 
+						$(selector).val("0");
+						return false;
 					}
-				});
-				console.log(returnVal);
-				return returnVal;
-			}
+					if ($(selector).val() > 99) {
+						alert("수량은 1개부터 99개 까지 입력 가능합니다."); 
+						$(selector).val("99");
+						return false;
+					}
+					return true;
+				};
+				
+			});//onload
+    		
+				//장바구니 추가 함수
+				function addCart(data){
+					var returnVal = "";
+					
+					$.ajax({
+						url : "/cart/addToCart",
+						type : "POST",
+						data : data,
+						async: false,
+						headers : {
+							"Content-Type" : "application/json",
+							"X-HTTP-Method-Override" : "POST"
+						},
+						dataType : "text",
+						success: function (result) {
+							returnVal = 'SUCCESS';
+						},
+						error : function(){
+							alert("장바구니 담기에 실패했습니다.\n관리자에게 문의해 주세요.");
+							returnVal = 'FAIL';
+						}
+					});
+					console.log(returnVal);
+					return returnVal;
+				};
+				
+				function buySingleItem(data) {
+					var returnVal = 0;
+		            $.ajax({
+						url : "/cart/buySingleItem",
+						type : "POST",
+						data : data,
+						async: false,
+						headers : {
+							"Content-Type" : "application/json",
+							"X-HTTP-Method-Override" : "POST"
+						},
+						success : function(result) {
+							returnVal = result;
+							console.log("success: "+returnVal)
+							return result;
+						},
+						error : function(){
+							alert("구매화면으로 이동이 실패했습니다.\n관리자에게 문의해 주세요.");
+							returnVal = -1;
+							console.log("error: "+returnVal)
+						}
+		            });
+					return returnVal;
+				};
+				
+	    		/* 체크된 상품 주문하기 눌렀을 때 */
+	    		 function order(data){
+	    			console.log("order 호출");
+		            $.ajax({
+		               url : "/purchase/purchaseSingleItem.json",
+		               type : "post",
+		               data : data,
+		               async: false,
+		               headers : { 
+		                  "Content-Type" : "application/json",
+		                  "X-HTTP-Method-Override" : "POST"
+		               }, 
+		               dataType : "text",
+		               success: function (result) {
+		            	   location.href="/purchase/purchaseForm";
+		               },
+		               error : function(){
+		                  alert("시스템 오류 발생. \n관리자에게 문의해 주세요.");
+		               }
+		            });
+		         };
     	</script>
 	</head>
 	<body>
@@ -617,8 +701,7 @@
 				</div>
 				<!-- content header buttons -->
 				<div class="bottomRightDiv">
-					<button type="button" class="btn btn-default text-right selectedCartBtn" name="cartBtn" >장바구니 담기</button>
-					<button type="button" class="btn btn-default text-right selectedBuyBtn" name="buyBtn" >구매</button>
+					<button type="button" class="btn text-right selectedCartBtn" name="cartBtn" >장바구니 담기</button>
 				</div>
 			</div>
 			<div class="contentHeaderCartMsg" style="display: none;">

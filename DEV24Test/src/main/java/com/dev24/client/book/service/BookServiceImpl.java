@@ -36,8 +36,8 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public int getBookListCnt() {
-		int result = bookDAO.getBookListCnt();
+	public int getBookListCnt(BookVO bvo) {
+		int result = bookDAO.getBookListCnt(bvo);
 		return result;
 	}
 

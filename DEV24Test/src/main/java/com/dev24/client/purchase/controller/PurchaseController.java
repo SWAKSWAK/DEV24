@@ -39,14 +39,16 @@ public class PurchaseController {
 	private PurchaseService purchaseService;
 	
 	/*******************
-	 * 주문 페이지 출력
+	 * 二쇰Ц �럹�씠吏� 異쒕젰
 	 * *****/
 	@RequestMapping(value="/purchaseForm", method= {RequestMethod.GET, RequestMethod.POST})
 	public String purchaseForm(Model model, HttpSession session) {
-		log.info("purchaseForm 호출 성공");
+		log.info("purchaseForm �샇異� �꽦怨�");
 		
 		@SuppressWarnings("unchecked")
 		List<CartVO> cvoList = (List<CartVO>) session.getAttribute("cvoList");
+		
+		log.info(cvoList.toString());
 
 		List<CartVO> resultList = purchaseService.purchaseForm(cvoList);
 		
@@ -64,7 +66,7 @@ public class PurchaseController {
 	@ResponseBody
 	@PostMapping(value="/purchaseItems", produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
 	public String purchaseItems(@RequestBody List<Map<String, Object>> cartList, HttpSession session, Model model){
-		log.info("purchaseItems 호출 성공");
+		log.info("purchaseItems �샇異� �꽦怨�");
 		log.info(session.getAttribute("c_id").toString());
 
 		CartVO cvo = null;
@@ -83,26 +85,43 @@ public class PurchaseController {
 		return "purchase/purchaseForm";
 	}
 	
+	/****************************
+	 * 단일항목 구매를 위한 session 추가 작업
+	 * **********/
+	@ResponseBody
+	@PostMapping(value="/purchaseSingleItem", produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
+	public String purchaseSingleItem(@RequestBody CartVO cvo, HttpSession session, Model model){
+		log.info("purchaseSingleItem �샇異� �꽦怨�");
+		log.info(session.getAttribute("c_id").toString());
+
+		List<CartVO> cvoList = new ArrayList<CartVO>();
+		cvoList.add(cvo);
+		
+		session.setAttribute("cvoList", cvoList);
+		model.addAttribute("cartList", purchaseService.purchaseForm(cvoList));
+		return "purchase/purchaseForm";
+	}
+	
 	
 	/****************************
-	 * 주문자 정보 출력
+	 * 二쇰Ц�옄 �젙蹂� 異쒕젰
 	 * **********/
 	@ResponseBody
 	@GetMapping(value="/{c_num}", produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
 	public ResponseEntity<CustomerVO> getSenderInfo(@PathVariable("c_num") Integer c_num){
-		log.info("getSenderInfo 호출 성공");
+		log.info("getSenderInfo �샇異� �꽦怨�");
 		ResponseEntity<CustomerVO> entity = null;
 		entity = new ResponseEntity<CustomerVO>(purchaseService.getSenderInfo(c_num), HttpStatus.OK);
 		return entity;
 	}
 	
 	/****************************
-	 * 주문 상품 구매 삽입
+	 * 二쇰Ц �긽�뭹 援щℓ �궫�엯
 	 * **********/
 	@RequestMapping(value="/purchaseInsert", method= {RequestMethod.POST, RequestMethod.GET}, produces = "text/plain; charset=utf8")
 	@ResponseBody
 	public String purchaseInsert(@ModelAttribute("pvo") PurchaseVO pvo, @RequestBody List<Map<String, Object>> pdvoList, HttpSession session, Model model) {
-		log.info("purchaseInsert 호출 성공");
+		log.info("purchaseInsert �샇異� �꽦怨�");
 		
 		int p_num = 0;
 		int result = 0;
@@ -158,12 +177,12 @@ public class PurchaseController {
 	
 	
 	/****************************
-	 * 주문 상품 구매상세 삽입
+	 * 二쇰Ц �긽�뭹 援щℓ�긽�꽭 �궫�엯
 	 * **********/
 	@ResponseBody
 	@RequestMapping(value="/pdetailInsert", method= {RequestMethod.POST, RequestMethod.GET}, produces = "text/plain; charset=utf8")
 	public String pdetailInsert(@RequestBody List<Map<String, Object>> pdvoList, HttpSession session, Model model) {
-		log.info("pdetailInsert 호출 성공");
+		log.info("pdetailInsert �샇異� �꽦怨�");
 		
 		int result = 0;
 		PdetailVO pdvo = null;
@@ -207,11 +226,11 @@ public class PurchaseController {
 	
 	
 	/************************
-	 * 구매완료 페이지 출력
+	 * 援щℓ�셿猷� �럹�씠吏� 異쒕젰
 	 * **********/
 	@PostMapping(value="/purchasefinish")
 	public String purchasefinish(@ModelAttribute("data") PurchaseVO pvo, Model model) {
-		log.info("purchasefinish 호출 성공");
+		log.info("purchasefinish �샇異� �꽦怨�");
 		
 		model.addAttribute("pvo", pvo);
 		return "purchase/purchasefinish";
@@ -220,7 +239,7 @@ public class PurchaseController {
 	@ResponseBody
 	@PostMapping(value="/purchasedItemDelete")
 	public String purchasedItemDelete(@RequestBody List<Map<String, Integer>> cvoList, HttpSession session, Model model) {
-		log.info("purchasedItemDelete 호출 성공");
+		log.info("purchasedItemDelete �샇異� �꽦怨�");
 		
 		List<CartVO> cartList = new ArrayList<CartVO>();
 		CartVO cvo = new CartVO();
@@ -228,7 +247,7 @@ public class PurchaseController {
 		
 		for (int i=0; i<cvoList.size(); i++) {
 			String s_num = cvoList.get(i).get("crt_num")+"";
-			log.info(i+"번째 : "+s_num);
+			log.info(i+"踰덉㎏ : "+s_num);
 			
 				if(s_num != null) {
 					log.info(i + ": " + s_num);

@@ -5,7 +5,7 @@
     <li class="active"><a href="../jsp/booksAdmin.jsp">도서정보관리<span class="sr-only">(current)</span></a></li>
     <li><a href="/admin/stockList">재고관리 </a></li>
     <li><a href="/admin/pdetailList">구매세부</a></li>
-    <li><a href="/admin/book/0/0">도서목록</a></li>
+    <li><a href="/admin/book/00">도서목록</a></li>
     <li><a href="/admin/book/bookInsertForm">도서등록</a></li>
   </ul>
   <ul class="nav nav-sidebar">
