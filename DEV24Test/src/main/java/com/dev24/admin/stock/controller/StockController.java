@@ -71,9 +71,9 @@ public class StockController {
 		
 		result=stockService.stockInsert(svo);
 		if(result==1) {
-			url="admin/stockList";
+			url="/admin/stockList";
 		}else {
-			url="admin/stockList";
+			url="/admin/stockList";
 		}
 		return "redirect:"+url;
 	}

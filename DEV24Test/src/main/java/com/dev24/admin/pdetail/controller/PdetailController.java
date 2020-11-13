@@ -37,6 +37,8 @@ public class PdetailController {
 		model.addAttribute("plist", plist);
 		session.setAttribute("p_num", p_num);
 		
+		log.info(plist);
+		
 		return "admin/pdetailList";
 	}
 	
