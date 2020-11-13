@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.dev24.data.book.vo.BooksVO;
+import com.dev24.client.book.vo.BookVO;
 
 public class InserBookDataDAO {
 	// 데이터베이스 연결 관련 상수 선언
@@ -45,7 +45,7 @@ public class InserBookDataDAO {
 	 * @param BooksVO를 담은 List타입
 	 * @return (boolean)처리결과
 	 *****************************************************/
-	public boolean booksInsert(List<BooksVO> voList) {
+	public boolean booksInsert(List<BookVO> voList) {
 
 		boolean isSuccess = false;
 		int resultNum = 0;
@@ -54,33 +54,91 @@ public class InserBookDataDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		StringBuilder insertQuery = new StringBuilder();
-		BooksVO vo = null;
+		BookVO vo = null;
 
 		try {
 
 			con = getConnection();
+			con.setAutoCommit(false);
 
 			for (int i = 0; i < voList.size(); i++) {
+				
 
 				vo = voList.get(i);
 
-				insertQuery.append("INSERT INTO book ");
+				/*insertQuery.append("INSERT INTO book ");
 				insertQuery.append("	(b_num, b_name, b_date, b_list, b_author, b_pub, b_authorinfo, ");
 				insertQuery.append("	b_info, b_price, cateone_num, catetwo_num");
 				insertQuery.append(") VALUES  (");
 				insertQuery.append("	?, ?, ?, ?, ?, ");
-				insertQuery.append("	?, ?, ?, ?, ?, ?)");
+				insertQuery.append("	?, ?, ?, ?, ?, ?)");*/
+				
+				insertQuery.append("MERGE INTO book b ");
+				insertQuery.append("USING (");
+				insertQuery.append("	SELECT");
+				insertQuery.append("		  ? as b_num");
+				insertQuery.append("		, ? as b_name");
+				insertQuery.append("		, ? as b_date");
+				insertQuery.append("		, ? as b_list");
+				insertQuery.append("		, ? as b_author");
+				insertQuery.append("		, ? as b_pub");
+				insertQuery.append("		, ? as b_authorinfo");
+				insertQuery.append("		, ? as b_info");
+				insertQuery.append("		, ? as b_price");
+				insertQuery.append("		, ? as cateOne_num");
+				insertQuery.append("		, ? as cateTwo_num");
+				insertQuery.append("	FROM");
+				insertQuery.append("		dual ) d ");
+				insertQuery.append("ON (b.b_num = d.b_num) ");
+				insertQuery.append("WHEN MATCHED THEN ");
+				insertQuery.append("	UPDATE SET");
+				insertQuery.append("		  b.b_name = d.b_name");
+				insertQuery.append("		, b.b_date = d.b_date");
+				insertQuery.append("		, b.b_list = d.b_list");
+				insertQuery.append("		, b.b_author = d.b_author");
+				insertQuery.append("		, b.b_pub = d.b_pub");
+				insertQuery.append("		, b.b_authorinfo = d.b_authorinfo");
+				insertQuery.append("		, b.b_info = d.b_info");
+				insertQuery.append("		, b.b_price = d.b_price");
+				insertQuery.append("		, b.cateOne_num = d.cateOne_num");
+				insertQuery.append("		, b.cateTwo_num = d.cateTwo_num ");
+				insertQuery.append("WHEN NOT MATCHED THEN");
+				insertQuery.append("	INSERT (");
+				insertQuery.append("		  b.b_num");
+				insertQuery.append("		, b.b_name");
+				insertQuery.append("		, b.b_date");
+				insertQuery.append("		, b.b_list");
+				insertQuery.append("		, b.b_author");
+				insertQuery.append("		, b.b_pub");
+				insertQuery.append("		, b.b_authorinfo");
+				insertQuery.append("		, b.b_info");
+				insertQuery.append("		, b.b_price");
+				insertQuery.append("		, b.cateOne_num");
+				insertQuery.append("		, b.cateTwo_num");
+				insertQuery.append(" ) VALUES ( ");
+				insertQuery.append("		  d.b_num");
+				insertQuery.append("		, d.b_name");
+				insertQuery.append("		, d.b_date");
+				insertQuery.append("		, d.b_list");
+				insertQuery.append("		, d.b_author");
+				insertQuery.append("		, d.b_pub");
+				insertQuery.append("		, d.b_authorinfo");
+				insertQuery.append("		, d.b_info");
+				insertQuery.append("		, d.b_price");
+				insertQuery.append("		, d.cateOne_num");
+				insertQuery.append("		, d.cateTwo_num");
+				insertQuery.append(" )");
 
 				pstmt = con.prepareStatement(insertQuery.toString());
 
 				Clob b_list = con.createClob();
-				b_list.setString(1, vo.getB_list().replace("&#31;", "#&32;"));
+				b_list.setString(1, vo.getB_list());
 
 				Clob b_authorinfo = con.createClob();
-				b_authorinfo.setString(1, vo.getB_authorinfo().replace("&#31;", "#&32;"));
+				b_authorinfo.setString(1, vo.getB_authorinfo());
 
 				Clob b_info = con.createClob();
-				b_info.setString(1, vo.getB_info().replace("&#31;", "#&32;"));
+				b_info.setString(1, vo.getB_info());
 
 				String b_date = vo.getB_date().replace("년 ", "-").replace("월 ", "-").replace("일", "").substring(0, 10);
 
@@ -97,28 +155,57 @@ public class InserBookDataDAO {
 				pstmt.setClob(7, b_authorinfo);
 				pstmt.setClob(8, b_info);
 				pstmt.setInt(9, vo.getB_price());
-				pstmt.setInt(10, vo.getCateone_num());
-				pstmt.setInt(11, vo.getCatetwo_num());
+				pstmt.setInt(10, vo.getCateOne_num());
+				pstmt.setInt(11, vo.getCateTwo_num());
 
 				resultNum = pstmt.executeUpdate();
-
+				con.commit();
 				insertQuery.setLength(0);// StringBuilder 값 초기화
 				pstmt.clearParameters();
 				pstmt.close();
 
-				insertQuery.append("INSERT INTO bookimg ");
+				/*insertQuery.append("INSERT INTO bookimg ");
 				insertQuery.append("	(b_num, ");
 				insertQuery.append("	listcover_imgurl, detailcover_imgurl, detail_imgurl");
 				insertQuery.append(") VALUES  (");
-				insertQuery.append("	?, ?, ?, ?)");
+				insertQuery.append("	?, ?, ?, ?)");*/
+//				System.out.println(insertQuery.toString());
+				
+				insertQuery.append("MERGE INTO bookimg i ");
+				insertQuery.append("USING (");
+				insertQuery.append("	SELECT");
+				insertQuery.append("		  ? as b_num");
+				insertQuery.append("		, ? as listcover_imgurl");
+				insertQuery.append("		, ? as detailcover_imgurl");
+				insertQuery.append("		, ? as detail_imgurl");
+				insertQuery.append("	FROM");
+				insertQuery.append("		dual ) d ");
+				insertQuery.append("ON (i.b_num = d.b_num) ");
+				insertQuery.append("WHEN MATCHED THEN ");
+				insertQuery.append("	UPDATE SET");
+				insertQuery.append("		  i.listcover_imgurl = d.listcover_imgurl");
+				insertQuery.append("		, i.detailcover_imgurl = d.detailcover_imgurl");
+				insertQuery.append("		, i.detail_imgurl = d.detail_imgurl ");
+				insertQuery.append("WHEN NOT MATCHED THEN");
+				insertQuery.append("	INSERT (");
+				insertQuery.append("		  i.b_num");
+				insertQuery.append("		, i.listcover_imgurl");
+				insertQuery.append("		, i.detailcover_imgurl");
+				insertQuery.append("		, i.detail_imgurl");
+				insertQuery.append(" ) VALUES ( ");
+				insertQuery.append("		  d.b_num");
+				insertQuery.append("		, d.listcover_imgurl");
+				insertQuery.append("		, d.detailcover_imgurl");
+				insertQuery.append("		, d.detail_imgurl");
+				insertQuery.append(" ) ");
 
 				pstmt = con.prepareStatement(insertQuery.toString());
 
-				String listCover = "/resources/bookimg/" + vo.getCateone_num() + "/" + vo.getCatetwo_num() + "/"
+				String listCover = "/resources/bookimg/" + vo.getCateOne_num() + "/" + vo.getCateTwo_num() + "/"
 						+ vo.getB_num() + "-listcover.jpg";
-				String detailCover = "/resources/bookimg/" + vo.getCateone_num() + "/" + vo.getCatetwo_num() + "/"
+				String detailCover = "/resources/bookimg/" + vo.getCateOne_num() + "/" + vo.getCateTwo_num() + "/"
 						+ vo.getB_num() + "-detailcover.jpg";
-				String detail = "/resources/bookimg/" + vo.getCateone_num() + "/" + vo.getCatetwo_num() + "/"
+				String detail = "/resources/bookimg/" + vo.getCateOne_num() + "/" + vo.getCateTwo_num() + "/"
 						+ vo.getB_num() + "-detail.jpg";
 
 				pstmt.setInt(1, vo.getB_num());
@@ -139,17 +226,18 @@ public class InserBookDataDAO {
 					pstmt.setString(4, null);
 				}
 
-				System.out.println("URL: " + vo.getURL());
-				System.out.println("b_name: " + vo.getB_name());
-				System.out.println("vo.toString(): " + vo.toString());
-				System.out.println(insertQuery.toString());
+//				System.out.println("URL: " + vo.getURL());
+//				System.out.println("b_name: " + vo.getB_name());
+//				System.out.println("vo.toString(): " + vo.toString());
+//				System.out.println(insertQuery.toString());
 
-				System.out.println("URL: " + vo.getURL());
 				System.out.println("b_name: " + vo.getB_name());
 				System.out.println("vo.toString(): " + vo.toString());
 				System.out.println(insertQuery.toString());
 				resultNum = pstmt.executeUpdate();
+				System.out.println("MERGE INTO 성공");
 
+				con.commit();	
 				insertQuery.setLength(0);// StringBuilder 값 초기화
 				pstmt.clearParameters();
 				pstmt.close();
@@ -157,10 +245,10 @@ public class InserBookDataDAO {
 
 				System.out.println(vo.getB_name() + ", 도서정보 DB저장 완료(voList.size:" + voList.size() + ")");
 			}
-
+				
 			if (resultNum == 1)
 				isSuccess = true;
-
+				
 			System.out.println("========================DB저장 완료 ====================");
 
 		} catch (SQLException se) {

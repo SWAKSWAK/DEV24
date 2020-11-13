@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class Pagination {
 
-	private int listRange 		= 20; 
+	private int listRange 		= 20;	// 한페이지에 출력될 도서의 개수
 	private int range 			= 4;	// 한번에 숫자로 보여질 페이지 범위 -1(기본값 5)
 	private int page; 					// 현재 목록의 페이지 번호
 	private int startPage 		= 1;	// 각 페이지 범위 시작 번호 (기본값 1)
@@ -13,14 +13,18 @@ public class Pagination {
 	private int pageLength; 			// 총 페이지 개수 (where절에 따라 가변)
 	private int bookLength; 			// 전체 도서 개수 (where절에 따라 가변)
 	private int listLength 		= 15; 	// 한 페이지당 보여질 리스트의 개수. 초기값으로 목록개수를 15로 셋팅
-	private int lastRownum; 			// 한페이지에 출력되는 마지막 상품의 rownum
 	private int startRownum; 			// 한페이지에 출력되는 첫번째 상품의 rownum
+	private int lastRownum; 			// 한페이지에 출력되는 마지막 상품의 rownum
 	private boolean prev; 				// 이전 페이지 여부
 	private boolean next;				 // 다음 페이지 여부
 
 	// 카테고리 조건에 맞춰서 페이징 출력을 하기 위함
 	private int cateOne_num = 0; // 대분류 코드
 	private int cateTwo_num = 0; // 소분류 코드
+	
+	// 정렬에 따라 츨력하기 위한 정보 (기본값 = "best")
+	// dev24 / best / new / lowp / highp
+	String sort = "best";
 
 	/******************************************************************
 	 * 페이징 처리를 위한 메소드
@@ -31,7 +35,7 @@ public class Pagination {
 	 * @param cateOne_num : 대분류 코드
 	 * @param cateTwo_num : 소분휴 코드
 	 ******************************************************************/
-	public Pagination(int bookLength, int startPage, int page, int cateOne_num, int cateTwo_num, int listRange) {
+	public Pagination(int bookLength, int startPage, int page, int cateOne_num, int cateTwo_num, int listRange, String sort) {
 		this.page = page;
 		this.listRange = listRange;
 
@@ -41,8 +45,7 @@ public class Pagination {
 		this.startRownum = startRownum;
 
 		// 한페이지에 출력될 마지막 상품 rownum
-		int lastRownum = page * 10;
-		this.lastRownum = lastRownum;
+		this.lastRownum = startRownum + listRange;
 
 		// 전체 상품 개수
 		this.bookLength = bookLength;

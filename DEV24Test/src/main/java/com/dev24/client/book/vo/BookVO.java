@@ -42,4 +42,7 @@ public class BookVO {
 	private MultipartFile listcoverFile;
 	private MultipartFile detailcoverFile;
 	private MultipartFile detailFile;
+	
+	private String url;
+	
 }

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,28 +39,31 @@ public class AdminBookController {
 	 * @param listRange
 	 * @param model
 	 */
-	@RequestMapping(value = { "/{cateOne_num}/{cateTwo_num}", "/{cateOne_num}", "" }, method = RequestMethod.GET)
+	@RequestMapping(value = "/{category}", method = RequestMethod.GET)
 	public String adminBookList(
-			@PathVariable int cateOne_num,
-			@PathVariable int cateTwo_num,
+			@PathVariable String category,
 			@RequestParam(required = false, defaultValue = "1") int page,
 			@RequestParam(required = false, defaultValue = "1") int startPage,
 			@RequestParam(required = false, defaultValue = "20") int listRange,
+			@RequestParam(required = false, defaultValue = "best") String sort,
 			Model model
 	) {
 
 		log.info("bookList 호출 성공");
 		log.info(page);
 
+		int cateOne_num = Integer.parseInt(category.charAt(0)+"");
+		int cateTwo_num = Integer.parseInt(category.charAt(1)+"");
+
 		// Pagination 객체 생성
 		int bookLength = bookService.getBookListCnt();
-		Pagination pagination = new Pagination(bookLength, startPage, page, cateOne_num, cateTwo_num, listRange);
+		Pagination pagination = new Pagination(bookLength, startPage, page, cateOne_num, cateTwo_num, listRange, sort);
 
 		// 얻어낸 pagination객체를 통해 bookList() 호출
 		ArrayList<BookVO> bookList = bookService.bookViewList(pagination);
-
+		
 		log.info(pagination.toString());
-
+		
 		// 임시 로그인용. 프로젝트 완료 시 삭제
 		model.addAttribute("adm_id", "admin");
 		model.addAttribute("adm_num", 2);

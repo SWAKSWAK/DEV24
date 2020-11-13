@@ -136,4 +136,146 @@
 				b_num = #{b_num}
 	</select>
 	
+	
+		<update id="addToCart" parameterType="java.util.List">
+		MERGE INTO
+			book b
+		USING (
+			<foreach collection="list" item="cvo" separator="union all"> 
+				SELECT
+					  #{cvo.b_num} as b_num
+					, #{cvo.crt_price} as crt_price
+					, #{cvo.c_num} as c_num
+					, #{cvo.crt_qty} as crt_qty
+				FROM
+					dual
+			</foreach>
+		) d
+		ON (c.b_num = d.b_num)
+		WHEN MATCHED THEN
+			UPDATE
+			<set>
+				  c.crt_price = c.crt_price + d.crt_price
+				, c.c_num = d.c_num
+				, c.crt_qty = c.crt_qty + d.crt_qty
+			</set>
+		WHEN NOT MATCHED THEN
+			INSERT 
+			 <trim prefix="(" suffix=")" suffixOverrides="," >
+			 	  crt_num
+				, b_num
+				, crt_price
+				, c_num
+				, crt_qty
+			</trim>
+			<trim prefix="values (" suffix=")" suffixOverrides="," >
+				  crt_num_seq.nextval
+				, d.b_num
+				, d.crt_price
+				, d.c_num
+				, d.crt_qty
+			</trim>
+	</update>
+	
+	<update id="mergeBookData" parameterType="java.util.List">
+				MERGE INTO book b 
+				USING (
+			<foreach collection="list" item="book" separator="union all"> 
+					SELECT
+						  #{book.b_num} as b_num
+						, #{book.b_name} as b_name
+						, #{book.b_date} as b_date
+						, #{book.b_list} as b_list
+						, #{book.b_author} as b_author
+						, #{book.b_pub} as b_pub
+						, #{book.b_authorinfo} as b_authorinfo
+						, #{book.b_info} as b_info
+						, #{book.b_price} as b_price
+						, #{book.cateOne_num} as cateOne_num
+						, #{book.cateTwo_num} as cateTwo_num
+					FROM
+						dual 
+			</foreach>
+					) d 
+				ON (b.b_num = d.b_num) 
+				WHEN MATCHED THEN 
+					UPDATE 
+			<set>
+						  b.b_name = d.b_name
+						, b.b_date = d.b_date
+						, b.b_list = d.b_list
+						, b.b_author = d.b_author
+						, b.b_pub = d.b_pub
+						, b.b_authorinfo = d.b_authorinfo
+						, b.b_info = d.b_info
+						, b.b_price = d.b_price
+						, b.cateOne_num = d.cateOne_num
+						, b.cateTwo_num = d.cateTwo_num 
+			</set>
+				WHEN NOT MATCHED THEN
+					INSERT
+			 <trim prefix="(" suffix=")" suffixOverrides="," >
+						  b.b_num
+						, b.b_name
+						, b.b_date
+						, b.b_list
+						, b.b_author
+						, b.b_pub
+						, b.b_authorinfo
+						, b.b_info
+						, b.b_price
+						, b.cateOne_num
+						, b.cateTwo_num
+			</trim>
+			<trim prefix="values (" suffix=")" suffixOverrides="," >
+						  d.b_num
+						, d.b_name
+						, d.b_date
+						, d.b_list
+						, d.b_author
+						, d.b_pub
+						, d.b_authorinfo
+						, d.b_info
+						, d.b_price
+						, d.cateOne_num
+						, d.cateTwo_num
+			</trim>
+		</update>
+		<update id="mergeBookImgData" parameterType="java.util.List">
+				MERGE INTO bookimg i 
+				USING (
+				
+			<foreach collection="list" item="bookImg" separator="union all"> 
+					SELECT
+						  #{bookImg.b_num} as b_num
+						, #{bookImg.listcover_imgurl} as listcover_imgurl
+						, #{bookImg.detailcover_imgurl} as detailcover_imgurl
+						, #{bookImg.detail_imgurl} as detail_imgurl
+					FROM
+						dual 
+			</foreach>
+				) d 
+				ON (i.b_num = d.b_num) 
+				WHEN MATCHED THEN 
+					UPDATE
+			<set>
+						  i.listcover_imgurl = d.listcover_imgurl
+						, i.detailcover_imgurl = d.detailcover_imgurl
+						, i.detail_imgurl = d.detail_imgurl 
+			</set>
+				WHEN NOT MATCHED THEN
+					INSERT 
+			 <trim prefix="(" suffix=")" suffixOverrides="," >
+						  i.b_num
+						, i.listcover_imgurl
+						, i.detailcover_imgurl
+						, i.detail_imgurl
+			</trim>
+			<trim prefix="values (" suffix=")" suffixOverrides="," >
+						  d.b_num
+						, d.listcover_imgurl
+						, d.detailcover_imgurl
+						, d.detail_imgurl
+			</trim>
+		</update>
 </mapper>

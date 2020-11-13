@@ -9,24 +9,26 @@
            <nav>
 		      <ul id="gnb">
                 <li class="dropBox" id="book">
-                    <span><a href="/book">일반도서</a></span>
+                    <span>일반도서</span>
                     <ul class="dropmenu">
-                      <li class=""><a href="#">프로그래밍 언어</a></li>
-                      <li><a href="#">네트워크/해킹/보안</a></li>
-                      <li><a href="#">웹사이트</a></li>
-                      <li><a href="#">컴퓨터 입문/활용</a></li>
-                       <li><a href="#">OS/데이터베이스</a></li>
+                      <li><a class="bookLink" id="" href="/book/10">일반도서 전체</a></li>
+                      <li class=""><a href="/book/11">프로그래밍 언어</a></li>
+                      <li><a href="/book/12">OS/데이터베이스</a></li>
+                      <li><a href="/book/13">웹사이트</a></li>
+                      <li><a href="/book/15">네트워크/해킹/보안</a></li>
+                      <li><a href="/book/14">컴퓨터 입문/활용</a></li>
                     </ul> <!-- dropmenu for book -->
                 </li>
 		        <li class="dropBox" id="ebook">
 		            <span>eBook</span>
 		          <ul class="dropmenu">
-                      <li><a href="#">IT전문서</a></li>
-                      <li><a href="#">컴퓨터 수험서</a></li>
-                      <li><a href="#">웹/컴퓨터 입문&활용</a></li>
+		          	  <li><a class="bookLink" href="/book/20">eBook 전체</a></li>
+                      <li><a href="/book/26">IT전문서</a></li>
+                      <li><a href="/book/27">컴퓨터 수험서</a></li>
+                      <li><a href="/book/28">웹/컴퓨터 입문&활용</a></li>
                 </ul> <!-- dropmenu for ebook -->      
 		      </li>
-		        <li><a href="freeboard/freeboardList">커뮤니티</a></li> <!-- 자유게시판, 공지사항/이벤트 -->
+		        <li><a href="/freeboard/freeboardList">커뮤니티</a></li> <!-- 자유게시판, 공지사항/이벤트 -->
 		        <li><a href="#">고객지원</a></li> <!-- 주문내역/배송조회, QnA, FAQ -->
 		      </ul> <!-- gnb -->
 		      

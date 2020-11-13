@@ -49,7 +49,10 @@
     		}
     		.pageNum{
     			display: inline-block;
-    			padding: 5px;
+    		}
+    		.pageNumBtn {
+    			display: inline-block;
+    			width: 25px;
     		}
     		.pageBtn{
     			display: inline-block;
@@ -319,6 +322,11 @@
     	<script src="/resources/include/js/jquery-3.5.1.min.js"></script>
     	<script>
     		$(function() {
+    			$("#listRange").find("option").each(function(){
+	    			if (this.value == ${pagination.listRange})
+	    				$(this).attr("selected", "true");
+    				
+    			});
     			
     			//수량 실시간 갑지 (1~99)
     			$(".crt_qty").on("propertychange change keyup paste input", function(){
@@ -358,8 +366,6 @@
     				var result = addCart(data);
     				if(result == 'SUCCESS')
 						$(".cartMsg:eq("+index+")").css("display", "block");
-    				
-    				
     			});
     			
     			$(".selectedCartBtn").click(function(){
@@ -410,10 +416,6 @@
     				$(this).parent().parent("div").css("display", "none");
     			});
     			
-    			$(".butBtn").click(function(){
-    				
-    			});
-    			
     			$(".upBtn").click(function(){
     				console.log("upBtn");
     				var n = $(".upBtn").index(this);
@@ -457,7 +459,7 @@
 				if(startPage+1 > pageLength)
 					$(".nextRangeBtn").css("cursor", "default");
 				
-				var uri = "/book/"+cateOne_num+"/"+cateTwo_num+"?page=";
+				var uri = "/book/"+cateOne_num+cateTwo_num+"?page=";
 				
     			$(".prevBtn").click(function(){
     				if (startPage-1 > 0){
@@ -506,13 +508,25 @@
     			
     			$(".b_name").click(function(){
     				var b_num = $(this).parents(".bookWrap").attr("data-num");
-    				location.href = "http://localhost:8080/book/detail/"+b_num;
+    				location.href = "/book/detail/"+b_num;
     			});
 
     			$(".listcover").click(function(){
     				var b_num = $(this).parents(".bookWrap").attr("data-num");
-    				location.href = "http://localhost:8080/book/detail/"+b_num;
+    				location.href = "/book/detail/"+b_num;
     			});
+    			
+    			// "/book/00" 에서  "00"만 추출
+    			var category = window.location.pathname.substr(6, 8);
+    			$("#"+category).css("font-weight", "900")
+    						   .css("text-shadow", "2px 2px 6px grey");
+    			
+    			// #listRange 값이 바뀔 때마다 맞춰 출력
+    			$("#listRange").change(function(){
+    				location.href="/book/"+category+"?listRange="+$("#listRange").select().val();
+    			});
+    			
+    			
     			
     		});
     		
@@ -557,7 +571,7 @@
 				});
 				console.log(returnVal);
 				return returnVal;
-			};
+			}
     	</script>
 	</head>
 	<body>
@@ -572,7 +586,7 @@
 					<span class="sort highPriceSort">높은가격순</span>
 				</div>
 				<div class="topRightDiv">
-					<select id="listSize">
+					<select id="listRange">
 						<option value="20">20개씩 보기</option>
 						<option value="40">40개씩 보기</option>
 					</select>
@@ -619,125 +633,125 @@
 			</div>
 		</div>
 			
-					<div id="content_wrap"> 
+		<div id="content_wrap"> 
+     
+	       <div id="leftmenu">
+	          <div class="book_cate"><a  id="10"  href="/book/10">일반도서</a></div>
+	           <ul>
+	               <li id="11"><a href="/book/11">프로그래밍 언어</a></li>
+	               <li id="12"><a href="/book/12">OS/데이터베이스</a></li>
+	               <li id="13"><a href="/book/13">웹사이트</a></li>
+	               <li id="14"><a href="/book/14">컴퓨터 입문/활용</a></li>
+	               <li id="15"><a href="/book/15">네트워크/해킹/보안</a></li>
+	             </ul>
+	            <div class="book_cate"><a id="20" href="/book/20">eBook</a></div>
+	           <ul>
+	                <li><a id="26" href="/book/26">IT전문서</a></li>
+	                <li><a id="27" href="/book/27">컴퓨터 수험서</a></li>
+	                <li><a id="28" href="/book/28">웹/컴퓨터 입문	&#38;활용</a></li>
+	          </ul>
+	       </div>
 	       
-				       <div id="leftmenu">
-				          <div class="book_cate">일반도서</div>
-				           <ul>
-				               <li class=""><a href="#">프로그래밍 언어</a></li>
-				               <li><a href="#">네트워크/해킹/보안</a></li>
-				               <li><a href="#">웹사이트</a></li>
-				               <li><a href="#">컴퓨터 입문/활용</a></li>
-				                <li><a href="#">OS/데이터베이스</a></li>
-				             </ul>
-				            <div class="book_cate">eBook</div>
-				           <ul>
-				                <li><a href="#">IT전문서</a></li>
-				                <li><a href="#">컴퓨터 수험서</a></li>
-				                <li><a href="#">웹/컴퓨터 입문&활용</a></li>
-				          </ul>
-				       </div>
-				       
-				       <div id="div">
-					       <h1 id="listTitle"></h1>
-							<div class="listWrap">
-									<c:choose>
-										<c:when test="${ not empty bookList }">
-											<c:forEach var="bl" items="${ bookList }">
-												<div class="bookWrap" data-num="${ bl.b_num }">
-													<div class="listcoverWrap text-left">
-														<img class="listcover" src="${bl.listcover_imgurl}">
-													</div>
-													<div class="lineDiv"></div>
-													<div class="booktext text-left">
-														<h1 class="b_name" title="${ bl.b_name }">
-															<span class="b_nameText" >${ bl.b_name }</span>
-														</h1>
-														<span class="authorPub">${ bl.b_author } 저 | ${ bl.b_pub }</span>
-														<p class="priceWrap">
-															<span class="b_price" style="display: none" >${ bl.b_price }</span>
-																<fmt:formatNumber value="${ bl.b_price }"/>
-															<span class="won">원</span>
-														</p>
-														<p class="b_rating">
-															<c:set var="avg" value="${(bl.ra_sum/bl.ra_count)}" />
-															<c:set var="devided" value="${(bl.ra_sum/bl.ra_count)/2}" />
-															<c:choose>
-																<c:when test="${ avg != Double.NaN }">
-																	<c:forEach var="i" begin="1" end="5" step="1">
-																		<c:if test="${ i <= devided }">
-																			<i class="fas fa-star"></i>
-																		</c:if>
-																		<c:if test="${ i > devided }">
-																			<c:choose>
-																				<c:when test="${ i>devided && (devided-i+1)>0}">
-																					<i class="fas fa-star-half-alt"></i>
-																				</c:when>
-																				<c:otherwise>
-																					<i class="far fa-star"></i>
-																				</c:otherwise>
-																			</c:choose>
-																		</c:if>
-																	</c:forEach>
-																</c:when>
-																<c:otherwise>
-																	<i class="far fa-star"></i>
-																	<i class="far fa-star"></i>
-																	<i class="far fa-star"></i>
-																	<i class="far fa-star"></i>
-																	<i class="far fa-star"></i>
-																</c:otherwise>
-															</c:choose>
-															<c:if test="${ avg == Double.NaN }">
-																<c:set var="avg" value="0"/>
+	       <div id="div">
+		       <h1 id="listTitle"></h1>
+				<div class="listWrap">
+						<c:choose>
+							<c:when test="${ not empty bookList }">
+								<c:forEach var="bl" items="${ bookList }">
+									<div class="bookWrap" data-num="${ bl.b_num }">
+										<div class="listcoverWrap text-left">
+											<img class="listcover" src="${bl.listcover_imgurl}">
+										</div>
+										<div class="lineDiv"></div>
+										<div class="booktext text-left">
+											<h1 class="b_name" title="${ bl.b_name }">
+												<span class="b_nameText" >${ bl.b_name }</span>
+											</h1>
+											<span class="authorPub">${ bl.b_author } 저 | ${ bl.b_pub }</span>
+											<p class="priceWrap">
+												<span class="b_price" style="display: none" >${ bl.b_price }</span>
+													<fmt:formatNumber value="${ bl.b_price }"/>
+												<span class="won">원</span>
+											</p>
+											<p class="b_rating">
+												<c:set var="avg" value="${(bl.ra_sum/bl.ra_count)}" />
+												<c:set var="devided" value="${(bl.ra_sum/bl.ra_count)/2}" />
+												<c:choose>
+													<c:when test="${ avg != Double.NaN }">
+														<c:forEach var="i" begin="1" end="5" step="1">
+															<c:if test="${ i <= devided }">
+																<i class="fas fa-star"></i>
 															</c:if>
-																<span class="avgVal">${avg}</span>
-														</p>
-													</div>
-													<div class="btnWrap">
-														<div class="cntWrap">
-															<input type="number" value="1" class="crt_qty" min="0" max="99"/>
-															<button type="button" class="upBtn" ><i class="fas fa-caret-up"></i></button>
-															<button type="button" class="downBtn" ><i class="fas fa-caret-down"></i></button>
-														</div>
-														<!-- <input type="number" class="number text-right" name="cartCnt" value="0" min="0"/> -->
-														
-														<button type="button" class="btn text-right cartBtn">장바구니 담기</button>
-														<div class="cartMsg" style="display: none;">
-															<p class="cartMsgText">
-																<span class="cartMsgTextBold">상품이 장바구니에 담겼습니다.</span><br />
-																바로 확인하시겠습니까?
-															</p>
-															<div class="cartBtnWrap">
-																<button type="button" class="btn goCartBtn">예</button>
-																<button type="button" class="btn noCartBtn">아니오</button>
-															</div>											
-														</div>
-														<button type="button" class="btn text-right buyBtn">구매</button>
-														
-													</div>
-													<div class="chkWrap">
-														<input type="checkbox" class="checkbox" value="${ bl.b_num }" />
-													</div>
-												</div>
-											</c:forEach>
-										</c:when>
-									</c:choose>
-								</div>
-						</div> <!-- 여기에 도서 리스트 넣으세요. 이름바꿔도됨 -->
-				        
-				    </div> <!-- content_wrap -->
-
-				<div></div>
-				<div class="contentFooter">
-					<div class="top">
-						<span class="sort devPowSort">DEV24 랭킹순</span>
-						<span class="sort bestSort">판매량순</span>
-						<span class="sort newSort">신상품순</span>
-						<span class="sort lowPriceSort">낮은가격순</span>
-						<span class="sort highPriceSort">높은가격순</span>
+															<c:if test="${ i > devided }">
+																<c:choose>
+																	<c:when test="${ i>devided && (devided-i+1)>0}">
+																		<i class="fas fa-star-half-alt"></i>
+																	</c:when>
+																	<c:otherwise>
+																		<i class="far fa-star"></i>
+																	</c:otherwise>
+																</c:choose>
+															</c:if>
+														</c:forEach>
+													</c:when>
+													<c:otherwise>
+														<i class="far fa-star"></i>
+														<i class="far fa-star"></i>
+														<i class="far fa-star"></i>
+														<i class="far fa-star"></i>
+														<i class="far fa-star"></i>
+													</c:otherwise>
+												</c:choose>
+												<c:if test="${ avg == Double.NaN }">
+													<c:set var="avg" value="0"/>
+												</c:if>
+													<span class="avgVal">${avg}</span>
+											</p>
+										</div>
+										<div class="btnWrap">
+											<div class="cntWrap">
+												<input type="number" value="1" class="crt_qty" min="0" max="99"/>
+												<button type="button" class="upBtn" ><i class="fas fa-caret-up"></i></button>
+												<button type="button" class="downBtn" ><i class="fas fa-caret-down"></i></button>
+											</div>
+											<!-- <input type="number" class="number text-right" name="cartCnt" value="0" min="0"/> -->
+											
+											<button type="button" class="btn text-right cartBtn">장바구니 담기</button>
+											<div class="cartMsg" style="display: none;">
+												<p class="cartMsgText">
+													<span class="cartMsgTextBold">상품이 장바구니에 담겼습니다.</span><br />
+													바로 확인하시겠습니까?
+												</p>
+												<div class="cartBtnWrap">
+													<button type="button" class="btn goCartBtn">예</button>
+													<button type="button" class="btn noCartBtn">아니오</button>
+												</div>											
+											</div>
+											<button type="button" class="btn text-right buyBtn">구매</button>
+											
+										</div>
+										<div class="chkWrap">
+											<input type="checkbox" class="checkbox" value="${ bl.b_num }" />
+										</div>
+									</div>
+								</c:forEach>
+							</c:when>
+						</c:choose>
 					</div>
-				</div>
+			</div> <!-- 여기에 도서 리스트 넣으세요. 이름바꿔도됨 -->
+	        
+	    </div> <!-- content_wrap -->
+
+		<div></div>
+		<div class="contentFooter">
+			<div class="top">
+				<span class="sort devPowSort">DEV24 랭킹순</span>
+				<span class="sort bestSort">판매량순</span>
+				<span class="sort newSort">신상품순</span>
+				<span class="sort lowPriceSort">낮은가격순</span>
+				<span class="sort highPriceSort">높은가격순</span>
 			</div>
+		</div>
+	</div>
 	</body>
 </html>

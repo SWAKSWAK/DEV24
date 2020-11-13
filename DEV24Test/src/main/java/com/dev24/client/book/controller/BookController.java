@@ -26,24 +26,29 @@ public class BookController {
 
 	private BookService bookService;
 	
-	@RequestMapping(value = {"/{cateOne_num}/{cateTwo_num}", "/{cateOne_num}", ""}, method = RequestMethod.GET)
+	@RequestMapping(value = {"/{category}"}, method = RequestMethod.GET)
 	public String bookList(
-							@PathVariable int cateOne_num,
-							@PathVariable int cateTwo_num,
+							@PathVariable("category") String category,
 							@RequestParam(required = false, defaultValue = "1") int page,
 							@RequestParam(required = false, defaultValue = "1") int startPage,
 							@RequestParam(required = false, defaultValue = "20") int listRange,
+							@RequestParam(required = false, defaultValue = "best") String sort,
 							Model model
 	) {
 		
 		log.info("bookList 호출 성공");
 		log.info("bookList(): page=" + page);
+		
+		int cateOne_num = Integer.parseInt(category.charAt(0)+"");
+		int cateTwo_num = Integer.parseInt(category.charAt(1)+"");
+
 		log.info(cateOne_num);
 		log.info(cateTwo_num);
+		
 		// Pagination 객체 생성
 		int bookLength = bookService.getBookListCnt();
 		log.info(bookLength);
-		Pagination pagination = new Pagination(bookLength, startPage, page, cateOne_num, cateTwo_num, listRange);
+		Pagination pagination = new Pagination(bookLength, startPage, page, cateOne_num, cateTwo_num, listRange, sort);
 		//얻어낸 pagination객체를 통해 bookList() 호출
 		ArrayList<BookVO> bookList = bookService.bookViewList(pagination);
 		log.info(bookList.toString());
