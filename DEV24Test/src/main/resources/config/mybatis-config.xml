@@ -18,5 +18,6 @@
 		<typeAlias type="com.dev24.client.freeboard.vo.FreeBoardVO" alias="freeboard" />
 		<typeAlias type="com.dev24.client.freeboard.freecmt.vo.FreeCmtVO" alias="freecmt"/>
 		<typeAlias type="com.dev24.client.mypage.orderhistory.vo.OrderhistoryVO" alias="orderhistory"/>
+		<typeAlias type="com.dev24.client.refund.vo.RefundVO" alias="refund"/>
 	</typeAliases>
 </configuration>

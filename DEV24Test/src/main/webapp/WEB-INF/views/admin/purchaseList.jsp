@@ -27,10 +27,9 @@
          <script type="text/javascript" src="/resources/include/dist/js/bootstrap.js"></script>
          <script type="text/javascript" src="/resources/include/js/common.js"></script>
          <style>
-         	.table{
-         		margin-top:140px;
-         		margin-bottom:70px;
-         	}
+         .listTable tbody tr:hover{
+         	background-color:rgba(0,0,0,0.1);
+         }
          </style>
 		<script type="text/javascript">
 			$(function(){
@@ -123,6 +122,7 @@
 				$(".adminPdetailBtn").click(function(){
 					var p_num = $(this).parents("tr").attr("data-num");
 					$("#p_num").val(p_num);
+					//console.log(p_num);
 					
 					$("#detailForm").attr({
 						"method": "get",
@@ -169,7 +169,6 @@
 	                                <option value="p_num">구매번호</option>
 	                                <option value="c_id">주문자ID</option>
 	                                <option value="p_pmethod">결제방법</option>
-	                                <option value="pd_orderstate">주문상태</option>
 	                            </select>
 	                            <input type="text" name="keyword" id="keyword" class="form-control" />
 	                        </div>
@@ -205,7 +204,6 @@
 	                        <th>결제방법</th>
 	                        <th>결제금액</th> <!--sales_view 구매금액-환불금액 뷰!-->
 	                        <th>구매날짜</th>
-	                        <th>주문상태</th> <!--pdetail-->
 	                        <th>환불내역</th> <!--p_num의 pd_num의 rf_num 존재유무-->
 	                        <th></th>
 	                    </tr>
@@ -220,7 +218,6 @@
 				                        <td>${list.p_pmethod}</td>
 				                        <td class="td_price">${list.sales_price}</td>
 				                        <td>${list.p_buydate}</td>
-				                        <td>${list.pd_orderstate}</td>
 				                        <td>${list.isRefund}</td>
 				                        <td>
 				                            <input type="button" value="자세히" class="btn btn-default adminPdetailBtn" />

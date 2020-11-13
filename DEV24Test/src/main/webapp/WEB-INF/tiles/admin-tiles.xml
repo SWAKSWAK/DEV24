@@ -21,7 +21,7 @@
 		<put-attribute name="body" value="/WEB-INF/views/template/admin/menu.jsp" />
 	</definition>
 	
-	<definition name="/admin/*" extends="adminIntro">
+	<definition name="admin/*" extends="adminIntro">
 		<put-attribute name="title" value="DEV24 관리자페이지 " />
 		<put-attribute name="adminbody" value="/WEB-INF/views/admin/{1}.jsp" /> 
 	</definition>

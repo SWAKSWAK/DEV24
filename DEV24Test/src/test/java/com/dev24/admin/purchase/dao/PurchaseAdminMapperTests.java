@@ -45,7 +45,7 @@ public class PurchaseAdminMapperTests {
 	public void testPdetailList() {
 		log.info("pdetailList 메서드 호출");
 		AdminPdetailViewVO pdvo = new AdminPdetailViewVO();
-		pdvo.setP_num(6);
+		pdvo.setP_num(76);
 		List<AdminPdetailViewVO> list = pdetailDaoAdmin.pdetailList(pdvo);
 		for(AdminPdetailViewVO vo : list) {
 			log.info(vo);

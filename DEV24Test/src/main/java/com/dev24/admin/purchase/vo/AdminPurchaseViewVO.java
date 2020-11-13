@@ -18,7 +18,6 @@ public class AdminPurchaseViewVO extends CommonVO {
 	private String p_pmethod = ""; // 결제방법
 	private int sales_price = 0; // 매출금액(구매금액-환불금액)
 	private String p_buydate = ""; // 구매일
-	private String pd_orderstate = ""; // 주문상태
 	private String isRefund = ""; // 환불여부 Y/N
 
 }

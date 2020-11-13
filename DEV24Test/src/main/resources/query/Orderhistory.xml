@@ -117,7 +117,7 @@
 	<update id="orderstateUpdate" parameterType="orderhistory">
 		update pdetail		
 		set pd_orderstate = #{pd_orderstate}
-		where b_num = #{b_num}
+		where b_num = #{b_num} and p_num = #{p_num}
 	</update>
 	
 

@@ -20,7 +20,7 @@ import lombok.extern.log4j.Log4j;
 
 @Controller
 @Log4j
-@RequestMapping("admin/*")
+@RequestMapping("/admin/*")
 @AllArgsConstructor
 //@SessionAttributes({"adm_id", "adm_num", "adm_name"})
 
@@ -31,7 +31,7 @@ public class AdminController {
 	
 	@RequestMapping(value="/admin/adminLoginForm")
 	public String adminLoginForm() {
-		return "admin/adminLoginForm";
+		return "/admin/adminLoginForm";
 	}
 	
 	@ResponseBody

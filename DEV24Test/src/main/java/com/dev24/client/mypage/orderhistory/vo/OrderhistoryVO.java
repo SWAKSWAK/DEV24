@@ -24,4 +24,7 @@ public class OrderhistoryVO extends CommonVO {
 	private String p_receiver = "";
 	private int price = 0;
 	
+	// refundForm print elements
+	private int singlePrice = 0;
+	private String listcover_imgurl = "";
 }

@@ -9,6 +9,9 @@
 		from pdetail_view
 		where p_num = #{p_num}
 
+		<if test="search=='pd_num'">
+			<![CDATA[AND (pd_num LIKE '%'||#{keyword}||'%')]]>
+		</if>
 		<if test="search=='b_num'">
 			<![CDATA[AND (b_num LIKE '%'||#{keyword}||'%')]]>
 		</if>
@@ -25,6 +28,5 @@
 		
 	</select>
 	
-
 
 </mapper>

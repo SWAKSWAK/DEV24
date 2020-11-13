@@ -5,7 +5,6 @@
 		<li class="active"><a href="/admin/book/bookInsertForm">도서등록<span
 				class="sr-only">(current)</span></a></li>
 		<li><a href="/admin/stockList">재고관리 </a></li>
-		<li><a href="/admin/pdetailList">구매세부</a></li>
 		<li><a href="/admin/book/0/0">도서목록</a></li>
 	</ul>
 	<ul class="nav nav-sidebar">

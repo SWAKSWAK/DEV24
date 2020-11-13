@@ -19,7 +19,7 @@ import lombok.extern.log4j.Log4j;
 
 @Controller
 @Log4j
-@RequestMapping("admin/*")
+@RequestMapping("/admin/*")
 @AllArgsConstructor
 public class StockController {
 	
@@ -32,7 +32,7 @@ public class StockController {
 		List<BookVO> bookstockList = stockService.stockBInfoList(bvo);
 		model.addAttribute("stockList", stockList);
 		model.addAttribute("bookstockList", bookstockList);
-		return "/admin/stockList";
+		return "admin/stockList";
 	}
 	
 	@RequestMapping(value="/stockDetail", method=RequestMethod.GET)

@@ -24,6 +24,7 @@
 .center{
     width: 1200px;
     margin: 0 auto;
+    margin-left:13%;
 }
 
 #upper{
@@ -33,7 +34,7 @@
     width: 100%;
     position: fixed;
     left: 0;
-    top: 0;
+    top: 50px;
 }
 
 #admin_search > form{
@@ -71,10 +72,12 @@
 }
 
 
-.listTable{
+table.listTable{
     text-align: center;
     width: 100%;
     border-collapse: collapse;
+    margin-top: 140px;
+    margin-bottom: 70px;
 }
 
 .listTable th{

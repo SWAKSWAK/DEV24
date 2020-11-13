@@ -9,15 +9,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PurchaseVO {
 	private int p_num = 0;
-	private String p_sender = ""; // 二쇰Ц�옄(�쉶�썝)
-	private int p_price = 0; // 二쇰Ц媛�寃�
-	private String p_zipcode = ""; // �슦�렪踰덊샇
-	private String p_pmethod = ""; // 寃곗젣諛⑸쾿
-	private String p_receiver = ""; // �닔�졊�옄
-	private String p_address = ""; // 諛곗넚二쇱냼
-	private String p_senderphone = ""; // 二쇰Ц�옄 踰덊샇
-	private String p_receivephone = ""; // �닔�졊�옄 踰덊샇
-	private int c_num = 0; // �쉶�썝踰덊샇
-	private String p_buydate = ""; // �벑濡앹씪
+	private String p_sender = ""; // person ordered
+	private int p_price = 0; // purchase price(total)
+	private String p_zipcode = ""; //
+	private String p_pmethod = ""; // purchase method
+	private String p_receiver = ""; // person who will receive
+	private String p_address = ""; // delivery address
+	private String p_senderphone = "";
+	private String p_receivephone = "";
+	private int c_num = 0; // customer number
+	private String p_buydate = ""; // buy date
 
 }

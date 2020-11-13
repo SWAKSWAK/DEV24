@@ -19,7 +19,7 @@ public class PdetailServiceImpl implements PdetailService {
 	@Override
 	public List<AdminPdetailViewVO> pdetailList(AdminPdetailViewVO pdvo) {
 		List<AdminPdetailViewVO> list = null; 
-//		list = pdetailDaoAdmin.pdetailList(pdvo);
+		list = pdetailDaoAdmin.pdetailList(pdvo);
 		return list;
 	}
 

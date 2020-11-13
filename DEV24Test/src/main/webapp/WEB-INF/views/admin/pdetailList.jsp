@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page trimDirectiveWhitespaces="true" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -24,6 +26,15 @@
          <script type="text/javascript" src="/resources/include/js/jquery-1.12.4.min.js"></script>
          <script type="text/javascript" src="/resources/include/dist/js/bootstrap.js"></script>
          <script type="text/javascript" src="/resources/include/js/common.js"></script>
+         <style>
+         #admin_search{
+         	float : right;
+         }
+         
+         .listTable tbody tr:hover{
+         	background-color:rgba(0,0,0,0.1);
+         }
+         </style>
 		<script>
     
 	        $(function(){
@@ -32,17 +43,83 @@
 	            //console.log(rows);
 
 	            for(var i=0; i<rows; i++){
-	                var tr = $(".listTable > tbody > tr").eq(i);
+	               /* 환불금액 표시 */
+	            	var tr = $(".listTable > tbody > tr").eq(i);
 	                var td = tr.find(".td_refund").text();
-	                if(td!=""){
+	                if(td!=""){ // 환불번호가 입력되어있으면!
 	                    var text = tr.find(".td_price").text();
 	                    tr.find(".td_price").css("color","red").text("-"+text);
 	                }
+	                
+	                
+	                /* 배송예정인 건 '배송중'처리 */
+					var state = $(".listTable > tbody > tr").eq(i).find(".td_orderstate").text();
+		            if(state == "preShipping"){
+		            	$(".listTable > tbody > tr").eq(i).find(".td_orderstate").css({
+		            		"font-weight":"bold",
+	            			"color":"orange"
+		            	}).hover(function(event){
+		            		$(this).css({"color":"blue","cursor":"pointer"});
+		            		
+		            		var b_num = $(this).siblings("td.td_bnum").text();
+		            		$(".listTable > tbody > tr").each(function(){
+		            			if($(this).find("td.td_bnum").text() == b_num){
+		            				$(this).find("td.td_orderstate").css({"color":"blue"});
+		            			}
+		            		});
+		            		
+		            	}, function(event){
+		            		$(this).css("color","orange");
+		            		
+		            		var b_num = $(this).siblings("td.td_bnum").text();
+		            		$(".listTable > tbody > tr").each(function(){
+		            			if($(this).find("td.td_bnum").text() == b_num){
+		            				$(this).find("td.td_orderstate").css({"color":"orange"});
+		            			}
+		            		});
+		            	});
+		            	
+		            	
+		            	
+		            }
 	            }
+	            
+	            $(".td_orderstate").click(function(){
+            		var pd_orderstate = "shipping";
+					var b_num = $(this).siblings("td.td_bnum").text();
+					var p_num = $(this).parents("tr").attr("data-num");
+					
+					$.ajax({
+						url:"/admin/orderstateUpdate",
+						type:"get",
+						data : "b_num="+b_num+"&pd_orderstate="+pd_orderstate+"&p_num="+p_num,
+						dataType:"text",
+						error:function(){
+							alert("시스템 오류. 관리자에게 문의하세요.");
+						},
+						success:function(result){
+							console.log("result => "+result);
+							location.href="/admin/pdetailList?p_num="+p_num;
+						}
+					});
+            	});
+	            
+	            
+	            /* 금액 콤마 찍기 */
+				var l = $(".listTable").find("tbody tr").length;
+				var sum = 0;
+				for(var i=0; i<l; i++){
+					var price = $(".listTable").find("tbody tr").eq(i).find("td.td_price").text();
+					sum += parseInt(price);
+					$(".listTable").find("tbody tr").eq(i).find("td.td_price").text(addComma(price));
+				}
+    			$("#total_count").text(addComma(l)); // 전체 구매 횟수
+				$("#total_price").text(addComma(sum)); // 전체 금액
+				
 	            
 	            /* 메인으로 이동 버튼 */
 				$("#goMainBtn").click(function(){
-					location.href="/adminIndex";
+					location.href="/admin/adminIndex";
 				});
 	            
 	            /* 구매관리 페이지로 이동 버튼 */
@@ -51,11 +128,62 @@
 				});
 	            
 				/* 구매번호 출력 */
-	              var p_num = $("#pnum span").text();
-	            $("#p_num").val(p_num);
-	            console.log("p_num : "+p_num);
-	            
-	        })
+	            $("#pnum span").text("${p_num}");
+	            console.log("p_num : ${p_num}");
+
+				
+				/* 키워드 검색 시 */
+				$("#searchTextBtn").click(function(){
+					if($("#search").val()!="all"){ // 검색 조건이 '전체'일 때 빼고는 유효성 체크!
+						if(!chkData("#keyword", "검색어를"))return;
+					}
+					goPage(); // 검색 완료 후 purchaseList 페이지 재호출하는 함수
+				});
+				
+				
+				/* 검색 후 검색대상과 검색단어 출력 */
+				if("${data.keyword}" != ""){
+					$("#keyword").val("${data.keyword}");
+					$("#search").val("${data.search}");
+				}
+
+				/* 입력양식 enter제거 */
+				$("#keyword").bind("keydown", function(event){
+					if(event.keyCode == 13){
+						event.preventDefault();
+					}
+				});
+				
+				/* 검색 조건 '전체'로 했을 때 */
+				$("#search").change(function(){
+					if($("#search").val()=='all'){
+						$("#keyword").val("전체 데이터 조회");
+					}else if($("#search").val()!='all'){
+						$("#keyword").val("");
+						$("#keyword").focus();
+					}
+				});
+				
+				
+				
+	        }); // 최상위 종료
+	        
+	        
+	        /* 검색을 위한 실질적인 처리 함수 */
+			function goPage(){
+				if($("#search").val()=="all"){
+					$("#keyword").val("");
+				}
+				
+				
+				$("#f_searchText").attr({
+					"method" : "get",
+					"action" : "/admin/pdetailList"
+				});
+				$("#f_searchText").submit();
+			}
+	        
+	        
 	    </script>
 		
 
@@ -68,24 +196,20 @@
 	
 	                <div id="admin_search">
 	                    <form name="f_searchText" id="f_searchText" class="form-inline">
+	                    	<input type="hidden" name="p_num" id="p_num" value="${p_num}" />	                    
 	                        <div class="form-group">
 	                            <label>검색조건</label>
-	                            <select name="ad_search" id="ad_search" class="form-control">
+	                            <select name="search" id="search" class="form-control">
 	                                <option value="all">전체</option>
-	                                <option value="p_num">구매상세번호</option>
+	                                <option value="pd_num">구매상세번호</option>
 	                                <option value="b_num">도서번호</option>
 	                                <option value="b_name">도서명</option>
 	                                <option value="c_id">주문자ID</option>
 	                                <option value="p_pmethod">결제방법</option>
-	                                <option value="p_orderdate">주문상태</option>
+	                                <option value="pd_orderdate">주문상태</option>
 	                                <option value="rf_num">환불번호</option>
 	                            </select>
 	                            <input type="text" name="keyword" id="keyword" class="form-control" />
-	                        </div>
-	                        <div class="form-group">
-	                            <label>구매날짜</label>
-	                            <input type="date" name="p_buydate_start" id="p_buydate_start" class="form-control" /> ~ 
-	                            <input type="date" name="p_buydate_end" id="p_buydate_end" class="form-control" />
 	                        </div>
 	                        <input type="button" id="searchTextBtn" value="검색" class="btn btn-default" />
 	                    </form>
@@ -100,8 +224,9 @@
 	        
 	        
 	        <div id="content_wrap">
-	           <p>구매번호 : purchase001</p> <!--p_num-->
+	           
 	            <table class="listTable table table-striped" border="1">
+	           		<caption id="pnum">구매번호 : <span></span></caption> <!--p_num-->
 	                <thead>
 	                    <tr>
 	                        <th>구매상세번호</th> <!--pd_num-->
@@ -117,42 +242,36 @@
 	                    </tr>
 	                </thead>
 	                <tbody>
-	                    <tr>
-	                        <td>pdetail001</td>
-	                        <td>book01</td>
-	                        <td>혼자 하는 자바</td>
-	                        <td>hong12</td>
-	                        <td>계좌이체</td>
-	                        <td>1</td>
-	                        <td class="td_price">20,000</td>
-	                        <td>2020-02-02</td>
-	                        <td>환불승인대기</td>
-	                        <td class="td_refund">refund01</td>
-	                    </tr>
-	                    <tr>
-	                        <td>pdetail002</td>
-	                        <td>book01</td>
-	                        <td>혼자 하는 자바</td>
-	                        <td>hong12</td>
-	                        <td>계좌이체</td>
-	                        <td>1</td>
-	                        <td class="td_price">20,000</td>
-	                        <td>2020-02-02</td>
-	                        <td>구매확정</td>
-	                        <td class="td_refund"></td>
-	                    </tr>
-	                    <tr>
-	                        <td>pdetail003</td>
-	                        <td>book23</td>
-	                        <td>힘내라, 자바</td>
-	                        <td>hong12</td>
-	                        <td>신용카드</td>
-	                        <td>1</td>
-	                        <td class="td_price">12,000</td>
-	                        <td>2020-02-22</td>
-	                        <td>배송예정</td>
-	                        <td class="td_refund"></td>
-	                    </tr>
+	                	<c:choose>
+	                		<c:when test="${not empty plist}">
+	                			<c:forEach var="list" items="${plist}">
+	                				<tr data-num="${list.p_num}">
+				                        <td>${list.pd_num}</td>
+				                        <td class="td_bnum">${list.b_num}</td>
+				                        <td>${list.b_name}</td>
+				                        <td>${list.c_id}</td>
+				                        <td>${list.p_pmethod}</td>
+				                        <td>1</td>
+				                        <td class="td_price">${list.pd_price}</td>
+				                        <td>${list.p_buydate}</td>
+				                        <td class="td_orderstate">${list.pd_orderstate}</td>
+				                        <c:choose>
+					                        <c:when test="${list.rf_num == 0}">
+					                        	<td class="td_refund"></td>
+					                        </c:when>
+					                        <c:otherwise>
+						                        <td class="td_refund">${list.rf_num}</td>
+					                        </c:otherwise>
+				                        </c:choose>
+				                    </tr>
+	                			</c:forEach>
+	                		</c:when>
+	                		<c:otherwise>
+	                			<tr>
+	                				<td colspan="10">내역이 없습니다.</td>
+	                			</tr>
+	                		</c:otherwise>
+	                	</c:choose>
 	                </tbody>
 	            </table>
 	        
@@ -161,8 +280,8 @@
 	        
 	        <div id="down">
 	            <div class="center">
-	                <label class="totalCount">총 도서개수 : <strong>2권</strong></label>
-	                <label class="totalPrice">총 결제금액 : <strong>60,000원</strong></label>
+	                <label class="totalCount">총 도서개수 : <strong><span id="total_count"></span>권</strong></label>
+	                <label class="totalPrice">총 결제금액 : <strong><span id="total_price"></span>원</strong></label>
 	            </div><!--center-->
 	        </div><!--down-->
 	        

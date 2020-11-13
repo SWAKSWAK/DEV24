@@ -26,7 +26,7 @@ public class PurchaseController {
 		log.info("purchaseList 메서드 호출 성공");
 		List<AdminPurchaseViewVO> list = purchaseService.purchaseList(pvo);
 		model.addAttribute("list", list);
-		return "/admin/purchaseList";
+		return "admin/purchaseList";
 	}
 	
 	

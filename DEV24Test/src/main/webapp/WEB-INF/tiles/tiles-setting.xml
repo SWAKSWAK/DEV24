@@ -35,10 +35,15 @@
 			<put-attribute name="body" value="/WEB-INF/views/purchase/{1}.jsp" />
 		</definition>
 	
-	<definition name="freeboard/*" extends="content">
-		<put-attribute name="title" value="DEV24 구매" />
-		<put-attribute name="body" value="/WEB-INF/views/freeboard/{1}.jsp" />
-	</definition>
+		<definition name="freeboard/*" extends="content">
+			<put-attribute name="title" value="DEV24 구매" />
+			<put-attribute name="body" value="/WEB-INF/views/freeboard/{1}.jsp" />
+		</definition>
+	
+		<definition name="refund/*" extends="content">
+			<put-attribute name="title" value="DEV24 환불" />
+			<put-attribute name="body" value="/WEB-INF/views/refund/{1}.jsp" />
+		</definition>
 	
 	<!-- 일반페이지(사이드메뉴 있는 페이지) -->
 	<definition name="withSide" template="/WEB-INF/views/template/client/contentWithSideMenu.jsp">

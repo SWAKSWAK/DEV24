@@ -154,8 +154,9 @@
 				$(".pConfirmBtn").click(function(){
 					var pd_orderstate = "pConfirm";
 					var b_num = $(this).parents("tr").attr("data-num");
+					var p_num = $(this).parents("td").siblings("td.td_num").text();
 					
-					updateState(b_num, pd_orderstate);
+					updateState(b_num, pd_orderstate, p_num);
 					
 				});
 				
@@ -163,8 +164,22 @@
 				$(".orderCancelBtn").click(function(){
 					var pd_orderstate = "cancel";
 					var b_num = $(this).parents("tr").attr("data-num");
+					var p_num = $(this).parents("td").siblings("td.td_num").text();
+					console.log(p_num);
 					
-					updateState(b_num, pd_orderstate);
+					updateState(b_num, pd_orderstate, p_num);
+				});
+				
+				
+				/* 환불신청 버튼 처리 */
+				$(".refundInsertFormBtn").click(function(){
+					var p_num = $(this).parents("td").siblings("td.td_num").text();
+					var b_num = $(this).parents("tr").attr("data-num");
+					
+					if(confirm("해당 상품의 환불신청을 진행하시겠습니까?")){
+						location.href="/refund/refundForm?p_num="+p_num+"&b_num="+b_num;
+					}
+					
 				});
 				
 			}); // 최상위 종료
@@ -184,11 +199,11 @@
 			
 			
 			/* 주문상태 수정 ajax처리 함수 */
-			function updateState(b_num, pd_orderstate){
+			function updateState(b_num, pd_orderstate, p_num){
 				$.ajax({
 					url:"/mypage/orderstateUpdate",
 					type:"get",
-					data : "b_num="+b_num+"&pd_orderstate="+pd_orderstate,
+					data : "b_num="+b_num+"&pd_orderstate="+pd_orderstate+"&p_num="+p_num,
 					dataType:"text",
 					error:function(){
 						alert("시스템 오류. 관리자에게 문의하세요.");
@@ -293,12 +308,12 @@
 				                           	</c:when>
 				                           	<c:when test="${ohvo.pd_orderstate == 'shipping'}">
 				                           		배송중
-				                                <input type="button" class="btn btn-default refundInsertFormBtn" value="환불신청" />
+				                                <input type="button" class="btn btn-info refundInsertFormBtn" value="환불신청" />
 				                                <input type="button" class="btn btn-default pConfirmBtn" value="구매확정" />
 				                           	</c:when>
 				                           	<c:when test="${ohvo.pd_orderstate == 'pConfirm'}">
 				                           		구매확정
-				                                <input type="button" class="btn btn-default refundInsertFormBtn" value="환불신청" />
+				                                <input type="button" class="btn btn-info refundInsertFormBtn" value="환불신청" />
 				                           	</c:when>
 				                           	<c:when test="${ohvo.pd_orderstate == 'reRequest'}">
 				                           		환불승인대기
@@ -315,7 +330,7 @@
 			                            <td>${ohvo.p_receiver}</td>
 			                            <td class="td_buttons">
 			                            	<c:if test="${ohvo.pd_orderstate == 'pConfirm'}">
-			                            		<input type="button" class="btn btn-info reviewInsertFormBtn" value="리뷰작성" /> <!--구매확정 시에만 가능-->
+			                            		<input type="button" class="btn btn-success reviewInsertFormBtn" value="리뷰작성" /> <!--구매확정 시에만 가능-->
 			                            	</c:if>
 			                            </td>
 			                        </tr>
