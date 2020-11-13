@@ -67,9 +67,11 @@
             });
           
         });
-        
-        
     </script>
+    
+    <style type="text/css">
+    	
+    </style>
     
 </head>
 <body>
@@ -98,7 +100,7 @@
 		<div class="text-right btnArea">
 		    <input type="button" id="boardUpdateFormBtn" value="글수정" class="btn btn-success" />
             <input type="button" id="boardDeleteBtn" value="글삭제" class="btn btn-success" />
-            <input type="button" id="boardReplyBtn" value="글답변" class="btn btn-success" />
+            <!-- <input type="button" id="boardReplyBtn" value="글답변" class="btn btn-success" /> -->
             <input type="button" id="boardListBtn" value="글목록" class="btn btn-primary" />
 		</div>
 	
@@ -123,10 +125,10 @@
 				<td colspan="3">${detail.fb_content}</td>
 			</tr>
 			
-			<tr>
+			<%-- <tr>
 				<th>이 미 지</th>
 				<td colspan="3"><img src="${detail.fb_img_url}"/></td>
-			</tr>
+			</tr> --%>
 		</table>
 		<jsp:include page="freecmt.jsp"/>
     </div> <!-- content_wrap -->

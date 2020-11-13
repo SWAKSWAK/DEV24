@@ -9,14 +9,14 @@
 		inner join 
 		customer 
 		on freecmt.c_num=customer.c_num
-		where fb_num=#{fb_num}
+		where fb_num=#{fb_num} order by fbc_num desc
 	</select>
 	
 	<insert id="freeCmtInsert" parameterType="freecmt">
 		insert into freecmt 
 		(fbc_num, fbc_author, fbc_content, fbc_writeday, fb_num, c_num) 
 		values 
-		(FBC_NUM_SEQ.nextval, #{c_nickname}, #{fbc_content}, sysdate, #{fb_num}, #{c_num})
+		(FBC_NUM_SEQ.nextval, #{fbc_author}, #{fbc_content}, sysdate, #{fb_num}, #{c_num})
 
 	</insert>
 	

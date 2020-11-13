@@ -1,10 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+ <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="UTF-8">
 		<title>freecmt.jsp</title>
+		
+		<link rel="stylesheet" href="/resources/include/css/style_boot.css">
+    	<link rel="stylesheet" href="/resources/include/css/style_board_detail.css">
 		
 		<script type="text/javascript" src="/resources/include/js/jquery-1.12.4.min.js"></script>
 		<script type="text/javascript" src="/resources/include/js/common.js"></script>
@@ -15,16 +18,47 @@
 			$(function(){
 				
 				var fb_num = ${freeDetail.fb_num};
+				var fbc_author = "${c_nickname}";
+			
 				listAll(fb_num);
 				
-				/*댓글 등록 버튼 클릭시 모달창 설정작업*/
 				$("#replyInsertFormBtn").click(function(){
-					setModal("댓글 등록", "insertBtn", "등록");
-					dataReset();
-					$("#replyModal").modal();
+					console.log(fb_num);
+					console.log($("#fbc_content").val());
+					console.log($("#fbc_author").val());
+					console.log($("#c_num").val());
+					
+					var insertUrl="/freecmt/freecmtInsert";
+					var value = JSON.stringify({
+						fb_num: fb_num, 
+						fbc_content: $("#fbc_content").val(),
+						//fbc_author: $("#fbc_author").val(),
+						fbc_author: fbc_author,
+						c_num:$("#c_num").val()
+					});
+					
+					$.ajax({
+						url:insertUrl, 
+						type:"post", 
+						headers:{
+							"Content-Type":"application/json", 
+							"X-HTTP-Method-Override":"POST", 
+						}, 
+						dataType:"text", 
+						data : value,
+						error: function(){
+							alert("시스템 오류입니다. 관리자에게 문의하세요.");
+						},
+						success: function(result){
+							if(result == "SUCCESS"){
+								alert("댓글 등록 성공!");
+								//dataReset();
+								listAll(fb_num);
+							}
+						}
+					}); 
+					
 				});
-				
-				
 			});
 			
 			
@@ -45,16 +79,17 @@
 						fbc_content = fbc_content.replace(/(\r\n|\r|\n)/g, "<br>");
 						addItem(fbc_num, fbc_author, fbc_content, fbc_writeday);
 					});
+					
 				}).fail(function(){
 					alert('댓글을 불러오는데 실패했습니다. 잠시후에 다시 시도해주세요..')
 				});
 			}
 			
 			/*카페에서 받아온 함수의 소스..*/
-			/** 새로운 글을 화면에 추가하기(보여주기) 위한 함수*/
+			/* 새로운 글을 화면에 추가하기(보여주기) 위한 함수*/
 			function addItem(fbc_num, fbc_author, fbc_content, fbc_writeday) {
 				// 새로운 글이 추가될 div태그 객체
-				var wrapper_div = $("<div>");
+				var wrapper_div = $("<div class='wrapper'>");
 				wrapper_div.attr("data-num", fbc_num);
 				wrapper_div.addClass("panel panel-default");
 				
@@ -67,7 +102,7 @@
 				name_span.html(fbc_author + "님");
 			
 				// 작성일시
-				var date_span = $("<span>");
+				var date_span = $("<span class='fbc_writeday'>");
 				date_span.html(" / " + fbc_writeday + " ");
 			
 				// 수정하기 버튼
@@ -83,8 +118,8 @@
 				delBtn.attr({"type" : "button"});
 				delBtn.attr("data-btn","delBtn");
 				delBtn.addClass("btn btn-primary gap");
-				delBtn.html("삭제하기");
-				
+				delBtn.html("삭제하기"); 
+ 		
 				// 내용 
 				var content_div = $("<div>");
 				content_div.html(fbc_content);
@@ -92,53 +127,48 @@
 				
 			
 				// 조립하기
-				new_div.append(name_span).append(date_span).append(upBtn).append(delBtn);
-				wrapper_div.append(new_div).append(content_div);
+				//new_div.append(name_span).append(date_span).append(upBtn).append(delBtn);
+				//new_div.append(name_span).append(date_span);
+				new_div.append(name_span).append(date_span);
+				wrapper_div.append(new_div).append(content_div).append("<br>");
 				$("#reviewList").append(wrapper_div);
 			}
 		</script>
+		
+		<style type="text/css">
+			#replyContainer{
+				align-content: center;
+			}
+			
+			/*#replyBtnArea{
+				width:1200px;
+				display:inline-block;
+				align-content:center;
+				margin:auto;
+			}*/
+			
+			#reviewList{
+				margin:20px;
+			}
+			
+			#replyInsertFormBtn{margin-top:-30px;}
+			
+		</style>
+		
 	</head>
 	<body>
-	
-		<%------ 등록화면 형역 (modal) --%>
 		<div id="replyContainer">
-			
-			<p class="text-right">
-				<button type="button" class="btn btn-success" id="replyInsertFormBtn">댓글등록</button>
-			</p>
-			
-			<div id="reviewList"></div>
-		
-			<div class="modal fade" id="replyModal" tabindex="-1" role="dialog" aria-labelledby="replyModalLabel" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-				        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				        <h4 class="modal-title" id="replyModalLabel">댓글등록</h4>
-				      </div>
-				      <div class="modal-body">
-				        <form id="comment_form" name="comment_form">
-				        	<input type="hidden" name="fb_num" value="${detail.fb_num}"/>
-				          <div class="form-group">
-				            <label for="r_name" class="control-label">작성자</label>
-				            <input type="text" class="form-control" name="fbc_author" id="fbc_author" maxlength="25"/> 
-				          </div>
-				          <div class="form-group">
-				            <label for="r_content" class="control-label">글내용</label>
-				            <textarea class="form-control" name="fbc_content" id="fbc_content"></textarea>
-				          </div>
-				        </form>
-				      </div>
-				      <div class="modal-footer">
-				        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-				        <button type="button" class="btn btn-primary" id="replyInsertBtn">등록</button>
-				      </div>
-						</div>
-					</div>
-				</div>
+			<div class="text-right btnArea">
+				<form id="commentContent">
+					<input type="hidden" name="fb_num" id="fb_num"/>
+					<input type="hidden" name="c_num" id="c_num" value="${c_num}"/>
+					<textarea id="fbc_content" name="fbc_content" cols="130" style="resize:none"></textarea>
+					<input type="button" class="btn btn-success" value="댓글등록" id="replyInsertFormBtn"/>
+				</form>
 			</div>
-		
-		
-	
+
+			 <div id="reviewList"></div>
+			  
+		</div> 
 	</body>
 </html>
