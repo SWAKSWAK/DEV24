@@ -22,7 +22,15 @@
 		<script src="/resources/include/js/jquery-1.12.4.min.js"></script>
     	<script src="/resources/include/js/jquery-3.5.1.min.js"></script>
 		<script src="https://kit.fontawesome.com/a333e3670c.js" crossorigin="anonymous"></script>
-		
+		<script>
+			$(function(){
+				var successMsg = "${successMsg}";
+				if(successMsg!=""){
+					alert(successMsg);
+					successMsg = "";
+				}
+			}); // 최상위 종료
+		</script>		
 
 	</head>
 	<body>

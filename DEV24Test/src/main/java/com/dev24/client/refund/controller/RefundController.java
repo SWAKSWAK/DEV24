@@ -8,7 +8,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.dev24.client.mypage.orderhistory.service.OrderhistoryService;
 import com.dev24.client.mypage.orderhistory.vo.OrderhistoryVO;
 import com.dev24.client.purchase.vo.PurchaseVO;
 import com.dev24.client.refund.service.RefundService;
@@ -24,6 +26,7 @@ import lombok.extern.log4j.Log4j;
 public class RefundController {
 	
 	private RefundService refundService;
+	private OrderhistoryService orderhistoryService;
 	
 	/** go to refundForm page **/
 	@RequestMapping(value="/refundForm", method= {RequestMethod.GET})
@@ -48,10 +51,11 @@ public class RefundController {
 	
 	/** refund insert **/
 	@RequestMapping(value="/refundInsert", method= {RequestMethod.POST})
-	public String refundInsert(@ModelAttribute("data") RefundVO rfvo, HttpSession session) {
+	public String refundInsert(@ModelAttribute("data") RefundVO rfvo, OrderhistoryVO ohvo, HttpSession session, RedirectAttributes ras) {
 		log.info("refundInsert 호출 성공");
 		
 		int result = 0;
+		int update = 0;
 		String path = "";
 		
 		int c_num = Integer.parseInt((String)session.getAttribute("c_num"));
@@ -62,10 +66,19 @@ public class RefundController {
 		result = refundService.refundInsert(rfvo);
 		
 		if(result == 0) {
-			path = "refund/refundForm";
+			path = "/refund/refundForm";
 		}else {
-			path = "mypage/refundHistory";
+			ohvo.setC_num(c_num);
+			update = orderhistoryService.orderstateUpdate(ohvo);
+			
+			if(update == 0) {
+				ras.addFlashAttribute("failMsg", "환불신청 실패. 잠시 후 다시 시도해주세요.");
+				path = "/refund/refundForm";
+			}else {
+				ras.addFlashAttribute("successMsg", "환불신청이 완료되었습니다.");
+				path = "/mypage/refundHistory";
+			}
 		}
-		return path;
+		return "redirect:"+path;
 	}
 }

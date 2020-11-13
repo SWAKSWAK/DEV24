@@ -29,6 +29,11 @@
 		<script src="https://kit.fontawesome.com/a333e3670c.js" crossorigin="anonymous"></script>
 		<script>
 			$(function(){
+				var failMsg = "${failMsg}";
+				if(failMsg!=""){
+					alert(failMsg);
+					failMsg = "";
+				}
 				
 				/* 취소 버튼 처리 */
 				$("#refundCancelBtn").click(function(){
@@ -82,6 +87,7 @@
 	         	<input type="hidden" name="p_num" id="p_num" />
 	         	<input type="hidden" name="b_num" id="b_num" />
 	         	<input type="hidden" name="rf_reason" id="rf_reason" />
+	         	<input type="hidden" name="pd_orderstate" id="pd_orderstate" value="reRequest" />
  			</form>
  			
 	          <!--구매내역 정보 가져오기-->

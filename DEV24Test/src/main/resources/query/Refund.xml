@@ -21,7 +21,7 @@
 		where p_num = #{p_num} and book.b_num = #{b_num}
 	</select>
 	
-	<!-- 환불완료 -->
+	<!-- 환불신청완료 -->
 	<insert id="refundInsert" parameterType="refund">
 		insert into refund(rf_num, rf_reason, rf_price, rf_confirmdate, p_num, c_num, b_num)
 		values (rf_num_seq.nextval, #{rf_reason}, #{rf_price}, sysdate, #{p_num}, #{c_num}, #{b_num})
