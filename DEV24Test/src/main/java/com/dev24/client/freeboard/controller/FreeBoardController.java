@@ -27,7 +27,7 @@ public class FreeBoardController {
 	
 	@RequestMapping(value="/freeboardList", method=RequestMethod.GET)
 	public String freeboardList(@ModelAttribute("data") FreeBoardVO fbvo, Model model) {
-		log.info("freeboardList ?˜¸ì¶? ?„±ê³?");
+		log.info("freeboardList ï¿½ìƒ‡ç•°ï¿½ ï¿½ê½¦æ€¨ï¿½");
 		
 		model.addAttribute("c_id", "javakhang");
 		model.addAttribute("c_num", 2);
@@ -60,7 +60,7 @@ public class FreeBoardController {
 	
 	@RequestMapping(value="/freeboardInsert")
 	public String freeboardInsert(FreeBoardVO fbvo, Model model) {
-		log.info("freeboardInsert ?˜¸ì¶? ?„±ê³?");
+		log.info("freeboardInsert ï¿½ìƒ‡ç•°ï¿½ ï¿½ê½¦æ€¨ï¿½");
 		
 		int result = 0;
 		String url="";
@@ -75,7 +75,7 @@ public class FreeBoardController {
 	
 	@RequestMapping(value="/freeboardDelete")
 	public String freeboardDelete(@ModelAttribute("data") FreeBoardVO fbvo, RedirectAttributes ras) {
-		log.info("freeboardDelete ?˜¸ì¶? ?„±ê³?!");
+		log.info("freeboardDelete ï¿½ìƒ‡ç•°ï¿½ ï¿½ê½¦æ€¨ï¿½!");
 		int result = 0; 
 		String url="";
 		
@@ -90,11 +90,7 @@ public class FreeBoardController {
 	
 	@RequestMapping(value="/freeboardUpdateForm")
 	public String freeboardUpdateForm(@ModelAttribute("data") FreeBoardVO fbvo, Model model) {
-<<<<<<< HEAD
-		log.info("freeboardUpdateForm ?˜¸ì¶?");
-=======
-		log.info("freeboardUpdateForm í˜¸ì¶œ");
->>>>>>> origin/master
+		log.info("freeboardUpdateForm ï¿½ìƒ‡ç•°ï¿½");
 		log.info("fb_num="+fbvo.getFb_num());
 		
 		FreeBoardVO updateData = freeboardService.freeboardDetail(fbvo);
@@ -107,11 +103,7 @@ public class FreeBoardController {
 	
 	@RequestMapping(value="/freeboardUpdate", method=RequestMethod.POST)
 	public String freeboardUpdate(@ModelAttribute FreeBoardVO fbvo, RedirectAttributes ras) {
-<<<<<<< HEAD
-		log.info("freeboardUpdate ?˜¸ì¶?!");
-=======
-		log.info("freeboardUpdate í˜¸ì¶œ!");
->>>>>>> origin/master
+		log.info("freeboardUpdate ï¿½ìƒ‡ç•°ï¿½!");
 		
 		int result = 0; 
 		String url="";

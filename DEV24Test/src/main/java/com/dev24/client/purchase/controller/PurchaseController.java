@@ -60,11 +60,11 @@ public class PurchaseController {
 	}
 	
 	/*******************
-	 * 雅뚯눖揆 占쎈읂占쎌뵠筌욑옙 �빊�뮆�젾
+	 * �썒�슣�닑�룇 �뜝�럥�쓡�뜝�럩逾좂춯�쉻�삕 占쎈퉲占쎈츊占쎌졑
 	 * *****/
 	@RequestMapping(value="/SingleItemPurchaseForm", method= {RequestMethod.GET, RequestMethod.POST})
 	public String SingleItemPurchaseForm(Model model, HttpSession session) {
-		log.info("purchaseForm 占쎌깈�빊占� 占쎄쉐�⑨옙");
+		log.info("purchaseForm �뜝�럩源덌옙鍮듿뜝占� �뜝�럡�뎽占썩뫅�삕");
 		
 		@SuppressWarnings("unchecked")
 		List<CartVO> cvoList = (List<CartVO>) session.getAttribute("cvoList");
@@ -109,7 +109,7 @@ public class PurchaseController {
 <<<<<<< HEAD
 	 * single item to purchase from cart
 =======
-	 * �떒�씪�빆紐� 援щℓ瑜� �쐞�븳 session 異붽� �옉�뾽
+	 * 占쎈뼊占쎌뵬占쎈퉮筌륅옙 �뤃�됤꼻�몴占� 占쎌맄占쎈립 session �빊遺쏙옙 占쎌삂占쎈씜
 >>>>>>> origin/master
 	 * **********/
 	@ResponseBody
@@ -133,7 +133,7 @@ public class PurchaseController {
 	@ResponseBody
 	@GetMapping(value="/{c_num}", produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
 	public ResponseEntity<CustomerVO> getSenderInfo(@PathVariable("c_num") Integer c_num){
-		log.info("getSenderInfo 占쎌깈�빊占� 占쎄쉐�⑨옙");
+		log.info("getSenderInfo �뜝�럩源덌옙鍮듿뜝占� �뜝�럡�뎽占썩뫅�삕");
 		ResponseEntity<CustomerVO> entity = null;
 		entity = new ResponseEntity<CustomerVO>(purchaseService.getSenderInfo(c_num), HttpStatus.OK);
 		return entity;
@@ -145,7 +145,7 @@ public class PurchaseController {
 	@RequestMapping(value="/purchaseInsert", method= {RequestMethod.POST, RequestMethod.GET}, produces = "text/plain; charset=utf8")
 	@ResponseBody
 	public String purchaseInsert(@ModelAttribute("pvo") PurchaseVO pvo, @RequestBody List<Map<String, Object>> pdvoList, HttpSession session, Model model) {
-		log.info("purchaseInsert 占쎌깈�빊占� 占쎄쉐�⑨옙");
+		log.info("purchaseInsert �뜝�럩源덌옙鍮듿뜝占� �뜝�럡�뎽占썩뫅�삕");
 		
 		int p_num = 0;
 		int result = 0;
@@ -257,16 +257,12 @@ public class PurchaseController {
 	 * **********/
 	@PostMapping(value="/purchasefinish")
 	public String purchasefinish(@ModelAttribute("data") PurchaseVO pvo, Model model) {
-		log.info("purchasefinish 占쎌깈�빊占� 占쎄쉐�⑨옙");
+		log.info("purchasefinish �뜝�럩源덌옙鍮듿뜝占� �뜝�럡�뎽占썩뫅�삕");
 		
 		model.addAttribute("pvo", pvo);
 		return "purchase/purchasefinish";
 	}
 	
-<<<<<<< HEAD
-=======
-	
->>>>>>> origin/master
 	/**********************************
 	 * after insert pdetail, automatically delete purchased items from cart
 	 * ********/
