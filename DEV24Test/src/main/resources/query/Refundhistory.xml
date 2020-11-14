@@ -4,12 +4,10 @@
 
 	<!-- 마이페이지 - 환불내역조회 -->
 	<select id="refundhistoryList" parameterType="refundhistory" resultType="refundhistory">
-		select pd_orderstate, to_char(p_buydate, 'YYYY-MM-DD') p_buydate, c_num,
-		 refund_history_view1.p_num, rf_num, b_num, b_name, to_char(rf_confirmdate, 'YYYY-MM-DD') rf_confirmdate,
-		  rf_price
-		from refund_history_view1
-		full outer join refund_history_view2
-		on refund_history_view1.p_num = refund_history_view2.p_num
+		select rf_orderstate, to_char(p_buydate, 'YYYY-MM-DD') p_buydate, c_num,
+		 p_num, rf_num, b_num, b_name, to_char(rf_confirmdate, 'YYYY-MM-DD') rf_confirmdate,
+		  rf_price, rf_qty
+		from refund_history_view
 		
 		<where>
 			
@@ -20,26 +18,26 @@
 					<![CDATA[AND (rf_num LIKE '%'||#{keyword}||'%')]]>
 					
 					<if test="orderby_state=='reRequest'">
-						AND pd_orderstate = #{pd_orderstate}
+						AND rf_orderstate = #{rf_orderstate}
 					</if>
 					<if test="orderby_state=='rfConfirm'">
-						AND pd_orderstate = #{pd_orderstate}
+						AND rf_orderstate = #{rf_orderstate}
 					</if>
 					<if test="orderby_state=='cancel'">
-						AND pd_orderstate = #{pd_orderstate}
+						AND rf_orderstate = #{rf_orderstate}
 					</if>
 				</if>
 				<if test="search=='b_name'">
 					<![CDATA[AND (b_name LIKE '%'||#{keyword}||'%')]]>
 					
 					<if test="orderby_state=='reRequest'">
-						AND pd_orderstate = #{pd_orderstate}
+						AND rf_orderstate = #{rf_orderstate}
 					</if>
 					<if test="orderby_state=='rfConfirm'">
-						AND pd_orderstate = #{pd_orderstate}
+						AND rf_orderstate = #{rf_orderstate}
 					</if>
 					<if test="orderby_state=='cancel'">
-						AND pd_orderstate = #{pd_orderstate}
+						AND rf_orderstate = #{rf_orderstate}
 					</if>
 				</if>
 			</if>
@@ -47,10 +45,10 @@
 		</where>
 		
 		<if test="orderby_when=='past'">
-			order by p_buydate
+			order by rf_confirmdate
 		</if>
 		<if test="orderby_when=='last'">
-			order by p_buydate desc
+			order by rf_confirmdate desc
 		</if>
 
 	</select>

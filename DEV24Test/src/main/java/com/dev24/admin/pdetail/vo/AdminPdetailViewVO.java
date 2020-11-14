@@ -23,4 +23,5 @@ public class AdminPdetailViewVO extends CommonVO {
 	private String p_buydate = "";
 	private String pd_orderstate = "";
 	private int rf_num = 0;
+	private int pd_qty = 0;
 }

@@ -20,6 +20,20 @@ public class RefundServiceImpl implements RefundService {
 		list = refundDaoAdmin.refundList(rfvo);
 		return list;
 	}
+
+	// orderstate update => refund confirm
+	@Override
+	public int pdetailStateUpdate(AdminRefundViewVO rfvo) {
+		int result = 0;
+		result = refundDaoAdmin.pdetailStateUpdate(rfvo);
+		return result;
+	}
+	@Override
+	public int refundStateUpdate(AdminRefundViewVO rfvo) {
+		int result = 0;
+		result = refundDaoAdmin.refundStateUpdate(rfvo);
+		return result;
+	}
 	
 	
 }

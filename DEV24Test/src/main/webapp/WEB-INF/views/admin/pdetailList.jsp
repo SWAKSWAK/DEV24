@@ -39,17 +39,27 @@
     
 	        $(function(){
 	        	// 환불 건의 결제 금액 식별(글자색 빨간색)
-	            var rows = $(".listTable > tbody > tr").length;
-	            //console.log(rows);
+	            
+	            /* 금액 콤마 찍기 */
+				var l = $(".listTable").find("tbody tr").length;
+				var sum = 0;
 
-	            for(var i=0; i<rows; i++){
+	            for(var i=0; i<l; i++){
+	            	var price = $(".listTable").find("tbody tr").eq(i).find("td.td_price").text();
+	                $(".listTable").find("tbody tr").eq(i).find("td.td_price").text(addComma(price));
+	            	
 	               /* 환불금액 표시 */
 	            	var tr = $(".listTable > tbody > tr").eq(i);
 	                var td = tr.find(".td_refund").text();
 	                if(td!=""){ // 환불번호가 입력되어있으면!
 	                    var text = tr.find(".td_price").text();
 	                    tr.find(".td_price").css("color","red").text("-"+text);
-	                }
+	           		}else{
+	           			sum += parseInt(unComma(price));
+	           			$("#total_count").text(addComma(l)); // 전체 구매 횟수
+	    				$("#total_price").text(addComma(sum)); // 전체 금액
+	           		}
+	              
 	                
 	                
 	                /* 배송예정인 건 '배송중'처리 */
@@ -80,41 +90,31 @@
 		            	});
 		            	
 		            	
+		            	$(".td_orderstate").click(function(){
+		            		var pd_orderstate = "shipping";
+							var b_num = $(this).siblings("td.td_bnum").text();
+							var p_num = $(this).parents("tr").attr("data-num");
+							var pd_num = $(this).siblings("td.td_pdnum").text();
+							
+							$.ajax({
+								url:"/admin/orderstateUpdate",
+								type:"get",
+								data : "b_num="+b_num+"&pd_orderstate="+pd_orderstate+"&p_num="+p_num+"&pd_num="+pd_num,
+								dataType:"text",
+								error:function(){
+									alert("시스템 오류. 관리자에게 문의하세요.");
+								},
+								success:function(result){
+									console.log("result => "+result);
+									location.href="/admin/pdetailList?p_num="+p_num;
+								}
+							});
+		            	});
+		            	
 		            	
 		            }
 	            }
-	            
-	            $(".td_orderstate").click(function(){
-            		var pd_orderstate = "shipping";
-					var b_num = $(this).siblings("td.td_bnum").text();
-					var p_num = $(this).parents("tr").attr("data-num");
-					
-					$.ajax({
-						url:"/admin/orderstateUpdate",
-						type:"get",
-						data : "b_num="+b_num+"&pd_orderstate="+pd_orderstate+"&p_num="+p_num,
-						dataType:"text",
-						error:function(){
-							alert("시스템 오류. 관리자에게 문의하세요.");
-						},
-						success:function(result){
-							console.log("result => "+result);
-							location.href="/admin/pdetailList?p_num="+p_num;
-						}
-					});
-            	});
-	            
-	            
-	            /* 금액 콤마 찍기 */
-				var l = $(".listTable").find("tbody tr").length;
-				var sum = 0;
-				for(var i=0; i<l; i++){
-					var price = $(".listTable").find("tbody tr").eq(i).find("td.td_price").text();
-					sum += parseInt(price);
-					$(".listTable").find("tbody tr").eq(i).find("td.td_price").text(addComma(price));
-				}
-    			$("#total_count").text(addComma(l)); // 전체 구매 횟수
-				$("#total_price").text(addComma(sum)); // 전체 금액
+	           
 				
 	            
 	            /* 메인으로 이동 버튼 */
@@ -246,12 +246,12 @@
 	                		<c:when test="${not empty plist}">
 	                			<c:forEach var="list" items="${plist}">
 	                				<tr data-num="${list.p_num}">
-				                        <td>${list.pd_num}</td>
+				                        <td class="td_pdnum">${list.pd_num}</td>
 				                        <td class="td_bnum">${list.b_num}</td>
 				                        <td>${list.b_name}</td>
 				                        <td>${list.c_id}</td>
 				                        <td>${list.p_pmethod}</td>
-				                        <td>1</td>
+				                        <td>${list.pd_qty}</td>
 				                        <td class="td_price">${list.pd_price}</td>
 				                        <td>${list.p_buydate}</td>
 				                        <td class="td_orderstate">${list.pd_orderstate}</td>

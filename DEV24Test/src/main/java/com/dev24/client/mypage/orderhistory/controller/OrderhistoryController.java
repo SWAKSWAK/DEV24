@@ -1,9 +1,12 @@
 package com.dev24.client.mypage.orderhistory.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -11,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.dev24.client.cart.vo.CartVO;
 import com.dev24.client.mypage.orderhistory.service.OrderhistoryService;
 import com.dev24.client.mypage.orderhistory.vo.OrderhistoryVO;
+import com.dev24.client.pdetail.vo.PdetailVO;
 import com.dev24.client.refund.service.RefundService;
 import com.dev24.client.refund.vo.RefundVO;
 
@@ -28,7 +33,7 @@ public class OrderhistoryController {
 	private OrderhistoryService orderhistoryService;
 	private RefundService refundService;
 	
-	/** mypage order history list
+	/** mypage order history list print
 	 * @param String */
 	@RequestMapping(value="/orderHistory", method= {RequestMethod.GET})
 	public String orderHistory(@ModelAttribute("data") OrderhistoryVO ohvo, Model model, HttpSession session) {
@@ -47,8 +52,8 @@ public class OrderhistoryController {
 	 * @ResponseBody */
 	@ResponseBody
 	@RequestMapping(value="/orderstateUpdate", method= {RequestMethod.GET})
-	public String orderstateUpdate(@ModelAttribute("data") OrderhistoryVO ohvo, RefundVO rfvo, HttpSession session) {
-		log.info("orderHistory 호출 성공");
+	public String orderstateUpdate(@ModelAttribute("data1") OrderhistoryVO ohvo, @ModelAttribute("data2") RefundVO rfvo, HttpSession session) {
+		log.info("orderstateUpdate get 호출 성공");
 		
 		String resultData = "";
 		int result = 0;
@@ -57,27 +62,39 @@ public class OrderhistoryController {
 		rfvo.setC_num(c_num);
 		rfvo.setRf_reason("배송 전 주문취소");
 		
-		result = orderhistoryService.orderstateUpdate(ohvo);
-
-		String pd_orderstate = ohvo.getPd_orderstate();
-		log.info("pd_orderstate : "+pd_orderstate);
-		if(pd_orderstate.equals("cancel")) {
-			//배송예정에서 바로 주문취소 되어도 refund테이블 추가
-			refundInsert = refundService.refundInsert(rfvo); 
+		if(ohvo.getPd_orderstate().equals("pConfirm")) {
+			result = orderhistoryService.orderstateUpdate(ohvo);
+			log.info("구매확정 result : "+result);
 			
-			if(refundInsert == 0) {
-				resultData = "FAIL";
-			}else {
-				resultData = "SUCCESS";
-			}
-		}else {
 			if(result == 0) {
 				resultData = "FAIL";
 			}else {
 				resultData = "SUCCESS";
 			}
+		}else {
+			rfvo.setRf_orderstate(ohvo.getPd_orderstate());
+			
+			result = orderhistoryService.orderstateUpdate(ohvo);
+			log.info("주문취소 result : "+result);
+			
+			if(result != 0) {
+				//배송예정에서 바로 주문취소 되어도 refund테이블 추가
+				refundInsert = refundService.refundInsert(rfvo); 
+				log.info("refundresult : "+refundInsert);
+
+				if(refundInsert == 0) {
+					resultData = "FAIL";
+				}else {
+					resultData = "SUCCESS";
+				}
+			}else {
+				resultData = "FAIL";
+			}
 		}
 		
 		return resultData;
+	
 	}
+	
+
 }

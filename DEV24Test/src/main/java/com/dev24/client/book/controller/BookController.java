@@ -79,5 +79,5 @@ public class BookController {
 		model.addAttribute("vo", vo);
 		return "book/bookDetail";
 	}
-
+//git test
 }

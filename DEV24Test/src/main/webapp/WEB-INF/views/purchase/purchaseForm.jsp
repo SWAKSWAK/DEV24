@@ -32,25 +32,25 @@
     		
     		$(function(){
     			/* 각 상품 금액 콤마 찍기 */
-    			var l = $(".table tbody tr").length;
+    			var l = $(".t_orderItems tbody tr").length;
     			var price = 0;
     			var sumPrice = 0;
     			var bookp = 0;
     			var ebookp = 0;
     			var total = 0;
     			for(var i=0; i<l; i++){
-    				price = $(".table tbody tr").eq(i).find(".td_price span").text();
-    				$(".table tbody tr").eq(i).find(".td_price span").text(addComma(price));
+    				price = $(".t_orderItems tbody tr").eq(i).find(".td_price span").text();
+    				$(".t_orderItems tbody tr").eq(i).find(".td_price span").text(addComma(price));
     				
-    				sumPrice = $(".table tbody tr").eq(i).find(".td_sumPrice span").text();
-    				$(".table tbody tr").eq(i).find(".td_sumPrice span").text(addComma(sumPrice));
+    				sumPrice = $(".t_orderItems tbody tr").eq(i).find(".td_sumPrice span").text();
+    				$(".t_orderItems tbody tr").eq(i).find(".td_sumPrice span").text(addComma(sumPrice));
     			}
     			
     			/* 상품 합계 구하기 */
     			for(var i=0; i<l; i++){
-	    			var cate = $(".table tbody tr").eq(i).attr("data-cate");
+	    			var cate = $(".t_orderItems tbody tr").eq(i).attr("data-cate");
 	    			//console.log("cate : "+cate);
-	    			sumPrice = $(".table tbody tr").eq(i).find(".td_sumPrice span").text();
+	    			sumPrice = $(".t_orderItems tbody tr").eq(i).find(".td_sumPrice span").text();
 	    			
     				if(cate == 1){
     					bookp += parseInt(unComma(sumPrice));
@@ -123,7 +123,7 @@
            			p = unComma(p);
            			$("#p_price").val(parseInt(p));
        				
-           			// purcahse
+           			// purchase
 					var p_receiver = {"p_receiver" : $("#p_receiver").val()};
 					var p_price = {"p_price" : $("#p_price").val()};
 					var p_zipcode = {"p_zipcode" : $("#p_zipcode").val()};
@@ -148,25 +148,23 @@
 					
         			for(var i=0; i<l; i++){ // pdetail
         				pdvo = new Object();
-        				
+        			
         				var crt_num = $(".t_orderItems tbody tr").eq(i).attr("data-num");
         				var b_num = $(".t_orderItems tbody tr").eq(i).attr("data-bnum");
-        				var pd_price = $(".t_orderItems tbody tr").eq(i).find(".td_price span").text();
+        				var pd_price = $(".t_orderItems tbody tr").eq(i).find(".td_sumPrice span").text();
         				pd_price = unComma(pd_price);
-        				var crt_qty = $(".t_orderItems tbody tr").eq(i).find(".td_qty").text();
-        				//console.log("crt_qty : "+typeof(crt_qty));
-        				//console.log("b_num : "+b_num);
-        				//console.log("pd_price : " + pd_price);
-        				crt_qty = parseInt(crt_qty);
+        				var pd_qty = $(".t_orderItems tbody tr").eq(i).find(".td_qty").text();
+        				console.log("pd_qty : "+typeof(crt_qty));
+        				console.log("b_num : "+b_num);
+        				console.log("pd_price : " + pd_price);
+        				pd_qty = parseInt(pd_qty);
         				
-        				for(var j=crt_qty; j>0; j--){
-	        				
-	        				pdvo.b_num = b_num;
-	        				pdvo.pd_price = pd_price;
-	        				
-	        				console.log(pdvo);
-	        				pdvoList.push(pdvo);
-        				}
+        				pdvo.b_num = b_num;
+        				pdvo.p_num = b_num;
+        				pdvo.pd_price = pd_price;
+        				pdvo.pd_qty = pd_qty;
+        				
+        				pdvoList.push(pdvo);
         				
         				var c = {"crt_num":crt_num};
         				crtnumList.push(c);
@@ -174,8 +172,6 @@
         			}
     	            
     	            var data = JSON.stringify(pdvoList);
-    	            
-    	            
     	            console.log(data); 
     	            
     	            order(data);
@@ -183,7 +179,7 @@
            		
            		
            		//결제 페이지에서 나올 경우 cart데이터 삭제
-           	 	$(window).on('beforeunload', function() {
+           	 	/*$(window).on('beforeunload', function() {
        	    		var crtnumList = new Array();
            			var l = $(".t_orderItems tbody tr").length;
             	   for(var i=0; i<l; i++){ // crt_num
@@ -207,7 +203,7 @@
     	                  alert("페이지를 나가는 중 오류 발생. \n관리자에게 문의해 주세요.");
     	               }
     	            });
-           	    });
+           	    });*/
            		
            	    /* $(window).on("beforeunload", function({
 					if(confirm("구매 페이지에서 나가시겠습니까?")){
@@ -273,7 +269,7 @@
 	    	        				var crt_num = $(".t_orderItems tbody tr").eq(i).attr("data-num");
 	    	        				var c = {"crt_num":crt_num};
 	    	        				crtnumList.push(c);
-	    	        			} 
+	    	        			}
 	    	            	   var cartNum = JSON.stringify(crtnumList);
 	    	            	   console.log(cartNum);
 	    	            	   $.ajax({

@@ -39,11 +39,11 @@ public class PurchaseController {
 	private PurchaseService purchaseService;
 	
 	/*******************
-	 * 二쇰Ц �럹�씠吏� 異쒕젰
+	 * purchaseForm print logic (just print)
 	 * *****/
 	@RequestMapping(value="/purchaseForm", method= {RequestMethod.GET, RequestMethod.POST})
 	public String purchaseForm(Model model, HttpSession session) {
-		log.info("purchaseForm �샇異� �꽦怨�");
+		log.info("purchaseForm success call!");
 		
 		@SuppressWarnings("unchecked")
 		List<CartVO> cvoList = (List<CartVO>) session.getAttribute("cvoList");
@@ -61,12 +61,12 @@ public class PurchaseController {
 	
 	
 	/****************************
-	 * after payment, pdetail automatically insert according to purchase
+	 * items to purchase from cart (cartList.jsp -> purchaseList.jsp)
 	 * **********/
 	@ResponseBody
 	@PostMapping(value="/purchaseItems", produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
 	public String purchaseItems(@RequestBody List<Map<String, Object>> cartList, HttpSession session, Model model){
-		log.info("purchaseItems �샇異� �꽦怨�");
+		log.info("purchaseItem succsess call!");
 		log.info(session.getAttribute("c_id").toString());
 
 		CartVO cvo = null;
@@ -86,12 +86,12 @@ public class PurchaseController {
 	}
 	
 	/****************************
-	 * 단일항목 구매를 위한 session 추가 작업
+	 * �떒�씪�빆紐� 援щℓ瑜� �쐞�븳 session 異붽� �옉�뾽
 	 * **********/
 	@ResponseBody
 	@PostMapping(value="/purchaseSingleItem", produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
 	public String purchaseSingleItem(@RequestBody CartVO cvo, HttpSession session, Model model){
-		log.info("purchaseSingleItem �샇異� �꽦怨�");
+		log.info("purchaseSingleItem success call!");
 		log.info(session.getAttribute("c_id").toString());
 
 		List<CartVO> cvoList = new ArrayList<CartVO>();
@@ -104,24 +104,24 @@ public class PurchaseController {
 	
 	
 	/****************************
-	 * 二쇰Ц�옄 �젙蹂� 異쒕젰
+	 * at purchaseForm, sender info is automatically printed as the customer
 	 * **********/
 	@ResponseBody
 	@GetMapping(value="/{c_num}", produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
 	public ResponseEntity<CustomerVO> getSenderInfo(@PathVariable("c_num") Integer c_num){
-		log.info("getSenderInfo �샇異� �꽦怨�");
+		log.info("getSenderInfo 占쎌깈�빊占� 占쎄쉐�⑨옙");
 		ResponseEntity<CustomerVO> entity = null;
 		entity = new ResponseEntity<CustomerVO>(purchaseService.getSenderInfo(c_num), HttpStatus.OK);
 		return entity;
 	}
 	
 	/****************************
-	 * 二쇰Ц �긽�뭹 援щℓ �궫�엯
+	 * after click purchase btn, insert purchase table
 	 * **********/
 	@RequestMapping(value="/purchaseInsert", method= {RequestMethod.POST, RequestMethod.GET}, produces = "text/plain; charset=utf8")
 	@ResponseBody
 	public String purchaseInsert(@ModelAttribute("pvo") PurchaseVO pvo, @RequestBody List<Map<String, Object>> pdvoList, HttpSession session, Model model) {
-		log.info("purchaseInsert �샇異� �꽦怨�");
+		log.info("purchaseInsert 占쎌깈�빊占� 占쎄쉐�⑨옙");
 		
 		int p_num = 0;
 		int result = 0;
@@ -177,12 +177,12 @@ public class PurchaseController {
 	
 	
 	/****************************
-	 * 二쇰Ц �긽�뭹 援щℓ�긽�꽭 �궫�엯
+	 * after insert purchase, automatically insert pdetail table
 	 * **********/
 	@ResponseBody
 	@RequestMapping(value="/pdetailInsert", method= {RequestMethod.POST, RequestMethod.GET}, produces = "text/plain; charset=utf8")
 	public String pdetailInsert(@RequestBody List<Map<String, Object>> pdvoList, HttpSession session, Model model) {
-		log.info("pdetailInsert �샇異� �꽦怨�");
+		log.info("pdetailInsert success call!");
 		
 		int result = 0;
 		PdetailVO pdvo = null;
@@ -197,14 +197,17 @@ public class PurchaseController {
 		for (int i=8; i<pdvoList.size(); i++) {
 			log.info(pdvoList.get(i).get("b_num")+"");
 			log.info(pdvoList.get(i).get("pd_price")+"");
+			log.info("pd_qty > "+ pdvoList.get(i).get("pd_qty")+"");
 			
 			 pdvo = new PdetailVO();
 			
 			int b_num = Integer.parseInt(pdvoList.get(i).get("b_num")+"");
 			int pd_price = Integer.parseInt(pdvoList.get(i).get("pd_price")+"");
+			int pd_qty = Integer.parseInt(pdvoList.get(i).get("pd_qty")+"");
 			
 			pdvo.setB_num(b_num);
 			pdvo.setPd_price(pd_price);
+			pdvo.setPd_qty(pd_qty);
 			pdvo.setP_num(p_num);
 			pdvo.setC_num(c_num);
 			
@@ -226,31 +229,34 @@ public class PurchaseController {
 	
 	
 	/************************
-	 * 援щℓ�셿猷� �럹�씠吏� 異쒕젰
+	 * complete purchase => go to purchasefinish.jsp
 	 * **********/
 	@PostMapping(value="/purchasefinish")
 	public String purchasefinish(@ModelAttribute("data") PurchaseVO pvo, Model model) {
-		log.info("purchasefinish �샇異� �꽦怨�");
+		log.info("purchasefinish 占쎌깈�빊占� 占쎄쉐�⑨옙");
 		
 		model.addAttribute("pvo", pvo);
 		return "purchase/purchasefinish";
 	}
 	
+	
+	/**********************************
+	 * after insert pdetail, automatically delete purchased items from cart
+	 * ********/
 	@ResponseBody
 	@PostMapping(value="/purchasedItemDelete")
 	public String purchasedItemDelete(@RequestBody List<Map<String, Integer>> cvoList, HttpSession session, Model model) {
-		log.info("purchasedItemDelete �샇異� �꽦怨�");
+		log.info("purchasedItemDelete success cal!!");
 		
 		List<CartVO> cartList = new ArrayList<CartVO>();
 		CartVO cvo = new CartVO();
 		
-		
 		for (int i=0; i<cvoList.size(); i++) {
 			String s_num = cvoList.get(i).get("crt_num")+"";
-			log.info(i+"踰덉㎏ : "+s_num);
+			log.info(i+"string num array : "+s_num);
 			
 				if(s_num != null) {
-					log.info(i + ": " + s_num);
+					log.info(i + " => change to int num " + s_num);
 					cvo = new CartVO();
 					int crt_num = Integer.parseInt(s_num);
 					cvo.setCrt_num(crt_num);

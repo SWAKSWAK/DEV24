@@ -19,10 +19,11 @@ public class OrderhistoryVO extends CommonVO {
 	private String b_name = "";
 	private String pd_orderstate = "";
 	private int c_num = 0;
-	private int qty = 0;
+	private int pd_qty = 0;
 	private String p_sender = "";
 	private String p_receiver = "";
-	private int price = 0;
+	private int pd_price = 0;
+	private int pd_num = 0;
 	
 	// refundForm print elements
 	private int singlePrice = 0;
