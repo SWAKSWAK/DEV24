@@ -28,9 +28,11 @@
 					console.log($("#fbc_author").val());
 					console.log($("#c_num").val());
 					
+					if(!chkSubmit("#fbc_content", "댓글 내용을")) return;
 					var insertUrl="/freecmt/freecmtInsert";
 					var value = JSON.stringify({
-						fb_num: fb_num, 
+						fb_num: fb_num,
+						//fb_num:${freeDetail.fb_num},
 						fbc_content: $("#fbc_content").val(),
 						//fbc_author: $("#fbc_author").val(),
 						fbc_author: fbc_author,
@@ -149,11 +151,16 @@
 			
 			#reviewList{
 				margin:30px;
+				margin-top: 20px;
 			}
 			
 			#replyContainer{margin-bottom:20px;}
 			
 			#replyInsertFormBtn{margin-top:-30px;}
+			
+			.text-right btnArea{
+				margin-bottom: 10px;				
+			}
 			
 		</style>
 		

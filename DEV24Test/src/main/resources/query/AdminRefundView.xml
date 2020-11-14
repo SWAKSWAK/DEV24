@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dev24.admin.refund.dao.RefundDaoAdmin">
+	
+	<!-- 관리자 페이지 => 환불관리 리스트 출력 -->
+	<select id="refundList" parameterType="adminRefund" resultType="adminRefund">
+		select rf_num, p_num, b_num, b_name, c_num, c_id, rf_price, rf_reason,
+		 to_char(rf_confirmdate, 'YYYY-DD-MM') rf_confirmdate, pd_orderstate
+		from refund_view
+		order by rf_num desc
+	</select>
+</mapper>

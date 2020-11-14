@@ -62,6 +62,10 @@
 						<td>작성자</td>
 						<td class="text-left"><input type="text" name="fbc_author" id="fbc_author" class="form-control"/></td>
 					</tr> --%>
+					<tr>
+						<td>작성자</td>
+						<td><input type="text" value="${c_nickname}" readonly="readonly"/></td>
+					</tr>
 					
 					<tr>
 						<td>글제목</td>

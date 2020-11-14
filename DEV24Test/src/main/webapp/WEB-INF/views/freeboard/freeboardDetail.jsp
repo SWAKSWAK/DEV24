@@ -23,68 +23,69 @@
     <script>
         $(function(){
            // gnb 메뉴 클릭 시
-           $("#gnb > li").click(function(){
-               var i = $(this).index();
-               console.log(i);
-               
-               $(this).siblings("li").removeClass("on");
-               $(this).addClass("on");
-               
-               $("#gnb > li > ul").removeClass("on");
-               $("#gnb > li > ul").eq(i).addClass("on");
+	           $("#gnb > li").click(function(){
+	               var i = $(this).index();
+	               console.log(i);
+	               
+	               $(this).siblings("li").removeClass("on");
+	               $(this).addClass("on");
+	               
+	               $("#gnb > li > ul").removeClass("on");
+	               $("#gnb > li > ul").eq(i).addClass("on");
+	           });
+	
+	            // 하위메뉴 마우스 커서 이동으로 메뉴 이동
+	            $(".dropmenu > li").mouseover(function(){
+	               $(this).siblings("li").removeClass("on");
+	               $(this).addClass("on");
+	           });
+	            $(".dropmenu").mouseleave(function(){
+	               $(".dropmenu > li").removeClass("on");
+	                $("#gnb > li > ul").removeClass("on");
+	           });
+	            
+	            $("#boardListBtn").click(function(){
+	            	location.href="/freeboard/freeboardList"
+	            });
+	            
+	            
+	            $("#boardDeleteBtn").click(function(){
+	            	$.ajax({
+	            		url:"/freeboard/freeboardDelete", 
+	            		type:"post",
+	            		data:"fb_num="+$("#fb_num").val(), 
+	            		dataType:"text", 
+	            		error: function(){
+	            			alert("시스템 오류, 관리자에게 문의해주세요");
+	            		},
+	            		success: function(){
+	            			alert("글 삭제 완료");
+	            			$("#fb_num").submit();
+	            			location.href="/freeboard/freeboardList";
+	            		}
+	            	});
+	            });
+	            
+	            $("#boardUpdateFormBtn").click(function(){
+	            	console.log($("#fb_num"));
+	            });
+            	
            });
-
-            // 하위메뉴 마우스 커서 이동으로 메뉴 이동
-            $(".dropmenu > li").mouseover(function(){
-               $(this).siblings("li").removeClass("on");
-               $(this).addClass("on");
-           });
-            $(".dropmenu").mouseleave(function(){
-               $(".dropmenu > li").removeClass("on");
-                $("#gnb > li > ul").removeClass("on");
-           });
-            
-            $("#boardListBtn").click(function(){
-            	location.href="/freeboard/freeboardList"
-            });
-            
-            
-            $("#boardDeleteBtn").click(function(){
-            	$.ajax({
-            		url:"/freeboard/freeboardDelete", 
-            		type:"post",
-            		data:"fb_num="+$("#fb_num").val(), 
-            		dataType:"text", 
-            		error: function(){
-            			alert("시스템 오류, 관리자에게 문의해주세요");
-            		},
-            		success: function(){
-            			alert("글 삭제 완료");
-            			$("#fb_num").submit();
-            			location.href="/freeboard/freeboardList";
-            		}
-            	});
-            });
-          
-        });
     </script>
     
     <style type="text/css">
-    	
     </style>
     
 </head>
 <body>
     <!--*************************************************************-->
     
-    <form name="">
-    
-    </form>
     
     <div id="content_wrap">
     	<c:set var="detail" value="${freeDetail}"/>
-    	<input type="hidden" id="fb_num" name="fb_num" value="${detail.fb_num}"/>
-    	
+    	<form name="f_data" id="f_data" method="post">
+    		<input type="hidden" id="fb_num" name="fb_num" value="${detail.fb_num}"/>
+ 		</form>
         <%-- <div id="pwdChk" class="authArea">
 			<form name="f_pwd" id="f_pwd">
 				<!--<input type="hidden" name="num" id="num" value="${detail.num}" />-->
@@ -98,38 +99,41 @@
 		</div> --%>
 		
 		<div class="text-right btnArea">
+			<c:if test="${c_num != null}">
 		    <input type="button" id="boardUpdateFormBtn" value="글수정" class="btn btn-success" />
             <input type="button" id="boardDeleteBtn" value="글삭제" class="btn btn-success" />
             <!-- <input type="button" id="boardReplyBtn" value="글답변" class="btn btn-success" /> -->
+            </c:if>
             <input type="button" id="boardListBtn" value="글목록" class="btn btn-primary" />
 		</div>
 	
-		
-		<table summary="게시판 상세 페이지" class="table" border="0">
-			<tr>
-				<th>글 번 호</th>
-				<td>${detail.fb_num}</td>
-				<th class="th_date">작 성 일</th>
-				<td>${detail.fb_writeday}</td>
-			</tr>
-			<tr>
-				<th>글 제 목</th>
-				<td colspan="3">${detail.fb_title}</td>
-			</tr>
-			<tr>
-				<th>작 성 자</th>
-				<td colspan="3">${detail.fb_author}</td>
-			</tr>
-			<tr>
-				<th>글 내 용</th>
-				<td colspan="3">${detail.fb_content}</td>
-			</tr>
-			
-			<%-- <tr>
-				<th>이 미 지</th>
-				<td colspan="3"><img src="${detail.fb_img_url}"/></td>
-			</tr> --%>
-		</table>
+		<form id="detail">
+			<table summary="게시판 상세 페이지" class="table" border="0">
+				<tr>
+					<th>글 번 호</th>
+					<td>${detail.fb_num}</td>
+					<th class="th_date">작 성 일</th>
+					<td>${detail.fb_writeday}</td>
+				</tr>
+				<tr>
+					<th>글 제 목</th>
+					<td colspan="3">${detail.fb_title}</td>
+				</tr>
+				<tr>
+					<th>작 성 자</th>
+					<td colspan="3">${detail.fb_author}</td>
+				</tr>
+				<tr>
+					<th>글 내 용</th>
+					<td colspan="3">${detail.fb_content}</td>
+				</tr>
+				
+				<%-- <tr>
+					<th>이 미 지</th>
+					<td colspan="3"><img src="${detail.fb_img_url}"/></td>
+				</tr> --%>
+			</table>
+		</form>
 		<jsp:include page="freecmt.jsp"/>
     </div> <!-- content_wrap -->
     

@@ -87,4 +87,38 @@ public class FreeBoardController {
 		}
 		return "redirect:"+url;
 	}
+	
+	@RequestMapping(value="/freeboardUpdateForm")
+	public String freeboardUpdateForm(@ModelAttribute("data") FreeBoardVO fbvo, Model model) {
+		log.info("freeboardUpdateForm 호출");
+		log.info("fb_num="+fbvo.getFb_num());
+		
+		FreeBoardVO updateData = freeboardService.freeboardDetail(fbvo);
+		model.addAttribute("updateData", updateData);
+		
+		return "freeboard/freeboardUpdateForm";
+	}
+	
+	
+	
+	@RequestMapping(value="/freeboardUpdate", method=RequestMethod.POST)
+	public String freeboardUpdate(@ModelAttribute FreeBoardVO fbvo, RedirectAttributes ras) {
+		log.info("freeboardUpdate 호출!");
+		
+		int result = 0; 
+		String url="";
+		
+		result = freeboardService.freeboardUpdate(fbvo);
+		ras.addFlashAttribute("data", fbvo);
+		log.info("result="+result);
+		
+		if(result == 1) {
+			url="/freeboard/freeboardDetail";
+		}else {
+			url = "/freeboard/freeboardUpdateForm";
+		}
+		return "redirect:"+url;
+		//return "freeboard/freeboardUpdateForm";
+	}
+	
 }

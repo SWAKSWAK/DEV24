@@ -9,5 +9,7 @@ public interface FreeBoardService {
 	public FreeBoardVO freeboardDetail(FreeBoardVO fbvo);
 	public int freeboardInsert(FreeBoardVO fbvo);
 	public int freeboardDelete(FreeBoardVO fbvo);
+	public FreeBoardVO freeboardUpdateForm(FreeBoardVO fbvo);
+	public int freeboardUpdate(FreeBoardVO fbvo);
 	public int updateFBReadCount(int fb_readcnt);
 }

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dev24.client.mypage.refundhistory.dao.RefundhistoryDAO">
+
+	<!-- 마이페이지 - 환불내역조회 -->
+	<select id="refundhistoryList" parameterType="refundhistory" resultType="refundhistory">
+		select pd_orderstate, to_char(p_buydate, 'YYYY-MM-DD') p_buydate, c_num,
+		 refund_history_view1.p_num, rf_num, b_num, b_name, to_char(rf_confirmdate, 'YYYY-MM-DD') rf_confirmdate,
+		  rf_price
+		from refund_history_view1
+		full outer join refund_history_view2
+		on refund_history_view1.p_num = refund_history_view2.p_num
+		
+		<where>
+			
+			<if test="date_start != ''">
+				<![CDATA[(to_char(p_buydate, 'YYYY-MM-DD') between #{date_start} and #{date_end}) ]]>
+			
+				<if test="search=='rf_num'">
+					<![CDATA[AND (rf_num LIKE '%'||#{keyword}||'%')]]>
+					
+					<if test="orderby_state=='reRequest'">
+						AND pd_orderstate = #{pd_orderstate}
+					</if>
+					<if test="orderby_state=='rfConfirm'">
+						AND pd_orderstate = #{pd_orderstate}
+					</if>
+					<if test="orderby_state=='cancel'">
+						AND pd_orderstate = #{pd_orderstate}
+					</if>
+				</if>
+				<if test="search=='b_name'">
+					<![CDATA[AND (b_name LIKE '%'||#{keyword}||'%')]]>
+					
+					<if test="orderby_state=='reRequest'">
+						AND pd_orderstate = #{pd_orderstate}
+					</if>
+					<if test="orderby_state=='rfConfirm'">
+						AND pd_orderstate = #{pd_orderstate}
+					</if>
+					<if test="orderby_state=='cancel'">
+						AND pd_orderstate = #{pd_orderstate}
+					</if>
+				</if>
+			</if>
+
+		</where>
+		
+		<if test="orderby_when=='past'">
+			order by p_buydate
+		</if>
+		<if test="orderby_when=='last'">
+			order by p_buydate desc
+		</if>
+
+	</select>
+	
+	
+	
+	
+	
+</mapper>

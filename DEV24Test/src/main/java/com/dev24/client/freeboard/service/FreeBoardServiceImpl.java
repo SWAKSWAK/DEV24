@@ -54,4 +54,20 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 		return result;
 	}
 
+	
+	
+	@Override
+	public int freeboardUpdate(FreeBoardVO fbvo) {
+		int result = 0; 
+		result = freeboardDAO.freeboardUpdate(fbvo);
+		return result;
+	}
+
+	@Override
+	public FreeBoardVO freeboardUpdateForm(FreeBoardVO fbvo) {
+		FreeBoardVO updateData = null;
+		updateData = freeboardDAO.freeboardDetail(fbvo);
+		return updateData;
+	}
+
 }
