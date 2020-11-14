@@ -38,7 +38,7 @@
 			</if>
 			
 		</where>
-		order by p_num
+		order by p_num desc
 	</select>
 
 </mapper>

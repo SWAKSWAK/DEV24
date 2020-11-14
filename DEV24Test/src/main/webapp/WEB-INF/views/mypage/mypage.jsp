@@ -70,7 +70,7 @@
             <div class="contentArea">
                 <div class="tit_mypage">
                     <h3>환불신청내역</h3>
-                    <a href="#">&gt;&nbsp;더보기</a>
+                    <a href="/mypage/refundHistory">&gt;&nbsp;더보기</a>
                 </div>
 
                 <table class="table" border="1">
@@ -84,13 +84,24 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>2020-10-10</td>
-                            <td class="td_num">045</td>
-                            <td class="td_title">혼자 하는 자바 <span class="other">외 2종</span></td>
-                            <td>승인대기</td>
-                            <td>2020-11-25</td>
-                        </tr>
+                    	<c:choose>
+                    		<c:when test="${not empty rfhvo}">
+                    			<c:forEach var="rfhvo" items="${rfhvo}" begin="0" end="3" step="1">
+                    				<tr>
+			                            <td>${rfhvo.p_buydate}</td>
+			                            <td class="td_num">${rfhvo.rf_num}</td>
+			                            <td class="td_title">${rfhvo.b_name}</td>
+			                            <td>${rfhvo.pd_orderstate}</td>
+			                            <td>${rfhvo.rf_confirmdate}</td>
+			                        </tr>
+                    			</c:forEach>
+                    		</c:when>
+                    		<c:otherwise>
+                    			<tr>
+                    				<td colspan="5">최근 환불내역이 없습니다.</td>
+                    			</tr>
+                    		</c:otherwise>
+                    	</c:choose>
                     </tbody>
                 </table>
             </div> <!-- contentArea -->

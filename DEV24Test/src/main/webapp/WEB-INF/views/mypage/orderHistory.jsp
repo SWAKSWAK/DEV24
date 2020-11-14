@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page trimDirectiveWhitespaces="true" %>
 <!DOCTYPE html>
 <html>
@@ -28,14 +29,14 @@
 		<script>
 			$(function(){
 				// 금액 콤마찍기
-				var l = $(".table tbody tr").length;
+				/*var l = $(".table tbody tr").length;
 				var price = 0;
 				for(var i=0; i<l; i++){
     				price = $(".table tbody tr").eq(i).find(".td_price").text();
     				$(".table tbody tr").eq(i).find(".td_price").text(addComma(price));
     				
     				//console.log("${ohvo}");
-    			}
+    			}*/
 				
 				/* 검색할 날짜 기본값 설정 */
 				var today = new Date(); // 오늘날짜
@@ -156,7 +157,7 @@
 					var b_num = $(this).parents("tr").attr("data-num");
 					var p_num = $(this).parents("td").siblings("td.td_num").text();
 					
-					updateState(b_num, pd_orderstate, p_num);
+					updateState(b_num, pd_orderstate, p_num, 0);
 					
 				});
 				
@@ -165,9 +166,11 @@
 					var pd_orderstate = "cancel";
 					var b_num = $(this).parents("tr").attr("data-num");
 					var p_num = $(this).parents("td").siblings("td.td_num").text();
-					console.log(p_num);
+					var rf_price = $(this).parents("td").siblings("td.td_price").text();
+					rf_price = unComma(rf_price);
+					console.log(rf_price);
 					
-					updateState(b_num, pd_orderstate, p_num);
+					updateState(b_num, pd_orderstate, p_num, rf_price);
 				});
 				
 				
@@ -199,11 +202,11 @@
 			
 			
 			/* 주문상태 수정 ajax처리 함수 */
-			function updateState(b_num, pd_orderstate, p_num){
+			function updateState(b_num, pd_orderstate, p_num, rf_price){
 				$.ajax({
 					url:"/mypage/orderstateUpdate",
 					type:"get",
-					data : "b_num="+b_num+"&pd_orderstate="+pd_orderstate+"&p_num="+p_num,
+					data : "b_num="+b_num+"&pd_orderstate="+pd_orderstate+"&p_num="+p_num+"&rf_price="+rf_price,
 					dataType:"text",
 					error:function(){
 						alert("시스템 오류. 관리자에게 문의하세요.");
@@ -279,6 +282,16 @@
               </form>
                 
                 <table class="table" border="1">
+                	<colgroup>
+	                   <col width="10%" />
+	                   <col width="15%" />
+	                   <col width="20%" /> 
+	                   <col width="10%" />
+	                   <col width="15%" />
+	                   <col width="10%" />
+	                   <col width="10%" />
+	                   <col width="10%" />
+	               </colgroup>
                     <thead>
                         <tr>
                             <th>주문번호</th>
@@ -299,7 +312,7 @@
 			                            <td class="td_num">${ohvo.p_num}</td>
 			                            <td>${ohvo.p_buydate}</td>
 			                            <td class="td_title">${ohvo.b_name}</td>
-			                            <td class="td_price">${ohvo.price}</td>
+			                            <td class="td_price"><fmt:formatNumber value="${ohvo.price}" pattern="#,###" /></td>
 			                            <td class="td_orderdate">
 			                            	<c:choose>
 				                           	<c:when test="${ohvo.pd_orderstate == 'preShipping'}">
