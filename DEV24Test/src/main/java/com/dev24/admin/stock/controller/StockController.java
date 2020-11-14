@@ -27,7 +27,7 @@ public class StockController {
 	
 	@RequestMapping(value="/stockList", method=RequestMethod.GET)
 	public String stockList(@ModelAttribute("data") StockVO svo, BookVO bvo, Model model) {
-		log.info("stockList ï¿½ìƒ‡ç•°ï¿½ ï¿½ê½¦æ€¨ï¿½!");
+		log.info("stockList ï¿½ìƒ‡?•°ï¿? ï¿½ê½¦?¨ï¿½!");
 		List<StockVO> stockList = stockService.stockList(svo);
 		List<BookVO> bookstockList = stockService.stockBInfoList(bvo);
 		model.addAttribute("stockList", stockList);
@@ -37,7 +37,7 @@ public class StockController {
 	
 	@RequestMapping(value="/stockDetail", method=RequestMethod.GET)
 	public String getStockDetail(@ModelAttribute("data") StockDetailVO sdvo, Model model) {
-		log.info("stockDetail ï¿½ìƒ‡ç•°ï¿½ ï¿½ê½¦æ€¨ï¿½!");
+		log.info("stockDetail ï¿½ìƒ‡?•°ï¿? ï¿½ê½¦?¨ï¿½!");
 		
 		StockDetailVO stockDetail = stockService.getStockDetail(sdvo);
 		model.addAttribute("stockDetail", stockDetail);
@@ -47,7 +47,7 @@ public class StockController {
 	
 	@RequestMapping(value="/stockInsertForm", method = RequestMethod.GET)
 	public String stockInsertForm( @ModelAttribute("data") BookVO bvo, Model model) {
-		log.info("stockInsertForm í˜¸ì¶œ ì„±ê³µ");
+		log.info("stockInsertForm ?˜¸ì¶? ?„±ê³?");
 		
 		log.info(bvo.getB_state());
 		
@@ -64,7 +64,7 @@ public class StockController {
 	
 	@RequestMapping(value="/stockInsert", method=RequestMethod.POST)
 	public String stockInsert(StockVO svo, Model model) {
-		log.info("stockInsert í˜¸ì¶œ ì„±ê³µ");
+		log.info("stockInsert ?˜¸ì¶? ?„±ê³?");
 		
 		int result =0;
 		String url="";
