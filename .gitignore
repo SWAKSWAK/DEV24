@@ -1,6 +1,6 @@
 
-# Created by https://www.toptal.com/developers/gitignore/api/java,java-web,maven,eclipse
-# Edit at https://www.toptal.com/developers/gitignore?templates=java,java-web,maven,eclipse
+# Created by https://www.toptal.com/developers/gitignore/api/eclipse,maven,java,java-web,git,windows
+# Edit at https://www.toptal.com/developers/gitignore?templates=eclipse,maven,java,java-web,git,windows
 
 ### Eclipse ###
 .metadata
@@ -15,17 +15,13 @@ local.properties
 .loadpath
 .recommenders
 
+.project
+
 # External tool builders
 .externalToolBuilders/
 
 # Locally stored "Eclipse launch configurations"
 *.launch
-
-# PyDev specific (Python IDE for Eclipse)
-*.pydevproject
-
-# CDT-specific (C/C++ Development Tooling)
-.cproject
 
 # CDT- autotools
 .autotools
@@ -68,6 +64,21 @@ local.properties
 # Spring Boot Tooling
 .sts4-cache/
 
+### Git ###
+# Created by git for backups. To disable backups in Git:
+# $ git config --global mergetool.keepBackup false
+*.orig
+
+# Created by git when using merge tools for conflicts
+*.BACKUP.*
+*.BASE.*
+*.LOCAL.*
+*.REMOTE.*
+*_BACKUP_*.txt
+*_BASE_*.txt
+*_LOCAL_*.txt
+*_REMOTE_*.txt
+
 ### Java ###
 # Compiled class file
 *.class
@@ -93,6 +104,9 @@ local.properties
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
+# JDT-specific (Eclipse Java Development Tools)
+.classpath
+
 ### Java-Web ###
 ## ignoring target file
 target/
@@ -109,4 +123,33 @@ buildNumber.properties
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
 
-# End of https://www.toptal.com/developers/gitignore/api/java,java-web,maven,eclipse
+### Windows ###
+# Windows thumbnail cache files
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+
+# Dump file
+*.stackdump
+
+# Folder config file
+[Dd]esktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+# STS (Spring Tool Suite)
+.springBeans
+
+# End of https://www.toptal.com/developers/gitignore/api/eclipse,maven,java,java-web,git,windows
