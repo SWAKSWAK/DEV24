@@ -10,7 +10,7 @@ import com.dev24.client.purchase.vo.PurchaseVO;
 public interface PurchaseService {
 	public List<CartVO> purchaseForm(List<CartVO> cvoList);
 	
-	// ì£¼ë¬¸ì ì •ë³´ ì¶œë ¥
+	// ÁÖ¹®ÀÚ Á¤º¸ Ãâ·Â
 	public CustomerVO getSenderInfo(int c_num);
 	
 	public int purchaseInsert(PurchaseVO pvo);
@@ -18,6 +18,6 @@ public interface PurchaseService {
 	
 	public int getMaxPnum();
 	
-	// êµ¬ë§¤ ì™„ë£Œí•œ ìƒí’ˆ ì‚­ì œ
+	// ±¸¸Å ¿Ï·áÇÑ »óÇ° »èÁ¦
 	public int purchasedItemDelete(List<CartVO> cvoList);
 }

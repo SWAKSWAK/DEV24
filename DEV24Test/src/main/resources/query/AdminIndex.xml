@@ -12,7 +12,7 @@
 	</select>
 	
 	<select id="rfCount" resultType="int">
-		select nvl(count(rf_num),0) from refund_view where pd_orderstate!='rfconfirm' 
+		select nvl(count(rf_num),0) from refund_view where rf_orderstate!='rfconfirm' 
 		and rf_confirmdate>=(select to_date(sysdate, 'YY/MM/DD') from dual)
 	</select>
 	

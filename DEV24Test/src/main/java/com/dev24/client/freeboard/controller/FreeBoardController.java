@@ -90,7 +90,11 @@ public class FreeBoardController {
 	
 	@RequestMapping(value="/freeboardUpdateForm")
 	public String freeboardUpdateForm(@ModelAttribute("data") FreeBoardVO fbvo, Model model) {
+<<<<<<< HEAD
 		log.info("freeboardUpdateForm ?˜¸ì¶?");
+=======
+		log.info("freeboardUpdateForm í˜¸ì¶œ");
+>>>>>>> origin/master
 		log.info("fb_num="+fbvo.getFb_num());
 		
 		FreeBoardVO updateData = freeboardService.freeboardDetail(fbvo);
@@ -103,7 +107,11 @@ public class FreeBoardController {
 	
 	@RequestMapping(value="/freeboardUpdate", method=RequestMethod.POST)
 	public String freeboardUpdate(@ModelAttribute FreeBoardVO fbvo, RedirectAttributes ras) {
+<<<<<<< HEAD
 		log.info("freeboardUpdate ?˜¸ì¶?!");
+=======
+		log.info("freeboardUpdate í˜¸ì¶œ!");
+>>>>>>> origin/master
 		
 		int result = 0; 
 		String url="";

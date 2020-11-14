@@ -106,7 +106,11 @@ public class PurchaseController {
 	}
 	
 	/****************************
+<<<<<<< HEAD
 	 * single item to purchase from cart
+=======
+	 * �떒�씪�빆紐� 援щℓ瑜� �쐞�븳 session 異붽� �옉�뾽
+>>>>>>> origin/master
 	 * **********/
 	@ResponseBody
 	@PostMapping(value="/purchaseSingleItem", produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
@@ -259,6 +263,10 @@ public class PurchaseController {
 		return "purchase/purchasefinish";
 	}
 	
+<<<<<<< HEAD
+=======
+	
+>>>>>>> origin/master
 	/**********************************
 	 * after insert pdetail, automatically delete purchased items from cart
 	 * ********/

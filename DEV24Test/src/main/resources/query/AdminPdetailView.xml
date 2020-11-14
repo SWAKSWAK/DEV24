@@ -5,7 +5,7 @@
 	<!-- 해당 구매번호에 해당하는 구매 상세 내용 조회 -->
 	<select id="pdetailList" parameterType="adminPdetail" resultType="adminPdetail">
 		select p_num, pd_num, b_num, b_name, c_num,
-		c_id, p_pmethod, pd_price, to_char(p_buydate, 'YYYY-MM-DD') as p_buydate, pd_orderstate, rf_num
+		c_id, p_pmethod, pd_price, to_char(p_buydate, 'YYYY-MM-DD') as p_buydate, pd_orderstate, rf_num, pd_qty
 		from pdetail_view
 		where p_num = #{p_num}
 

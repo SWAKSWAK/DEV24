@@ -18,7 +18,6 @@
 			<script src="/resources/js/html5shiv.js"></script>
 		<![endif]-->
 		
-		<!-- <link rel="stylesheet" href="/resources/include/css/style_mypage.css" /> -->
 		<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
 		
 		<script src="/resources/include/js/jquery-1.12.4.min.js"></script>
@@ -91,7 +90,11 @@
 			                            <td>${rfhvo.p_buydate}</td>
 			                            <td class="td_num">${rfhvo.rf_num}</td>
 			                            <td class="td_title">${rfhvo.b_name}</td>
+<<<<<<< HEAD
 			                            <td>${rfhvo.pd_orderstate}</td>
+=======
+			                            <td>${rfhvo.rf_orderstate}</td>
+>>>>>>> origin/master
 			                            <td>${rfhvo.rf_confirmdate}</td>
 			                        </tr>
                     			</c:forEach>

@@ -4,7 +4,7 @@
 	
 	<!-- 주문내역 리스트 조회 -->
 	<select id="orderhistoryList" parameterType="orderhistory" resultType="orderhistory">
-		select p_num, to_char(p_buydate, 'YYYY-MM-DD') p_buydate, b_num, b_name, pd_orderstate, qty, c_num, p_sender, p_receiver, price
+		select p_num, to_char(p_buydate, 'YYYY-MM-DD') p_buydate, b_num, b_name, pd_orderstate, pd_qty, c_num, p_sender, p_receiver, pd_price, pd_num
 		from order_history_view
 		
 		<where>
@@ -117,7 +117,7 @@
 	<update id="orderstateUpdate" parameterType="orderhistory">
 		update pdetail		
 		set pd_orderstate = #{pd_orderstate}
-		where b_num = #{b_num} and p_num = #{p_num}
+		where b_num = #{b_num} and p_num = #{p_num} and pd_num = #{pd_num}
 	</update>
 	
 

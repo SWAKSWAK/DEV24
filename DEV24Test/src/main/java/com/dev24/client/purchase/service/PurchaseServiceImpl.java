@@ -25,7 +25,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 	private PdetailDAO pdetailDAO;
 	private CartDAO cartDAO;
 
-	// êµ¬ë§¤í™”ë©´ ì¶œë ¥(ì²´í¬ ìƒí’ˆ ê°€ì ¸ì˜¤ê¸°)
+	// ±¸¸ÅÈ­¸é Ãâ·Â(Ã¼Å© »óÇ° °¡Á®¿À±â)
 	@Override
 	public List<CartVO> purchaseForm(List<CartVO> cvoList) {
 		List<CartVO> list = null;
@@ -33,7 +33,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 		return list;
 	}
 
-	// ì£¼ë¬¸ì ì •ë³´ ì¶œë ¥
+	// ÁÖ¹®ÀÚ Á¤º¸ Ãâ·Â
 	@Override
 	public CustomerVO getSenderInfo(int c_num) {
 		CustomerVO cvo = null;
@@ -41,7 +41,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 		return cvo;
 	}
 
-	// êµ¬ë§¤ ì‚½ì…
+	// ±¸¸Å »ğÀÔ
 	@Override
 	public int purchaseInsert(PurchaseVO pvo) {
 		int result = 0;
@@ -49,7 +49,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 		return result;
 	}
 
-	// êµ¬ë§¤ ìƒì„¸ ìë™ ì‚½ì…
+	// ±¸¸Å »ó¼¼ ÀÚµ¿ »ğÀÔ
 	@Override
 	public int pdetailInsert(List<PdetailVO> pdvoList) {
 		int result = 0;
@@ -57,7 +57,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 		return result;
 	}
 
-	// p_num êµ¬í•˜ê¸°
+	// p_num ±¸ÇÏ±â
 	@Override
 	public int getMaxPnum() {
 		int result = 0;
@@ -65,7 +65,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 		return result;
 	}
 
-	// êµ¬ë§¤ ì™„ë£Œí•œ ìƒí’ˆ ì‚­ì œ
+	// ±¸¸Å ¿Ï·áÇÑ »óÇ° »èÁ¦
 	@Override
 	public int purchasedItemDelete(List<CartVO> cvoList) {
 		int result = 0;

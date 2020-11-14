@@ -50,20 +50,25 @@
            			
            			// 전달 값 form에 저장
            			var rf_price = $(".lastrow td span").text();
-           			rf_price = parseInt(unComma(rf_price));
-           			var p_num = "${pvo.p_num}";
+           			rf_price = unComma(rf_price);
            			var b_num = $(".t_refundItem tbody tr").attr("data-num");
+           			var p_num = "${ohvo.p_num}";
+           			var pd_num = $(".t_refundItem tbody tr").attr("data-pd");
            			var rf_reason = $("#rf_reason_area").val();
-           			/* console.log(typeof(rf_price));
+           			var rf_qty = $("td.td_qty").text();
+           			
            			console.log(rf_price);
-           			console.log(p_num);
            			console.log(b_num);
-           			console.log(rf_reason); */
+           			console.log(pd_num);
+           			console.log(rf_reason);
+           			console.log("rf_qty : "+rf_qty);
            			
            			$("#rf_price").val(rf_price);
            			$("#rf_reason").val(rf_reason);
-           			$("#p_num").val(p_num);
            			$("#b_num").val(b_num);
+           			$("#p_num").val(p_num);
+           			$("#pd_num").val(pd_num);
+           			$("#rf_qty").val(rf_qty);
 
            			$("#f_refund").attr({
         				"action" : "/refund/refundInsert",
@@ -85,8 +90,10 @@
 	         <form name="f_refund" id="f_refund">
 	         	<input type="hidden" name="rf_price" id="rf_price" />
 	         	<input type="hidden" name="p_num" id="p_num" />
+	         	<input type="hidden" name="pd_num" id="pd_num" />
 	         	<input type="hidden" name="b_num" id="b_num" />
 	         	<input type="hidden" name="rf_reason" id="rf_reason" />
+	         	<input type="hidden" name="rf_qty" id="rf_qty" />
 	         	<input type="hidden" name="pd_orderstate" id="pd_orderstate" value="reRequest" />
  			</form>
  			
@@ -161,18 +168,18 @@
 	                    </tr>
 	                </thead>
 	                <tbody>
-	                    <tr data-num="${ohvo.b_num}">
+	                    <tr data-num="${ohvo.b_num}" data-pd="${ohvo.pd_num}">
 	                        <td class="td_book">
 	                            <span class="td_bookimg"><img src="${ohvo.listcover_imgurl}"/></span>
 	                            <span class="td_bookname">${ohvo.b_name}</span>
 	                        </td>
 	                        <td><span><fmt:formatNumber value="${ohvo.singlePrice}" pattern="#,###" /></span>원</td>
-	                        <td>${ohvo.qty}</td>
-	                        <td><span><fmt:formatNumber value="${ohvo.price}" pattern="#,###" /></span>원</td>
+	                        <td class="td_qty">${ohvo.pd_qty}</td>
+	                        <td><span><fmt:formatNumber value="${ohvo.pd_price}" pattern="#,###" /></span>원</td>
 	                    </tr>
 	                    
 	                    <tr class="lastrow">
-	                        <td colspan="4">환불신청 총 금액 : <span><fmt:formatNumber value="${ohvo.price}" pattern="#,###" /></span>원</td>
+	                        <td colspan="4">환불신청 총 금액 : <span><fmt:formatNumber value="${ohvo.pd_price}" pattern="#,###" /></span>원</td>
 	                    </tr>
 	                </tbody>
 	            </table>
