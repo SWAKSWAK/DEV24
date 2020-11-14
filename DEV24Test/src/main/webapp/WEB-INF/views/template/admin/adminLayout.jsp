@@ -20,6 +20,8 @@
 	<link rel="stylesheet" href="/resources/include/css/adminPage.css">
 
     <script src="/resources/include/dist/js/ie-emulation-modes-warning.js"></script>
+    
+	<script src="https://kit.fontawesome.com/a333e3670c.js" crossorigin="anonymous"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>

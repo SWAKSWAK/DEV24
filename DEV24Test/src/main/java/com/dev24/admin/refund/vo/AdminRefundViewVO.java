@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper=false)
 public class AdminRefundViewVO extends CommonVO {
 	private int rf_num = 0;
-	private int p_num = 0;
 	private int b_num = 0;
 	private String b_name = "";
 	private int c_num = 0;
@@ -21,5 +20,9 @@ public class AdminRefundViewVO extends CommonVO {
 	private int rf_price = 0;
 	private String rf_reason = "";
 	private String rf_confirmdate = "";
-	private String pd_orderstate = "";
+	private String rf_orderstate = "";
+	
+	// for refund confirm logic
+	//private String pd_orderstate = "";
+	//private int pd_num = 0;
 }

@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper=false)
 public class RefundhistoryVO extends CommonVO{
-	private String pd_orderstate = "";
+	private String rf_orderstate = "";
 	private String p_buydate = "";
 	private int c_num = 0;
 	private int p_num = 0;
@@ -21,4 +21,5 @@ public class RefundhistoryVO extends CommonVO{
 	private String b_name = "";
 	private String rf_confirmdate = "";
 	private int rf_price = 0;
+	private int rf_qty = 0;
 }

@@ -27,6 +27,8 @@
     	<script src="/resources/include/js/common.js"></script>
 		<script src="https://kit.fontawesome.com/a333e3670c.js" crossorigin="anonymous"></script>
 		<script>
+			var stateUpdateBtn = 0;
+		
 			$(function(){
 				// 금액 콤마찍기
 				/*var l = $(".table tbody tr").length;
@@ -153,24 +155,46 @@
 				
 				/* 구매확정 버튼 처리 */
 				$(".pConfirmBtn").click(function(){
-					var pd_orderstate = "pConfirm";
 					var b_num = $(this).parents("tr").attr("data-num");
+					var rf_num = $(this).parents("tr").attr("data-pd");
+					var pd_num = $(this).parents("tr").attr("data-pd");
+					var rf_price = $(this).parents("td").siblings("td.td_price").text();
+					var rf_qty = $(this).parents("td").siblings("td.td_qty").text();
 					var p_num = $(this).parents("td").siblings("td.td_num").text();
+					rf_price = unComma(rf_price);
+					rf_qty = unComma(rf_qty);
 					
-					updateState(b_num, pd_orderstate, p_num, 0);
+					$("#pd_orderstate").val("pConfirm");
+					$("#b_num").val(b_num);
+					$("#rf_num").val(rf_num);
+					$("#pd_num").val(pd_num);
+					$("#rf_price").val(rf_price);
+					$("#rf_qty").val(rf_qty);
+					$("#p_num").val(p_num);
 					
+					updateState(1);
 				});
 				
 				/* 구매취소 버튼 처리 */
 				$(".orderCancelBtn").click(function(){
-					var pd_orderstate = "cancel";
 					var b_num = $(this).parents("tr").attr("data-num");
-					var p_num = $(this).parents("td").siblings("td.td_num").text();
+					var rf_num = $(this).parents("tr").attr("data-pd");
+					var pd_num = $(this).parents("tr").attr("data-pd");
 					var rf_price = $(this).parents("td").siblings("td.td_price").text();
+					var rf_qty = $(this).parents("td").siblings("td.td_qty").text();
+					var p_num = $(this).parents("td").siblings("td.td_num").text();
 					rf_price = unComma(rf_price);
-					console.log(rf_price);
+					rf_qty = unComma(rf_qty);
 					
-					updateState(b_num, pd_orderstate, p_num, rf_price);
+					$("#pd_orderstate").val("cancel");
+					$("#b_num").val(b_num);
+					$("#rf_num").val(rf_num);
+					$("#pd_num").val(pd_num);
+					$("#rf_price").val(rf_price);
+					$("#rf_qty").val(rf_qty);
+					$("#p_num").val(p_num);
+					
+					updateState(2);
 				});
 				
 				
@@ -178,9 +202,10 @@
 				$(".refundInsertFormBtn").click(function(){
 					var p_num = $(this).parents("td").siblings("td.td_num").text();
 					var b_num = $(this).parents("tr").attr("data-num");
-					
+					var pd_num = $(this).parents("tr").attr("data-pd");
+						
 					if(confirm("해당 상품의 환불신청을 진행하시겠습니까?")){
-						location.href="/refund/refundForm?p_num="+p_num+"&b_num="+b_num;
+						location.href="/refund/refundForm?p_num="+p_num+"&b_num="+b_num+"&pd_num="+pd_num;
 					}
 					
 				});
@@ -202,20 +227,49 @@
 			
 			
 			/* 주문상태 수정 ajax처리 함수 */
-			function updateState(b_num, pd_orderstate, p_num, rf_price){
-				$.ajax({
-					url:"/mypage/orderstateUpdate",
-					type:"get",
-					data : "b_num="+b_num+"&pd_orderstate="+pd_orderstate+"&p_num="+p_num+"&rf_price="+rf_price,
-					dataType:"text",
-					error:function(){
-						alert("시스템 오류. 관리자에게 문의하세요.");
-					},
-					success:function(result){
-						console.log("result => "+result);
-						location.href="/mypage/orderHistory";
-					}
-				});
+			function updateState(btnNum){
+				stateUpdateBtn = btnNum;
+				console.log("stateUpdateBtn : "+stateUpdateBtn);
+				
+				var pd_orderstate = $("#pd_orderstate").val();
+				var b_num = $("#b_num").val();
+				var p_num = $("#p_num").val();
+				var rf_num = $("#rf_num").val();
+				var pd_num = $("#pd_num").val();
+				var rf_price = $("#rf_price").val();
+				var rf_qty = $("#rf_qty").val();
+
+				if(stateUpdateBtn == 1){ // 구매확정 처리
+					$.ajax({
+						url:"/mypage/orderstateUpdate",
+						type:"get",
+						data : "pd_orderstate="+pd_orderstate+"&b_num="+b_num+"&p_num="+p_num+"&pd_num="+pd_num,
+						dataType:"text",
+						error:function(){
+							alert("시스템 오류. 관리자에게 문의하세요.");
+						},
+						success:function(result){
+							stateUpdateBtn = 0;
+							console.log("result => "+result);
+							location.href="/mypage/orderHistory";
+						}
+					});
+				}else if(stateUpdateBtn == 2){ // 주문취소 처리
+					$.ajax({
+						url:"/mypage/orderstateUpdate",
+						type:"get",
+						data: "pd_orderstate="+pd_orderstate+"&b_num="+b_num+"&p_num="+p_num+"&rf_num="+rf_num+"&rf_price="+rf_price+"&rf_qty="+rf_qty+"&pd_num="+pd_num,
+						dataType:"text",
+						error:function(){
+							alert("시스템 오류. 관리자에게 문의하세요.");
+						},
+						success:function(result){
+							stateUpdateBtn = 0;
+							console.log("result => "+result);
+							location.href="/mypage/orderHistory";
+						}
+					});
+				}
 			}
 			
 		</script>
@@ -224,6 +278,20 @@
 	</head>
 	<body>
 		<div id="content_mypage">
+			<form name="f_updateState" id="f_updateState">
+			<!-- 구매취소로 인한 환불 테이블 추가 -->
+				<!-- <input type="hidden" name="rf_orderstate" id="rf_orderstate" value="cancel" /> -->
+				<input type="hidden" name="b_num" id="b_num" value="" />
+				<input type="hidden" name="rf_num" id="rf_num" value="" />
+				<input type="hidden" name="rf_price" id="rf_price" value="" />
+				<input type="hidden" name="rf_qty" id="rf_qty" value="" />
+
+			<!-- 	구매확정으로 인한 주문상태 변경 -->
+				<input type="hidden" name="pd_orderstate" id="pd_orderstate" value="" />
+				<input type="hidden" name="p_num" id="p_num" value="" />
+				<input type="hidden" name="pd_num" id="pd_num" value="" />
+				
+			</form>
             
             <!--****************** 주문내역 조회 부분 시작****************-->
             
@@ -284,10 +352,11 @@
                 <table class="table" border="1">
                 	<colgroup>
 	                   <col width="10%" />
-	                   <col width="15%" />
+	                   <col width="10%" />
 	                   <col width="20%" /> 
 	                   <col width="10%" />
-	                   <col width="15%" />
+	                   <col width="10%" />
+	                   <col width="10%" />
 	                   <col width="10%" />
 	                   <col width="10%" />
 	                   <col width="10%" />
@@ -298,6 +367,7 @@
                             <th>주문일자</th>
                             <th>주문내역</th>
                             <th>주문금액</th>
+                            <th>주문수량</th>
                             <th>주문상태</th>
                             <th>주문자</th>
                             <th>수령자</th>
@@ -308,11 +378,12 @@
                     	<c:choose>
                     		<c:when test="${not empty ohvo}">
                     			<c:forEach var="ohvo" items="${ohvo}">
-                    				<tr data-num="${ohvo.b_num}">
+                    				<tr data-num="${ohvo.b_num}" data-pd="${ohvo.pd_num}">
 			                            <td class="td_num">${ohvo.p_num}</td>
 			                            <td>${ohvo.p_buydate}</td>
 			                            <td class="td_title">${ohvo.b_name}</td>
-			                            <td class="td_price"><fmt:formatNumber value="${ohvo.price}" pattern="#,###" /></td>
+			                            <td class="td_price"><fmt:formatNumber value="${ohvo.pd_price}" pattern="#,###" /></td>
+			                            <td class="td_qty"><fmt:formatNumber value="${ohvo.pd_qty}" pattern="#,###" /></td>
 			                            <td class="td_orderdate">
 			                            	<c:choose>
 				                           	<c:when test="${ohvo.pd_orderstate == 'preShipping'}">

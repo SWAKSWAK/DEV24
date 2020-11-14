@@ -43,6 +43,11 @@ public class BookVO {
 	private MultipartFile detailcoverFile;
 	private MultipartFile detailFile;
 	
+	//json에 저장된 url데이터 보관용
 	private String url;
+	
+	// 정렬에 따라 츨력하기 위한 정보 (기본값 = "best")
+	// dev24 / best / new / lowPrice / highPrice
+	String sort = "best";
 	
 }

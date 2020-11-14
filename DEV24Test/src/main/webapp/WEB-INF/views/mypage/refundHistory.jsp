@@ -224,10 +224,11 @@
                 	<colgroup>
 	                   <col width="10%" />
 	                   <col width="15%" />
-	                   <col width="25%" /> 
+	                   <col width="28%" /> 
+	                   <col width="10%" />
+	                   <col width="10%" />
+	                   <col width="12%" />
 	                   <col width="15%" />
-	                   <col width="15%" />
-	                   <col width="20%" />
 	               </colgroup>
                     <thead>
                         <tr>
@@ -235,6 +236,7 @@
                             <th>주문일자</th>
                             <th>환불내역</th>
                             <th>환불금액</th>
+                            <th>환불수량</th>
                             <th>주문상태</th>
                             <th>환불신청/승인일자</th> <!--rf_confirmdate-->
                         </tr>
@@ -248,12 +250,13 @@
 			                            <td>${rfhvo.p_buydate}</td>
 			                            <td class="td_title">${rfhvo.b_name}</td>
 			                            <td><fmt:formatNumber value="${rfhvo.rf_price}" pattern="#,###" /></td>
+			                            <td>${rfhvo.rf_qty}</td>
 			                            <td class="td_orderdate">
 			                            	<c:choose>
-				                           	<c:when test="${rfhvo.pd_orderstate == 'reRequest'}">
+				                           	<c:when test="${rfhvo.rf_orderstate == 'reRequest'}">
 				                           		환불승인대기
 				                           	</c:when>
-				                           	<c:when test="${rfhvo.pd_orderstate == 'cancel'}">
+				                           	<c:when test="${rfhvo.rf_orderstate == 'cancel'}">
 				                           		주문취소
 				                           	</c:when>
 				                           	<c:otherwise>
@@ -267,7 +270,7 @@
                     		</c:when>
                     		<c:otherwise>
                     			<tr>
-                    				<td colspan="6">최근 주문내역이 없습니다.</td>
+                    				<td colspan="7">최근 주문내역이 없습니다.</td>
                     			</tr>
                     		</c:otherwise>
                     	</c:choose>

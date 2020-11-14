@@ -23,12 +23,14 @@
 		(
 			b_num, b_name, b_date, b_list, b_author, 
 			b_pub, b_authorinfo, b_info, b_price,
-			catetwo_num, cateone_num
+			catetwo_num, cateone_num,
+			b_state
 		) VALUES (
 			#{b_num}, #{b_name}, #{b_date}, #{b_list,jdbcType=CLOB}, 
 			#{b_author}, #{b_pub}, #{b_authorinfo,jdbcType=CLOB}, 
 			#{b_info,jdbcType=CLOB}, #{b_price}, 
-			#{cateOne_num}, #{cateTwo_num}
+			#{cateOne_num}, #{cateTwo_num},
+			'unreg'
 		)
 	</insert>
 	
@@ -74,6 +76,22 @@
 				<if test="cateTwo_num == 8">
 					<![CDATA[AND cateTwo_num = 8]]>
 				</if>
+			</if>
+			<if test="sort =='dev24'">
+			</if>
+			<if test="sort =='best'">
+			</if>
+			<if test="sort =='new'">
+				ORDER BY
+					b_date DESC
+			</if>
+			<if test="sort =='lowPrice'">
+				ORDER BY
+					b_price
+			</if>
+			<if test="sort =='highPrice'">
+				ORDER BY
+					b_price DESC
 			</if>
 		</where>
 	</select>
@@ -135,6 +153,21 @@
 					</if>
 					<if test="cateTwo_num == 8">
 						<![CDATA[AND cateTwo_num = 8]]>
+					</if>
+					<if test="b_state == 'reg'">
+						AND b_state is null
+					</if>
+					<if test="b_state == 'reg or oop'">
+						AND b_state is null
+						OR b_state = 'oop'
+					</if>
+					<if test="b_state == 'unreg'">
+						AND b_state = 'unreg'
+					</if>
+					<if test="b_state == 'oop'">
+						AND b_state 'oop'
+					</if>
+					<if test="b_state == null and b_state == ''">
 					</if>
 				</where>
 			    )

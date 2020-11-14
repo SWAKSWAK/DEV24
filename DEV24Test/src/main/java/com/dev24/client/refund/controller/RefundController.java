@@ -60,6 +60,9 @@ public class RefundController {
 		
 		int c_num = Integer.parseInt((String)session.getAttribute("c_num"));
 		rfvo.setC_num(c_num);
+		rfvo.setRf_num(ohvo.getPd_num());
+		rfvo.setRf_orderstate(ohvo.getPd_orderstate());
+		
 		log.info("c_num => "+c_num);
 		log.info("rfvo => "+rfvo);
 		

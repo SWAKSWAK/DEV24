@@ -124,6 +124,52 @@
 					}
 				});
 				
+				
+				/* 승인처리 버튼 처리 */
+				$(".refundConfirmBtn").click(function(){
+					var rf_num = $(this).parents("td").siblings(".td_rfnum").text();
+					var rf_orderstate = "rfConfirm";
+					console.log(rf_num);
+					
+					$.ajax({
+						url:"/admin/refundStateUpdate",
+						type:"get",
+						data : "rf_num="+rf_num+"&rf_orderstate="+rf_orderstate,
+						dataType:"text",
+						error:function(){
+							alert("시스템 오류. 관리자에게 문의하세요.");
+						},
+						success:function(result){
+							console.log("result => "+result);
+							location.href="/admin/refundList";
+						}
+					});
+					
+				});
+				
+				
+				/* 주문취소완료 버튼 처리 */
+				$(".orderCancelBtn").click(function(){
+					var rf_num = $(this).parents("td").siblings(".td_rfnum").text();
+					var rf_orderstate = "cancel";
+					console.log(rf_num);
+					
+					$.ajax({
+						url:"/admin/refundStateUpdate",
+						type:"get",
+						data : "rf_num="+rf_num+"&rf_orderstate="+rf_orderstate,
+						dataType:"text",
+						error:function(){
+							alert("시스템 오류. 관리자에게 문의하세요.");
+						},
+						success:function(result){
+							console.log("result => "+result);
+							location.href="/admin/refundList";
+						}
+					});
+					
+				});
+				
 
 				
 	        }); // 최상위 종료
@@ -158,12 +204,11 @@
 	                            <select name="search" id="search" class="form-control">
 	                                <option value="all">전체</option>
 	                                <option value="rf_num">환불번호</option>
-	                                <option value="p_num">구매번호</option>
 	                                <option value="b_num">도서번호</option>
 	                                <option value="b_name">도서명</option>
 	                                <option value="c_id">주문자ID</option>
 	                                <option value="rf_reason">환불사유</option>
-	                                <option value="pd_orderdate">주문상태</option>
+	                                <option value="rf_orderdate">주문상태</option>
 	                            </select>
 	                            <input type="text" name="keyword" id="keyword" class="form-control" />
 	                        </div>
@@ -185,17 +230,27 @@
 	        
 	        <div id="content_wrap">
 	            <table class="listTable table table-striped" border="1">
+	            	<colgroup>
+	                   <col width="7%" />
+	                   <col width="7%" />
+	                   <col width="21%" /> 
+	                   <col width="7%" />
+	                   <col width="8%" />
+	                   <col width="20%" />
+	                   <col width="8%" />
+	                   <col width="10%" />
+	                   <col width="10%" />
+	               </colgroup>
 	                <thead>
 	                    <tr>
 	                        <th>환불번호</th> <!--rf_num-->
-	                        <th>주문번호</th> <!--p_num-->
 	                        <th>도서번호</th> <!--b_num-->
 	                        <th>도서명</th> <!--b_name-->
 	                        <th>주문자ID</th>
 	                        <th>환불금액</th> <!--rf_price(단가)-->
 	                        <th>환불사유</th> <!--rf_reason-->
 	                        <th>승인날짜</th> <!--rf_confirmdate-->
-	                        <th>주문상태</th> <!--pdetail.pd_orderstate-->
+	                        <th>주문상태</th> <!--rf_orderstate-->
 	                        <th></th>
 	                    </tr>
 	                </thead>
@@ -205,20 +260,19 @@
 	                			<c:forEach var="list" items="${list}">
 	                				<tr>
 				                        <td class="td_rfnum">${list.rf_num}</td>
-				                        <td class="td_pnum">${list.p_num}</td>
 				                        <td>${list.b_num}</td>
 				                        <td>${list.b_name}</td>
 				                        <td>${list.c_id}</td>
 				                        <td class="td_price">${list.rf_price}</td>
 				                        <td class="text-left">${list.rf_reason}</td>
 				                        <td>${list.rf_confirmdate}</td>
-				                        <td class="td_orderstate">${list.pd_orderstate}</td>
+				                        <td class="td_orderstate">${list.rf_orderstate}</td>
 				                        <td>
 				                        	<c:choose>
-				                        		<c:when test="${list.pd_orderstate == 'reRequest'}">
+				                        		<c:when test="${list.rf_orderstate == 'reRequest'}">
 				                        			<input type="button" value="승인처리" class="btn btn-primary refundConfirmBtn" />
 				                        		</c:when>
-				                        		<c:when test="${list.pd_orderstate == 'rfConfirm'}">
+				                        		<c:when test="${list.rf_orderstate == 'rfConfirm'}">
 				                        			<input type="button" value="취소처리" class="btn btn-primary orderCancelBtn" />
 				                        		</c:when>
 				                        		<c:otherwise>

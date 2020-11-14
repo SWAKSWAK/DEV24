@@ -46,14 +46,20 @@ public class AdminBookController {
 			@RequestParam(required = false, defaultValue = "1") int startPage,
 			@RequestParam(required = false, defaultValue = "20") int listRange,
 			@RequestParam(required = false, defaultValue = "best") String sort,
+			@RequestParam(required = false, defaultValue = "null") String b_state,
 			Model model
 	) {
 
 		log.info("bookList 호출 성공");
 		log.info(page);
 
-		int cateOne_num = Integer.parseInt(category.charAt(0)+"");
-		int cateTwo_num = Integer.parseInt(category.charAt(1)+"");
+		int cateOne_num = 0;
+		int cateTwo_num = 0;
+		
+		if (!category.substring(0, 1).isEmpty())
+			cateOne_num = Integer.parseInt(category.substring(0, 1));
+		if (!category.substring(1).isEmpty())
+			cateTwo_num = Integer.parseInt(category.substring(1, 2));
 
 		BookVO bvo = new BookVO();
 		bvo.setCateOne_num(cateOne_num);
@@ -61,7 +67,7 @@ public class AdminBookController {
 		
 		// Pagination 객체 생성
 		int bookLength = bookService.getBookListCnt(bvo);
-		Pagination pagination = new Pagination(bookLength, startPage, page, cateOne_num, cateTwo_num, listRange, sort);
+		Pagination pagination = new Pagination(bookLength, startPage, page, cateOne_num, cateTwo_num, listRange, sort, b_state);
 
 		// 얻어낸 pagination객체를 통해 bookList() 호출
 		ArrayList<BookVO> bookList = bookService.bookViewList(pagination);

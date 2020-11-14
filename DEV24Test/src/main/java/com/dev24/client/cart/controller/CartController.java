@@ -44,8 +44,8 @@ public class CartController {
 		log.info("cartList() 메서드 호출");
 
 		// 임시 로그인용. 프로젝트 완료 시 삭제
-		model.addAttribute("c_id", "lee1234");
-		model.addAttribute("c_num", "2");
+//		model.addAttribute("c_id", "lee1234");
+//		model.addAttribute("c_num", "2");
 
 		List<CartVO> list = cartService.cartList(cvo);
 		List<CartVO> list1 = new ArrayList<CartVO>();
@@ -151,13 +151,14 @@ public class CartController {
 
 		int c_num = Integer.parseInt((String) session.getAttribute("c_num"));
 		log.info("c_num: " + c_num);
-		List<CartVO> cvoList = new ArrayList<CartVO>();
+//		List<CartVO> cvoList = new ArrayList<CartVO>();
 
 		cvo.setC_num(c_num);
 		cvo.setCrt_num(crt_num);
-
-		cvoList.add(cvo);
-		result = cartService.buySingleItem(cvoList.get(0));
+		log.info("cvo 에 c_num, crt_num 추가");
+//		cvoList.add(cvo);
+		log.info("cvoList 에 cvo추가 \n\t" + cvo.toString());
+		result = cartService.buySingleItem(cvo);
 		log.info("result: " + result);
 		
 		if (result == 1) {

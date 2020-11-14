@@ -26,7 +26,9 @@ public class MypageController {
 	private OrderhistoryService orderhistoryService;
 	private RefundhistoryService refundhistoryService;
 	
-	/** 마이페이지 메인 출력 */
+	/************************************************
+	 *  mypage main print
+	 *  ****************/
 	@RequestMapping(value="/mypage", method= {RequestMethod.GET})
 	public String mypage(OrderhistoryVO ohvo, RefundhistoryVO rfhvo, Model model, HttpSession session) {
 		log.info("mypage 호출 성공");
@@ -41,6 +43,6 @@ public class MypageController {
 		
 		return "mypage/mypage";
 	}
-
+//git add test
 
 }

@@ -56,7 +56,7 @@ public class BookController {
 		// Pagination 객체 생성
 		int bookLength = bookService.getBookListCnt(bvo);
 		log.info(bookLength);
-		Pagination pagination = new Pagination(bookLength, startPage, page, cateOne_num, cateTwo_num, listRange, sort);
+		Pagination pagination = new Pagination(bookLength, startPage, page, cateOne_num, cateTwo_num, listRange, sort, "reg or oop");
 		//얻어낸 pagination객체를 통해 bookList() 호출
 		ArrayList<BookVO> bookList = bookService.bookViewList(pagination);
 		log.info(bookList.toString());
@@ -79,5 +79,5 @@ public class BookController {
 		model.addAttribute("vo", vo);
 		return "book/bookDetail";
 	}
-
+//git test
 }

@@ -11,16 +11,10 @@
 		<!--<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />-->
 		<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
-		
-
-		
-		
-				<!-- 모바일 웹 페이지 설정 -->
+		<!-- 모바일 웹 페이지 설정 -->
 		<link rel="shortcut icon" href="/resources/image/icon.png" />
 		<link rel="apple-touch-icon" href="/resources/image/icon.png" />
  		
-		 
-		
 		<!--IE8이하 브라우저에서 HTML5를 인식하기 위해서는 아래의 패스필터를 적용하면 된다.(조건부주석) -->
 		<!--[if lt IE 9]>
 			<script src="/resources/js/html5shiv.js"></script>
@@ -342,13 +336,21 @@
     			var cateOne_num = parseInt(${pagination.cateOne_num});
     			var cateTwo_num = parseInt(${pagination.cateTwo_num});
     			var range = parseInt(${pagination.range});
-    			var listRange = $("#listRange").select().val();
+    			var listRange = parseInt(${pagination.listRange});
     			
-    			$("#listRange").find("option").each(function(){
+    			console.log(listRange);
+    			console.log($("#listRange").val());
+    			
+    			$("#listRange").val(listRange);
+				$("#listRange").val(listRange).attr("selected", "true");
+
+    			console.log($("#listRange").val());
+    			
+    			/* $("#listRange").find("option").each(function(){
 	    			if (this.value == ${pagination.listRange})
 	    				$(this).attr("selected", "true");
     				
-    			});
+    			}); */
     			
     			//수량 실시간 갑지 (1~99)
     			$(".crt_qty").on("propertychange change keyup paste input", function(){
@@ -456,7 +458,9 @@
 				
     			
 
-    			
+    			/*
+    				페이징 처리 관련
+    			*/
     			if (page > pageLength){
     				page = pageLength;
     			}
@@ -524,8 +528,13 @@
     			// #listRange 값이 바뀔 때마다 맞춰 출력
     			$("#listRange").change(function(){
     				listRange = $("#listRange").select().val();
+    				$(this).attr("selected", "true");
     				location.href="/book/"+category+"?listRange="+listRange;
     			});
+    			//페이징 처리 종료
+    			
+    			
+    			
     			
     			/*구매버튼 클릭시 이벤트*/
     			$(".buyBtn").click(function(){
@@ -562,100 +571,111 @@
 					};
     				
     				cvoToJSON = JSON.stringify(cvo);
+    				console.log("order() 호출 전");
     				order(cvoToJSON); 
+    				console.log("order() 호출 후");
+    				
     			});
     		
-    		
-	    		//false : range에서 벗어남
-	    		function crt_qtyRange(selector) {
-	
-					if ($(selector).val() < 0) {
-						alert("수량은 1개부터 99개 까지 입력 가능합니다."); 
-						$(selector).val("0");
-						return false;
-					}
-					if ($(selector).val() > 99) {
-						alert("수량은 1개부터 99개 까지 입력 가능합니다."); 
-						$(selector).val("99");
-						return false;
-					}
-					return true;
-				};
+    			$(".sort").click(function(){
+    				var sort = $(this).val();
+    				console.log(sort);
+    			});
+				
 				
 			});//onload
+			
+			
+			
+			
+    		//false : range에서 벗어남
+    		function crt_qtyRange(selector) {
+
+				if ($(selector).val() < 0) {
+					alert("수량은 1개부터 99개 까지 입력 가능합니다."); 
+					$(selector).val("0");
+					return false;
+				}
+				if ($(selector).val() > 99) {
+					alert("수량은 1개부터 99개 까지 입력 가능합니다."); 
+					$(selector).val("99");
+					return false;
+				}
+				return true;
+			};
     		
-				//장바구니 추가 함수
-				function addCart(data){
-					var returnVal = "";
-					
-					$.ajax({
-						url : "/cart/addToCart",
-						type : "POST",
-						data : data,
-						async: false,
-						headers : {
-							"Content-Type" : "application/json",
-							"X-HTTP-Method-Override" : "POST"
-						},
-						dataType : "text",
-						success: function (result) {
-							returnVal = 'SUCCESS';
-						},
-						error : function(){
-							alert("장바구니 담기에 실패했습니다.\n관리자에게 문의해 주세요.");
-							returnVal = 'FAIL';
-						}
-					});
-					console.log(returnVal);
-					return returnVal;
-				};
+			//장바구니 추가 함수
+			function addCart(data){
+				var returnVal = "";
 				
-				function buySingleItem(data) {
-					var returnVal = 0;
-		            $.ajax({
-						url : "/cart/buySingleItem",
-						type : "POST",
-						data : data,
-						async: false,
-						headers : {
-							"Content-Type" : "application/json",
-							"X-HTTP-Method-Override" : "POST"
-						},
-						success : function(result) {
-							returnVal = result;
-							console.log("success: "+returnVal)
-							return result;
-						},
-						error : function(){
-							alert("구매화면으로 이동이 실패했습니다.\n관리자에게 문의해 주세요.");
-							returnVal = -1;
-							console.log("error: "+returnVal)
-						}
-		            });
-					return returnVal;
-				};
-				
-	    		/* 체크된 상품 주문하기 눌렀을 때 */
-	    		 function order(data){
-	    			console.log("order 호출");
-		            $.ajax({
-		               url : "/purchase/purchaseSingleItem.json",
-		               type : "post",
-		               data : data,
-		               async: false,
-		               headers : { 
-		                  "Content-Type" : "application/json",
-		                  "X-HTTP-Method-Override" : "POST"
-		               }, 
-		               dataType : "text",
-		               success: function (result) {
-		            	   location.href="/purchase/purchaseForm";
-		               },
-		               error : function(){
-		                  alert("시스템 오류 발생. \n관리자에게 문의해 주세요.");
-		               }
-		            });
-		         };
+				$.ajax({
+					url : "/cart/addToCart",
+					type : "POST",
+					data : data,
+					async: false,
+					headers : {
+						"Content-Type" : "application/json",
+						"X-HTTP-Method-Override" : "POST"
+					},
+					dataType : "text",
+					success: function (result) {
+						returnVal = 'SUCCESS';
+					},
+					error : function(){
+						alert("장바구니 담기에 실패했습니다.\n관리자에게 문의해 주세요.");
+						returnVal = 'FAIL';
+					}
+				});
+				console.log(returnVal);
+				return returnVal;
+			};
+			
+			function buySingleItem(data) {
+				var returnVal = 0;
+	            $.ajax({
+					url : "/cart/buySingleItem",
+					type : "POST",
+					data : data,
+					async: false,
+					headers : {
+						"Content-Type" : "application/json",
+						"X-HTTP-Method-Override" : "POST"
+					},
+					success : function(result) {
+						returnVal = result;
+						console.log("success: "+returnVal)
+						return result;
+					},
+					error : function(){
+						alert("구매화면으로 이동이 실패했습니다.\n관리자에게 문의해 주세요.");
+						returnVal = -1;
+						console.log("error: "+returnVal)
+					}
+	            });
+				return returnVal;
+			};
+			
+    		/* 체크된 상품 주문하기 눌렀을 때 */
+    		 function order(data){
+    			console.log("order 호출");
+	            $.ajax({
+	               url : "/purchase/purchaseSingleItem.json",
+	               type : "post",
+	               data : data,
+	               async: false,
+	               headers : { 
+	                  "Content-Type" : "application/json",
+	                  "X-HTTP-Method-Override" : "POST"
+	               }, 
+	               dataType : "text",
+	               success: function (result) {
+	            	   location.href="/purchase/SingleItemPurchaseForm";
+	               },
+	               error : function(){
+	                  alert("시스템 오류 발생. \n관리자에게 문의해 주세요.");
+	               }
+	            });
+	         };
     	</script>
 	</head>
 	<body>
@@ -663,11 +683,14 @@
 		<div class="contentHeader">
 			<div class="top">
 				<div class="topLeftDiv">
-					<span class="sort devPowSort">DEV24 랭킹순</span>
-					<span class="sort bestSort">판매량순</span>
-					<span class="sort newSort">신상품순</span>
-					<span class="sort lowPriceSort">낮은가격순</span>
-					<span class="sort highPriceSort">높은가격순</span>
+					<span class="sort dev24">
+						<input type="hidden" name="sort" value="dev24" />
+						DEV24 랭킹순
+					</span>
+					<span class="sort best">판매량순</span>
+					<span class="sort new">신상품순</span>
+					<span class="sort lowPrice">낮은가격순</span>
+					<span class="sort highPrice">높은가격순</span>
 				</div>
 				<div class="topRightDiv">
 					<select id="listRange">
