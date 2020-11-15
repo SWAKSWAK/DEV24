@@ -30,15 +30,6 @@
 			var stateUpdateBtn = 0;
 		
 			$(function(){
-				// 금액 콤마찍기
-				/*var l = $(".table tbody tr").length;
-				var price = 0;
-				for(var i=0; i<l; i++){
-    				price = $(".table tbody tr").eq(i).find(".td_price").text();
-    				$(".table tbody tr").eq(i).find(".td_price").text(addComma(price));
-    				
-    				//console.log("${ohvo}");
-    			}*/
 				
 				/* 검색할 날짜 기본값 설정 */
 				var today = new Date(); // 오늘날짜
@@ -208,6 +199,23 @@
 						location.href="/refund/refundForm?p_num="+p_num+"&b_num="+b_num+"&pd_num="+pd_num;
 					}
 					
+				});
+				
+				
+				/* 리뷰 작성 버튼 처리 */
+				$(".reviewInsertFormBtn").click(function(){
+					var b_num = $(this).parents("tr").attr("data-num");
+					var pd_num = $(this).parents("tr").attr("data-pd");
+					console.log(b_num);
+					
+					location.href="/review/reviewForm?b_num="+b_num+"&pd_num="+pd_num;
+				});
+				
+				
+				/* 도서명 클릭 시 도서상세페이지 이동 */
+				$(".td_title").click(function(){
+					var b_num = $(this).parents("tr").attr("data-num");
+					location.href="/book/detail/"+b_num;
 				});
 				
 			}); // 최상위 종료

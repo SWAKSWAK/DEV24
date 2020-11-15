@@ -124,7 +124,7 @@
 
 .tit_mypage a{
     display: inline-block;
-    float: right;
+    float:right;
     font-size : 12px;
     margin-right: 5px;
     line-height: 35px;
@@ -144,12 +144,15 @@
 }
 
 .table .td_num{
-    cursor: pointer;
     color: #424874;
     font-weight: bold;
 }
 
-.table .td_num:hover{
+.table .td_title{
+	cursor : pointer;
+}
+
+.table .td_title:hover{
     text-decoration: underline;
 }
 
