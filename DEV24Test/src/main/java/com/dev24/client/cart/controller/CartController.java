@@ -151,12 +151,10 @@ public class CartController {
 
 		int c_num = Integer.parseInt((String) session.getAttribute("c_num"));
 		log.info("c_num: " + c_num);
-//		List<CartVO> cvoList = new ArrayList<CartVO>();
 
 		cvo.setC_num(c_num);
 		cvo.setCrt_num(crt_num);
 		log.info("cvo 에 c_num, crt_num 추가");
-//		cvoList.add(cvo);
 		log.info("cvoList 에 cvo추가 \n\t" + cvo.toString());
 		result = cartService.buySingleItem(cvo);
 		log.info("result: " + result);

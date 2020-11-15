@@ -1,5 +1,7 @@
 package com.dev24.client.book.vo;
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Data;
@@ -22,7 +24,7 @@ public class BookVO {
 	private String b_pub			="";
 	private String b_authorinfo		="";
 	private String b_info			="";
-	private String b_state			="";
+	private String b_state			=""; //도서상태 : null(등록), unreg, oop(out of print)
 	private int b_price				=0;
 	private int cateOne_num			=0;
 	private int cateTwo_num			=0;
@@ -33,7 +35,7 @@ public class BookVO {
 	private double ra_avg			= ra_sum * ra_count;
 	
 	//이미지
-	private String listcover_imgurl 	="";
+	private String listcover_imgurl 	=""; 
 	private String detailcover_imgurl 	="";
 	private String detail_imgurl		="";
 	
@@ -47,7 +49,23 @@ public class BookVO {
 	private String url;
 	
 	// 정렬에 따라 츨력하기 위한 정보 (기본값 = "best")
-	// dev24 / best / new / lowPrice / highPrice
-	String sort = "best";
+	// dev24 / best / new / old / lowPrice / highPrice
+	private String b_sort = "best";
 	
+	//b_salesRate : b_num 별로 가지는 sum(pd_qty)
+	//판매량을 조회할 수 있다.
+	private int b_salesRate;
+	
+	/****************
+	 * 등록/미등록/절판 여부를 판단하기 위한 필드
+	 * null 또는 "" 또는 "all"	:모두 조회
+	 * "null"				:등록상품만 조회
+	 * "unreg"				:미등록 상품만 조회
+	 * "outOfPrint"				:절판 상품만 조회
+	 * "reg or oop"			:등록 과 절판 모두 출력
+	 ****************/
+	private String b_stateKeyword = "all";
+	
+	//관리자페이지에서 도서 체크 후 일괄 처리에 사용하는 항목
+	private List<Integer> bNumList;
 }

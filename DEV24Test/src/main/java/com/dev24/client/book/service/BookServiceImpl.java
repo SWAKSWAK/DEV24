@@ -30,8 +30,8 @@ public class BookServiceImpl implements BookService {
 	private BookImgDAO bookimgDAO;
 
 	@Override
-	public ArrayList<BookVO> bookViewList(Pagination pagination) {
-		ArrayList<BookVO> list = bookDAO.bookViewList(pagination);
+	public ArrayList<BookVO> bookList(Pagination pagination) {
+		ArrayList<BookVO> list = bookDAO.bookList(pagination);
 		return list;
 	}
 

@@ -6,7 +6,7 @@ import lombok.Data;
 public class Pagination {
 
 	private int listRange;	// 한페이지에 출력될 도서의 개수
-	private int range 			= 10;	// 한번에 숫자로 보여질 페이지 범위 -1(기본값 5)
+	private int range 			= 10;	// 한번에 숫자로 보여질 페이지 범위 -1(기본값 10)
 	private int page; 					// 현재 목록의 페이지 번호
 	private int startPage 		= 1;	// 각 페이지 범위 시작 번호 (기본값 1)
 	private int endPage; 				// 각 페이지 범위 끝 번호 (기본값 5)
@@ -23,16 +23,17 @@ public class Pagination {
 	
 	// 정렬에 따라 츨력하기 위한 정보 (기본값 = "best")
 	// dev24 / best / new / lowp / highp
-	String sort = "best";
+	String b_sort = "best";
 	
 	/****************
 	 * 등록/미등록/절판 여부를 판단하기 위한 필드
-	 * b_state : ""     (모두 조회)
-	 * b_state : "null" (등록상품만 조회)
-	 * b_state : "unreg"(미등록 상품만 조회)
-	 * b_state : "oop"  (out of print/절판 상품만 조회)
+	 * null 또는 "" 또는 "all"	:모두 조회
+	 * "null"				:등록상품만 조회
+	 * "unreg"				:미등록 상품만 조회
+	 * "outOfPrint"			:절판 상품만 조회
+	 * "reg or oop"			:등록 과 절판 모두 출력
 	 ****************/
-	String b_state = "null";
+	String b_stateKeyword = "null";
 
 	/******************************************************************
 	 * 페이징 처리를 위한 메소드
@@ -43,15 +44,16 @@ public class Pagination {
 	 * @param cateOne_num : 대분류 코드
 	 * @param cateTwo_num : 소분휴 코드
 	 ******************************************************************/
-	public Pagination(int bookLength, int startPage, int page, int cateOne_num, int cateTwo_num, int listRange, String sort, String b_state) {
+	public Pagination(int bookLength, int startPage, int page, int cateOne_num, int cateTwo_num, int listRange, String b_sort, String b_stateKeyword) {
 		this.page = page;
 		this.listRange = listRange;
-		this.b_state = b_state;
+		this.b_stateKeyword = b_stateKeyword;
+		this.b_sort = b_sort;
 
 		// 한 페이지에 출력될 첫번째 상품 rownum
 		// 예: 1페이지의 minRownum은 1이므로 (1-1)*10+1==1
-		int startRownum = (page - 1) * 10 + 1;
-		this.startRownum = startRownum;
+		int strtRownum = (page - 1) * listRange + 1;
+		this.startRownum = strtRownum;
 
 		// 한페이지에 출력될 마지막 상품 rownum
 		this.lastRownum = startRownum + listRange;

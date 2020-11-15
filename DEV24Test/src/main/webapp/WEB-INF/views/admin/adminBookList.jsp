@@ -57,29 +57,35 @@
     			width: auto;
     			display: inline-block;
     		}
+    		ul.sort, ul.sort * {
+    			display: inline-block !important;
+    		}
 		</style>
     	<script>
 			$(function() {
-    			//pagination 정보  변수에 담기
-    			var listRange = parseInt(${pagination.listRange});
-				$("#listRange").val(listRange).attr("selected", "true");
+				//listRangeSelect 받아온 값으로 활성화
+    			var listRange = Number($("#listRange").val());
+				$("#listRangeSelect").val(listRange).attr("selected", "true");
 				
-    			var page = parseInt(${pagination.page});//현재페이지
-    			var startPage = parseInt(${pagination.startPage});//지금 길이의 시작페이지
-    			var endPage = parseInt(${pagination.endPage});
-    			var pageLength = parseInt(${pagination.pageLength});
-    			var cateOne_num = parseInt(${pagination.cateOne_num});
-    			var cateTwo_num = parseInt(${pagination.cateTwo_num});
-    			var range = parseInt(${pagination.range});
-    			var category = window.location.pathname.substr(12, 14);// "/admin/book/00" 에서  "00"만 추출
+				//stateSelect 받아온 값으로 활성화
+    			var stateSelect = $("#b_stateKeyword").val();
+				$("#stateSelect").val(stateSelect).attr("selected", "true");
+				
+    			var page = Number($("#page").val());//현재페이지
+    			var startPage = Number($("#startPage").val());//지금 길이의 시작페이지
+    			var endPage = Number($("#endPage").val());
+    			var pageLength = Number($("#pageLength").val());
+    			var cateOne_num = Number(${pagination.cateOne_num});
+    			var cateTwo_num = Number(${pagination.cateTwo_num});
+    			var range = Number($("#range").val());
+    			var category = Number(window.location.pathname.substr(12, 14));// "/admin/book/00" 에서  "00"만 추출
 
     			//버튼 클릭 여부에 따라 실행할 기본 uri 틀
 				var uri = "/admin/book/"+cateOne_num+cateTwo_num+"?page=";
-    			
-    			$("#listRange").val(listRange);
-				$("#cateOne_num").val(cateOne_num).attr("selected", "true");
-				$("#cateTwo_num").val(cateTwo_num).attr("selected", "true");
 				
+				//카테고리 선택에 따른 소분류 select 박스 출력
+				//먼저 대분류 값을 지정한 후 동적태그 생성 후 소분류 값 지정
+				$("#cateOne_num").val(cateOne_num).attr("selected", "true");
 				if (cateOne_num == 0) {
 					$("#cateTwo_num").html("<option value='0'>소분류</option>");
 				} else if (cateOne_num == 1){
@@ -92,118 +98,16 @@
 					$("#cateTwo_num").append("<option value='6'>IT 전문서</option>")
 									 .append("<option value='7'>컴퓨터 수험서</option>")
 									 .append("<option value='8'>웹/컴퓨터 입문&활용</option>");
-				} 
-
-
-				//수량 실시간 갑지 (1~99)
-				$(".crt_qty").on(
-						"propertychange change keyup paste input",
-						function() {
-							crt_qtyRange(this);
-						});
-
-				$(".cartBtn").click(
-					function() {
-						var index = $(".cartBtn").index(this);
-						if (!crt_qtyRange(".crt_qty:eq("+ index + ")")){
-							return;
-						}
-						
-						if ($(".crt_qty:eq(" + index + ")").val() == 0) {
-							alert("수량을 입력해 주세요.");
-							$(".crt_qty:eq(" + index + ")").val(0);
-							return;
-						}
-	
-						var cvo = new Object();
-						var cvoList = new Array();
-	
-						var dataNum = $(this).parents(".bookWrap").attr("data-num");
-						var crt_qty = $(".crt_qty:eq(" + index + ")").val();
-						var b_price = $(".b_price:eq(" + index + ")").html();
-	
-						cvo.b_num = dataNum;
-						cvo.crt_qty = crt_qty;
-						cvo.crt_price = b_price * crt_qty;
-						console.log(cvo.b_price);
-	
-						cvoList.push(cvo);
-	
-						var data = JSON.stringify(cvoList);
-	
-						var result = addCart(data);
-						if (result == 'SUCCESS')
-							$(".cartMsg:eq(" + index + ")").css("display", "block");
-
+				}
+				//동적 태그 생성 후 선정
+				$("#cateTwo_num").val(cateTwo_num).attr("selected", "true");
+				
+				$(".b_sort > .nav-link").click(function(){
+					var index = $(".nav-link").index(this);
+					var sortArr = ["best", "new", "old", "lowPrice", "highPrice"];
+					$("#b_sort").val(sortArr[index]);
+					goURL(category);
 				});
-
-				$(".selectedCartBtn").click(
-					function() {
-						var isQtyZero = false;
-						var cvoList = new Array();
-						var cvo;
-						if ($(".checkbox:checked").length == 0) {
-							alert("선택된 도서가 없습니다.");
-							return;
-						}
-						$(".checkbox:checked").each(
-							function(idx) {
-								cvo = new Object();
-
-								var index = $(".checkbox").index(this);
-								var dataNum = $(this).parents(".bookWrap").attr("data-num");
-								var crt_qty = $(".crt_qty:eq(" + index + ")").val();
-								var b_price = $(".b_price:eq("+ index + ")").html();
-
-								if (crt_qty < 1) {
-									alert("수량을 입력해 주세요.");
-									isQtyZero = true;
-									return;
-								}
-
-								cvo.b_num = dataNum;
-								cvo.crt_qty = crt_qty;
-								cvo.crt_price = b_price * crt_qty;
-
-								console.log(cvo.toString());
-								cvoList.push(cvo);
-							});
-
-						if (isQtyZero)
-							return;
-
-						var cartJsonArr = JSON.stringify(cvoList);
-						console.log(cartJsonArr);
-						var result = addCart(cartJsonArr);
-						if (result == 'SUCCESS')
-							$(".contentHeaderCartMsg").css("display","block");
-					});
-
-				$(".goCartBtn").click(function() {
-					location.href = "/cart/cartList";
-				});
-				$(".noCartBtn").click(function() {
-					$(this).parent().parent("div").css("display", "none");
-				});
-
-				$(".upBtn").click(
-					function() {
-						console.log("upBtn");
-						var n = $(".upBtn").index(this);
-						var crt_qty = $(".crt_qty:eq(" + n + ")");
-						$(".crt_qty:eq(" + n + ")").val(crt_qty.val() * 1 + 1);
-						if (!crt_qtyRange(crt_qty))
-							return;
-					});
-
-				$(".downBtn").click(
-					function() {
-						var n = $(".downBtn").index(this);
-						var crt_qty = $(".crt_qty:eq(" + n + ")");
-						$(".crt_qty:eq(" + n + ")").val(crt_qty.val() * 1 - 1);
-						if (!crt_qtyRange(crt_qty))
-							return;
-					});
 				
 				$("#checkAll").click(function(){
 					if ($("#checkAll").prop("checked")) {
@@ -213,23 +117,14 @@
 					}
 				});
 				
-				
 				/* 대분류, 소분류 선택에 따른 처리 */
 				$("#cateOne_num").change(function(){
 					var cateOneSelected = $("#cateOne_num").select().val();
-					if (cateOneSelected == 0) {
-						$("#cateTwo_num").html("<option value='0'>소분류</option>");
-					} else if (cateOneSelected == 1){
-						$("#cateTwo_num").append("<option value='1'>프로그래밍 언어</option>")
-										 .append("<option value='2'>OS/데이터베이스</option>")
-										 .append("<option value='3'>웹사이트</option>")
-										 .append("<option value='4'>컴퓨터 입문/활용</option>")
-										 .append("<option value='5'>네트워크/해킹/보안</option>");
-					} else {//2
-						$("#cateTwo_num").append("<option value='6'>IT 전문서</option>")
-										 .append("<option value='7'>컴퓨터 수험서</option>")
-										 .append("<option value='8'>웹/컴퓨터 입문&활용</option>");
-					}
+					goURL(cateOneSelected);
+				});
+				$("#cateTwo_num").change(function(){
+					var cateTwoSelected = $("#cateTwo_num").select().val();
+					goURL(cateOne_num + cateTwoSelected + "");
 				});
 				
 				/* 보기버튼 클릭처리 */
@@ -238,8 +133,6 @@
 					location.href = location.href="/admin/book/"+category+"?listRange="+listRange;
 				});
 				
-
-    		
 				/*	페이징 처리 관련 */
 				if (page > pageLength){
 					page = pageLength;
@@ -255,39 +148,48 @@
 					$(".nextRangeBtn").css("cursor", "default");
 				}
 				
-				
 				$(".prevBtn").click(function(){
 					if (startPage > 1){
 						if (startPage-10 > 0){
-						startPage = (startPage-10);
-							location.href = uri+(startPage)+"&startPage="+(startPage)+"&listRange="+listRange;
+						startPage = (Number(startPage)-10);
+							$("#page").val(Number(startPage));
+							goURL(category);
 						} else {
-							startPage = 1;
-							location.href = uri+(startPage)+"&startPage="+(startPage)+"&listRange="+listRange;
+							$("#page").val("1");
+							goURL(category);
 						}
 					}
 				});
 	
 				$(".nextBtn").click(function(){
 					if(startPage+10 <= pageLength){
-						startPage = (startPage+10);
-						location.href = uri+(startPage)+"&startPage="+(startPage)+"&listRange="+listRange;
+						$("#startPage").val(startPage+10);
+						$("#page").val(startPage);
+						goURL(category);
 					}
 				});
 	
 				$(".prevRangeBtn").click(function(){
 					if (startPage-1 > 1){
-						location.href = uri+"1&startPage=1&listRange="+listRange;
+						$("#page").val(1);
+						$("#startPage").val(1);
+						goURL(category);
 					}
 				});
 	
 				$(".nextRangeBtn").click(function(){
-					if(startPage+10 <= pageLength)
-						location.href = uri+(pageLength-9)+"&startPage="+(pageLength)+"&listRange="+listRange;
+					if(startPage+10 <= pageLength){
+						$("#page").val(pageLength);
+						$("#startPage").val(pageLength - pageLength%range + 1);
+						goURL(category);
+					}
+						
 				});
 				
 				$(".pageNumBtn").click(function(){
-					location.href = uri+$(this).html()+"&startPage="+startPage+"&listRange="+listRange;
+					var page = $(this).html();
+					$("#page").val(page);
+					goURL(category);
 				});
 				
 				$(".pageNum[data-num='"+page+"'] > a.pageNumBtn")
@@ -299,19 +201,108 @@
 					location.href = "/admin/book/detail/"+b_num;
 				});
 	
-				$(".listcover").click(function(){
-					var b_num = $(this).parents(".bookWrap").attr("data-num");
-					location.href = "/admin/book/detail/"+b_num;
-				});
-				
 				// #listRange 값이 바뀔 때마다 맞춰 출력
-				$("#listRange").change(function(){
-					listRange = $("#listRange").select().val();
-					location.href="/admin/book/"+category+"?listRange="+listRange;
+				$("#listRangeSelect").change(function(){
+					var listRangeSelect = $("#listRangeSelect").val();
+					$("#listRange").val(listRangeSelect);
+					goURL(category);
 				});
 				//페이징 처리 종료
+				
+				//#stateSelect 값이 바뀔 때마다 맞춰 출력
+				$("#stateSelect").change(function(){
+					var stateSelect = $("#stateSelect").val();
+					$("#b_stateKeyword").val(stateSelect);
+					goURL(category);
+				});
+				
+				//선택항목 등록/절판/품절 처리
+				$(".updateBookStateBtn").click(function(){
+					if ($(".checkbox:checked").length < 1){
+						alert("선택한 도서가없습니다. \n도서를 선택해 주세요");
+						return;
+					}
+					
+					var isSame = false;//이미 처리된 상품을 똑같은 처리를 하는지 판단하는 변수
+					
+					var b_stateKeyword = $(this).val();
+					var b_stateKeywordKR;
+
+					if(b_stateKeyword == 'reg'){
+						b_stateKeywordKR = '등록';
+					}
+					if(b_stateKeyword == 'soldOut'){
+						b_stateKeywordKR = '품절';
+					}
+					if(b_stateKeyword == 'outOfPrint'){
+						b_stateKeywordKR = '절판';
+					}
+
+					var bvo = new Object();
+					var bNumList = new Array();
+					
+					$(".checkbox:checked").each(function(){
+						
+						var index = $(".checkbox").index(this);
+						
+						if ($("span.b_state:eq("+index+")").html().trim() == b_stateKeywordKR){
+							alert("선택한 항목 중 이미 적용된 상품이 있습니다.\n적용되지 않은 상품을 선택해 주십시오");
+							isSame = true;
+							return;
+						}
+						
+						var b_num = $(".bookWrap:eq("+index+")").attr("data-num");		
+						bNumList.push(Number(b_num));
+						
+					});
+					if(isSame) return;
+					
+					bvo.bNumList = bNumList;
+					bvo.b_stateKeyword = b_stateKeyword;
+					
+					var data = JSON.stringify(bvo);
+					
+					console.log(bvo.toString());
+					console.log(data.toString());
+					updateBookState(data);
+				});
+				
+				
+			});//onload
 			
-			});
+			//b_state 컬럼 업데이트 함수
+			function updateBookState(data){
+				
+				$.ajax({
+					url : "/admin/book/updateBookState",
+					type : "POST",
+					data : data,
+					headers : {
+						"Content-Type" : "application/json",
+						"X-HTTP-Method-Override" : "POST"
+					}, 
+					dataType : "text",
+					success : function(result) {
+						alert(result + "권의 도서가 정상처리 되었습니다.");
+						location.reload();
+					},
+					error : function(){
+						alert("도서 등록에 실패하였습니다.");
+					}
+				});
+				
+			};
+			
+			//패이지 이동 URI값 조합 함수
+			function goURL(category){
+				var url = "/admin/book/"+category;
+				$("#goURL").attr({
+						"method" : "get",
+						"action" : url
+				});
+				
+				$("#goURL").submit();
+			};
 
 			//장바구니 추가 함수
 			function addCart(data) {
@@ -342,8 +333,23 @@
 	</head>
 	<body>
 		<div id="content_wrap">
+			<form id="goURL">
+				<input type="hidden" name="page" id="page" value="${pagination.page}"/>
+				<input type="hidden" name="startPage" id="startPage" value="${pagination.startPage}" />
+				<input type="hidden" name="endPage" id="endPage" value="${pagination.endPage}" />
+				<input type="hidden" name="pageLength" id="pageLength" value="${pagination.pageLength}" />
+				<input type="hidden" name="range" id="range" value="${pagination.range}" />
+				<input type="hidden" name="listRange" id="listRange" value="${pagination.listRange}" />
+				<input type="hidden" name="b_sort" id="b_sort" value="" />
+				<input type="hidden" name="b_stateKeyword" id="b_stateKeyword" value="${pagination.b_stateKeyword}" />
+				<input type="hidden" name="b_searchKeyword" id="b_searchKeyword" value=""/>
+			</form>
 			<div class="contentHeader">
-				<div class="bottom">
+				<div class="contentHeaderTop">
+					<form ></form>
+					<select name="" id=""></select>
+				</div>
+				<div class="contentHeaderBottom">
 					<!-- pagination -->
 					<div class="bottomLeftDiv">
 						<div class="paginationBox">
@@ -372,7 +378,15 @@
 									</a>
 								</li>
 							</ul>
-							<select id="listRange" class="pull-right form-control">
+							<select name="stateSelect" id="stateSelect" class="pull-right form-control">
+								<option value="">도서상태</option>
+								<option value="all">모두</option>
+								<option value="reg">등록</option>
+								<option value="unreg">미등록</option>
+								<option value="regOrOop">등록 또는 절판</option>
+								<option value="oop">절판</option>
+							</select>
+							<select id="listRangeSelect" class="pull-right form-control">
 								<option value="20">20개씩 보기</option>
 								<option value="40">40개씩 보기</option>
 							</select>
@@ -390,8 +404,25 @@
 							<option value="0">소분류</option>
 						</select>
 						<button type="button" class="btn btn-default" id="cateView" >보기</button>
-						<button type="button" class="btn btn-default pull-right" id="selectedOOP">일괄 절판</button>
-						<button type="button" class="btn btn-default pull-right" id="selectedREG">일괄 등록</button>
+						<ul class="nav sort justify-content-center">
+							<li class="nav-item sort b_sort">
+								<a class="nav-link sort active" href="#">판매순</a>
+							</li>
+							<li class="nav-item sort b_sort">
+								<a class="nav-link sort active" href="#">신상품순</a>
+							</li>
+							<li class="nav-item sort b_sort">
+								<a class="nav-link sort active" href="#">오래된순</a>	
+							</li>
+							<li class="nav-ite sortm b_sort">
+								<a class="nav-link sort active" href="#">낮은 가격순</a>
+							</li>
+							<li class="nav-item sort b_sort">
+								<a class="nav-link sort active" href="#">높은 가격순</a>
+							</li>
+						</ul>
+						<button type="button" class="btn btn-default pull-right updateBookStateBtn" id="selectedOOP" value="outOfPrint" >선택항목 절판 처리</button>
+						<button type="button" class="btn btn-default pull-right updateBookStateBtn" id="selectedREG" value="reg" >선택항목 등록</button>
 					</div>
 				</div><!-- bottom -->
 			</div> <!-- contentHeader -->
@@ -402,14 +433,17 @@
 					<th class="text-left">도서명</th>
 					<th class="text-center">저자</th>
 					<th class="text-center">출판사</th>
+					<th class="text-center">출간 날짜</th>
 					<th class='text-center'>가격</th>
+					<th class="text-center">판매수량</th>
+					<th class="text-center">상태</th>
 					<th class="text-left">
 						<input type="checkbox" id="checkAll"/>
 					</th>
 				</tr>
 				<c:choose>
-					<c:when test="${ not empty bookList }">
-						<c:forEach var="bl" items="${ bookList }">
+					<c:when test="${ not empty bList }">
+						<c:forEach var="bl" items="${ bList }">
 							<tr class="bookWrap" data-num="${ bl.b_num }">
 								<td class="b_num text-center">
 									${bl.b_num}
@@ -419,12 +453,38 @@
 								</td>
 								<td class="b_author text-center">${ bl.b_author }</td>
 								<td class="b_pub text-center">${ bl.b_pub }</td>
+								<td class="b_pub text-center">${ bl.b_date }</td>
 								<td class="b_price text-center">
 									<span class="b_price_hidden"  style="display: none" >${ bl.b_price }</span>
 									<fmt:formatNumber value="${ bl.b_price }"/>
 								</td>
+								<td class="b_salesRate text-center">
+									<span class="b_salesRate">${ bl.b_salesRate }</span>
+								</td>
+								<td class="b_state text-center">
+										<c:if test="${ empty bl.b_state }">
+											<span class="b_state" style="color:blue">
+												등록
+											</span>
+										</c:if>
+										<c:if test="${ bl.b_state == 'outOfPrint' }">
+											<span class="b_state" style="color:gray">
+												절판
+											</span>
+										</c:if>
+										<c:if test="${ bl.b_state == 'unreg' }">
+											<span class="b_state" style="color:red">
+												미등록
+											</span>
+										</c:if>
+										<c:if test="${ bl.b_state == 'soldOut' }">
+											<span class="b_state" style="color:orange">
+												품절
+											</span>
+										</c:if>
+								</td>
 								<td class="chkWrap">
-									<input type="checkbox" class="checkbox" value="${ bl.b_num }" />
+									<input type="checkbox" class="checkbox text-center" value="${ bl.b_num }" />
 								</td>
 							</tr><!-- .bookWrap -->
 						</c:forEach>

@@ -32,7 +32,7 @@ public class BookController {
 						@RequestParam(required = false, defaultValue = "1") int page,
 						@RequestParam(required = false, defaultValue = "1") int startPage,
 						@RequestParam(required = false, defaultValue = "20") int listRange,
-						@RequestParam(required = false, defaultValue = "best") String sort,
+						@RequestParam(required = false, defaultValue = "best") String b_sort,
 						Model model
 	) {
 		int cateOne_num = 0;
@@ -56,9 +56,9 @@ public class BookController {
 		// Pagination 객체 생성
 		int bookLength = bookService.getBookListCnt(bvo);
 		log.info(bookLength);
-		Pagination pagination = new Pagination(bookLength, startPage, page, cateOne_num, cateTwo_num, listRange, sort, "reg or oop");
+		Pagination pagination = new Pagination(bookLength, startPage, page, cateOne_num, cateTwo_num, listRange, b_sort, "regOrOop");
 		//얻어낸 pagination객체를 통해 bookList() 호출
-		ArrayList<BookVO> bookList = bookService.bookViewList(pagination);
+		ArrayList<BookVO> bookList = bookService.bookList(pagination);
 		log.info(bookList.toString());
 		log.info(pagination.toString());
 		

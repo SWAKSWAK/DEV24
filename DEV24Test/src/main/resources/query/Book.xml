@@ -7,6 +7,92 @@
 		<result property="b_authorinfo" column="b_authorinfo" jdbcType="CLOB" javaType="java.lang.String"/>
 		<result property="b_info" column="b_info" jdbcType="CLOB" javaType="java.lang.String"/>
 	</resultMap>
+	
+	<!-- where조건에 따른 sql문 -->
+	<sql id="bookListWhere">
+		<if test="cateOne_num == 0">
+		</if>
+		<if test="cateOne_num == 1">
+			<![CDATA[AND cateOne_num = 1]]>
+		</if>
+		<if test="cateOne_num == 2">
+			<![CDATA[AND cateOne_num = 2]]>
+		</if>
+		<if test="cateTwo_num == 0">
+		</if>
+		<if test="cateTwo_num == 1">
+			<![CDATA[AND cateTwo_num = 1]]>
+		</if>
+		<if test="cateTwo_num == 2">
+			<![CDATA[AND cateTwo_num = 2]]>
+		</if>
+		<if test="cateTwo_num == 3">
+			<![CDATA[AND cateTwo_num = 3]]>
+		</if>
+		<if test="cateTwo_num == 4">
+			<![CDATA[AND cateTwo_num = 4]]>
+		</if>
+		<if test="cateTwo_num == 5">
+			<![CDATA[AND cateTwo_num = 5]]>
+		</if>
+		<if test="cateTwo_num == 6">
+			<![CDATA[AND cateTwo_num = 6]]>
+		</if>
+		<if test="cateTwo_num == 7">
+			<![CDATA[AND cateTwo_num = 7]]>
+		</if>
+		<if test="cateTwo_num == 8">
+			<![CDATA[AND cateTwo_num = 8]]>
+		</if>
+		<!-- 등록 -->
+		<if test="b_stateKeyword == 'reg'">
+			AND b_state is null
+		</if>
+		<!-- 등록 과 절판 모두 출력 (사용자 페이지에서는 해당출력) -->
+		<if test="b_stateKeyword == 'regOrOop'">
+			AND b_state is null
+			OR b_state = 'oop'
+		</if>
+		<!-- 미등록 -->
+		<if test="b_stateKeyword == 'unreg'">
+			AND b_state = 'unreg'
+		</if>
+		<!-- 절판 -->
+		<if test="b_stateKeyword == 'outOfPrint'">
+			AND b_state = 'outOfPrint'
+		</if>
+		<!-- 품절 -->
+		<if test="b_stateKeyword == 'soldOut'">
+			AND b_state = 'soldOut'
+		</if>
+		<!-- 명시 안할경우 모두 출력 -->
+		<if test="b_stateKeyword == null or b_stateKeyword == '' or b_stateKeyword == 'all'">
+		</if>
+	</sql>
+	
+	<!-- 정렬조건에 따른 sql문 -->
+	<sql id="bookListOrderBy">
+		<if test="b_sort =='new'">
+			ORDER BY
+				b_date DESC
+		</if>
+		<if test="b_sort =='old'">
+			ORDER BY
+				b_date ASC
+		</if>
+		<if test="b_sort =='lowPrice'">
+			ORDER BY
+				b_price ASC
+		</if>
+		<if test="b_sort =='highPrice'">
+			ORDER BY
+				b_price DESC
+		</if>
+		<if test="b_sort == 'best'">
+			ORDER BY
+				b_salesRate DESC nulls last
+		</if>
+	</sql>
 
 	<!-- 시퀀스값 구하기 -->
 	<select id="bookNumber" resultType="int">
@@ -39,139 +125,74 @@
 		SELECT
 			count(*) as bookLength
 		FROM
-			book
+			book b LEFT OUTER JOIN pdetail p
+		ON b.b_num = p.b_num
 		<where>
-			<if test="cateOne_num == 0">
-			</if>
-			<if test="cateOne_num == 1">
-				<![CDATA[AND cateOne_num = 1]]>
-				<if test="cateTwo_num == 0">
-				</if>
-				<if test="cateTwo_num == 1">
-					<![CDATA[AND cateTwo_num = 1]]>
-				</if>
-				<if test="cateTwo_num == 2">
-					<![CDATA[AND cateTwo_num = 2]]>
-				</if>
-				<if test="cateTwo_num == 3">
-					<![CDATA[AND cateTwo_num = 3]]>
-				</if>
-				<if test="cateTwo_num == 4">
-					<![CDATA[AND cateTwo_num = 4]]>
-				</if>
-				<if test="cateTwo_num == 5">
-					<![CDATA[AND cateTwo_num = 5]]>
-				</if>
-			</if>
-			<if test="cateOne_num == 2">
-				<![CDATA[AND cateOne_num = 2]]>
-				<if test="cateTwo_num == 0">
-				</if>
-				<if test="cateTwo_num == 6">
-					<![CDATA[AND cateTwo_num = 6]]>
-				</if>
-				<if test="cateTwo_num == 7">
-					<![CDATA[AND cateTwo_num = 7]]>
-				</if>
-				<if test="cateTwo_num == 8">
-					<![CDATA[AND cateTwo_num = 8]]>
-				</if>
-			</if>
-			<if test="sort =='dev24'">
-			</if>
-			<if test="sort =='best'">
-			</if>
-			<if test="sort =='new'">
-				ORDER BY
-					b_date DESC
-			</if>
-			<if test="sort =='lowPrice'">
-				ORDER BY
-					b_price
-			</if>
-			<if test="sort =='highPrice'">
-				ORDER BY
-					b_price DESC
-			</if>
+	        <include refid="bookListWhere"></include>
 		</where>
 	</select>
 	
+	
+<!-- 	<select id="getAdminBookListCnt" parameterType="book" resultType="int">
+		SELECT
+			count(*) as bookLength
+		FROM
+			book b LEFT OUTER JOIN pdetail p
+		ON b.b_num = p.b_num
+		<where>
+	        <![CDATA[
+		        b.b_num > 0
+		        AND
+		        rownum <= #{lastRownum}
+	        ]]>
+	        <include refid="bookListWhere"></include>
+		</where>
+	</select> -->
+	
 	<!-- 도서리스트 출력, 카테고리 조건에 따라 출력내용이 다를 수 있음  -->
-	<select id="bookViewList" parameterType="pagination" resultType="book">
+	<select id="bookList" parameterType="pagination" resultType="book">
 		
-			SELECT 
-				rn, b_num, b_name, b_date, b_author,
-				b_pub, b_price, b_state,
-				cateOne_num, cateTwo_num, 
-				ra_sum, ra_count,
-				listcover_imgurl, detailcover_imgurl, detail_imgurl
-			FROM (
-			    SELECT 
-			    	rownum rn, b_num, b_name, to_char(b_date, 'yyyy"년" MM"월" dd"일"') b_date, b_author,
-					b_pub, b_price, b_state,
-					cateOne_num, cateTwo_num,
-					ra_sum, ra_count,
-					listcover_imgurl, detailcover_imgurl, detail_imgurl
-			    FROM
-			    	book_view
-				<where>
-			        <![CDATA[
-			        b_num > 0
+		SELECT 
+		        rownum as rn, b_num, b_name, 
+		        to_char(b_date, 'YYYY"년" MM"월" dd"일"') as b_date, b_author,
+		        b_pub, b_price, b_state,
+		        cateOne_num, cateTwo_num,
+		        ra_sum, ra_count,
+		        listcover_imgurl,
+		        b_salesRate
+		FROM (
+		    SELECT 
+		        /*+ INDEX_ASC(book book_pk) */
+		        min(rownum) as inlineViewRowNum,
+		        b.b_num, b_name, 
+		        b_date, b_author,
+		        b_pub, b_price, b_state,
+		        cateOne_num, cateTwo_num,
+		        ra_sum, ra_count,
+		        listcover_imgurl,
+		        nvl(sum(p.pd_qty), 0) as b_salesRate
+		    FROM
+		        book_view b LEFT OUTER JOIN pdetail p
+		    ON 
+		        b.b_num = p.b_num
+			<where>
+		        <![CDATA[
+			        b.b_num > 0
 			        AND
 			        rownum <= #{lastRownum}
-			        ]]>
-					<if test="cateOne_num == 0">
-					</if>
-					<if test="cateOne_num == 1">
-						<![CDATA[AND cateOne_num = 1]]>
-					</if>
-					<if test="cateOne_num == 2">
-						<![CDATA[AND cateOne_num = 2]]>
-					</if>
-					<if test="cateTwo_num == 0">
-					</if>
-					<if test="cateTwo_num == 1">
-						<![CDATA[AND cateTwo_num = 1]]>
-					</if>
-					<if test="cateTwo_num == 2">
-						<![CDATA[AND cateTwo_num = 2]]>
-					</if>
-					<if test="cateTwo_num == 3">
-						<![CDATA[AND cateTwo_num = 3]]>
-					</if>
-					<if test="cateTwo_num == 4">
-						<![CDATA[AND cateTwo_num = 4]]>
-					</if>
-					<if test="cateTwo_num == 5">
-						<![CDATA[AND cateTwo_num = 5]]>
-					</if>
-					<if test="cateTwo_num == 6">
-						<![CDATA[AND cateTwo_num = 6]]>
-					</if>
-					<if test="cateTwo_num == 7">
-						<![CDATA[AND cateTwo_num = 7]]>
-					</if>
-					<if test="cateTwo_num == 8">
-						<![CDATA[AND cateTwo_num = 8]]>
-					</if>
-					<if test="b_state == 'reg'">
-						AND b_state is null
-					</if>
-					<if test="b_state == 'reg or oop'">
-						AND b_state is null
-						OR b_state = 'oop'
-					</if>
-					<if test="b_state == 'unreg'">
-						AND b_state = 'unreg'
-					</if>
-					<if test="b_state == 'oop'">
-						AND b_state 'oop'
-					</if>
-					<if test="b_state == null and b_state == ''">
-					</if>
-				</where>
-			    )
-			<![CDATA[WHERE rn > #{startRownum}]]>
+		        ]]>
+		        <include refid="bookListWhere"></include>
+			</where>
+		    GROUP BY 
+		        b.b_num, b_name, 
+		        b_date, b_author,
+		        b_pub, b_price, b_state,
+		        cateOne_num, cateTwo_num,
+		        ra_sum, ra_count,
+		        listcover_imgurl
+			<include refid="bookListOrderBy"></include>
+			    ) bookList
+			<![CDATA[WHERE inlineViewRownum >= #{startRownum}]]>
 	</select>
 	
 		<!-- 도서리스트 출력, 카테고리 조건에 따라 출력내용이 다를 수 있음  -->
@@ -189,7 +210,7 @@
 	</select>
 	
 	
-		<update id="addToCart" parameterType="java.util.List">
+<!-- 	<update id="addToCart" parameterType="java.util.List">
 		MERGE INTO
 			book b
 		USING (
@@ -227,8 +248,10 @@
 				, d.c_num
 				, d.crt_qty
 			</trim>
-	</update>
+	</update> -->
 	
+	
+	<!-- 추출해낸 크롤링 데이터를 넣기 위한 작업 -->
 	<update id="mergeBookData" parameterType="java.util.List">
 				MERGE INTO book b 
 				USING (
@@ -293,6 +316,7 @@
 						, d.cateTwo_num
 			</trim>
 		</update>
+		
 		<update id="mergeBookImgData" parameterType="java.util.List">
 				MERGE INTO bookimg i 
 				USING (

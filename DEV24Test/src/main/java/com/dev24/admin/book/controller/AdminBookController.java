@@ -1,6 +1,9 @@
 package com.dev24.admin.book.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,11 +11,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.dev24.admin.book.service.AdminBookService;
 import com.dev24.client.book.service.BookService;
 import com.dev24.client.book.vo.BookVO;
 import com.dev24.common.pagination.Pagination;
@@ -27,9 +33,10 @@ import lombok.extern.log4j.Log4j;
 @SessionAttributes({"adm_id", "adm_num"})
 public class AdminBookController {
 
-	BookService bookService;
-
+	private BookService bookService;
 	
+	private AdminBookService adminBookService;
+
 	/***
 	 * 관리자 페이지 도서리스트 출력 메서드
 	 * @param cateOne_num
@@ -45,8 +52,8 @@ public class AdminBookController {
 			@RequestParam(required = false, defaultValue = "1") int page,
 			@RequestParam(required = false, defaultValue = "1") int startPage,
 			@RequestParam(required = false, defaultValue = "20") int listRange,
-			@RequestParam(required = false, defaultValue = "best") String sort,
-			@RequestParam(required = false, defaultValue = "null") String b_state,
+			@RequestParam(required = false, defaultValue = "best") String b_sort,
+			@RequestParam(required = false, defaultValue = "all") String b_stateKeyword,
 			Model model
 	) {
 
@@ -67,10 +74,10 @@ public class AdminBookController {
 		
 		// Pagination 객체 생성
 		int bookLength = bookService.getBookListCnt(bvo);
-		Pagination pagination = new Pagination(bookLength, startPage, page, cateOne_num, cateTwo_num, listRange, sort, b_state);
+		Pagination pagination = new Pagination(bookLength, startPage, page, cateOne_num, cateTwo_num, listRange, b_sort, b_stateKeyword);
 
 		// 얻어낸 pagination객체를 통해 bookList() 호출
-		ArrayList<BookVO> bookList = bookService.bookViewList(pagination);
+		ArrayList<BookVO> bList = bookService.bookList(pagination);
 		
 		log.info(pagination.toString());
 		
@@ -79,7 +86,7 @@ public class AdminBookController {
 		model.addAttribute("adm_num", 2);
 
 		model.addAttribute("pagination", pagination);
-		model.addAttribute("bookList", bookList);
+		model.addAttribute("bList", bList);
 
 		return "admin/adminBookList";
 
@@ -113,7 +120,7 @@ public class AdminBookController {
 		ResponseEntity<String> entity;
 		
 		if(result == 1) {
-			url = "/admin/book/0/0";
+			url = "/admin/book/detail/00";
 			entity = new ResponseEntity<String>("redirect:" + url, HttpStatus.OK);
 		} else {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -122,11 +129,44 @@ public class AdminBookController {
 		return entity;
 	}
 	
-//	@RequestMapping(value="/bookDetail", method=RequestMethod.GET)
-//	public String bookDetail (@ModelAttribute("data") BookVO bvo, Model model) {
-//		log.info("bookDetail 호출 성공");
-//		log.info("bvo" + bvo);
-//		
-////		BookVO detail = bookService.bookDetail(
-//	}
+	@PostMapping(value="/updateBookState", produces = "text/plain; charset=utf8")
+	public ResponseEntity<String> updateBookState(
+									@RequestBody Map<String, Object> data,
+									Model model
+		) {
+		BookVO bvo = new BookVO();
+		
+		log.info("updateBookState 호출 성공");
+//		log.info(data.toString());
+
+//		log.info(dataList.get(0).get("b_stateKeyword") + "");
+		log.info(data.get("b_stateKeyword").toString());
+		log.info(data.get("bNumList").toString());
+		
+		String b_stateKeyword = data.get("b_stateKeyword").toString();
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		List<Integer> bNumList = (List)data.get("bNumList");
+		log.info(bNumList.toString());
+		
+		bvo.setB_stateKeyword(b_stateKeyword);
+		bvo.setBNumList(bNumList);
+		
+		
+//		BookVO bvo = (BookVO)data;
+//		log.info(bvo.toString());
+//		log.info(bNumList.size());
+		
+//		log.info(dataList.get("b_stateKeyword"));
+		
+		ResponseEntity<String> entity;
+		int result = adminBookService.updateBookState(bvo);
+		
+		if (result > 0) {
+			entity = new ResponseEntity<String>(result+"", HttpStatus.OK);
+		} else {
+			entity = new ResponseEntity<String>(result+"", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		return entity;
+	}
 }

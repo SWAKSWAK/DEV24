@@ -9,7 +9,7 @@ import com.dev24.common.pagination.Pagination;
 public interface BookDAO {
 	
 	//select
-	public ArrayList<BookVO> bookViewList(Pagination pagination);
+	public ArrayList<BookVO> bookList(Pagination pagination);
 	public int getBookListCnt(BookVO bvo);
 	public BookVO bookDetail(int b_num);
 	

@@ -14,14 +14,9 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
 		
-
-		
-		
 				<!-- 모바일 웹 페이지 설정 -->
 		<link rel="shortcut icon" href="/resources/image/icon.png" />
 		<link rel="apple-touch-icon" href="/resources/image/icon.png" />
- 		
-		 
 		
 		<!--IE8이하 브라우저에서 HTML5를 인식하기 위해서는 아래의 패스필터를 적용하면 된다.(조건부주석) -->
 		<!--[if lt IE 9]>
@@ -45,7 +40,7 @@
     		}
     		#contentWrap * {
     			/* border: 1px solid; */
-    			font-size: 16px;
+    			font-size: 15px;
     		}
     		
     		#contentWrap h1 {
@@ -518,7 +513,7 @@
 	               }, 
 	               dataType : "text",
 	               success: function (result) {
-	            	   location.href="/purchase/purchaseForm";
+	            	   location.href="/purchase/SingleItemPurchaseForm";
 	               },
 	               error : function(){
 	                  alert("시스템 오류 발생. \n관리자에게 문의해 주세요.");
