@@ -15,13 +15,13 @@
     <link rel="stylesheet" href="dist/css/bootstrap-theme.css" />-->
     
     <script src="/resources/include/js/jquery-1.12.4.min.js"></script>
-    <script src="/resources/include/js/jquery-3.5.1.min.js"></script>
     <script src="https://kit.fontawesome.com/a333e3670c.js" crossorigin="anonymous"></script>
     <script type="text/javascript" src="/resources/include/js/common.js"></script>
     <script type="text/javascript" src="/resources/include/dist/js/bootstrap.min.js"></script>
     
     <script>
         $(function(){
+        	
            // gnb 메뉴 클릭 시
 	           $("#gnb > li").click(function(){
 	               var i = $(this).index();
@@ -53,7 +53,8 @@
 	            	$.ajax({
 	            		url:"/freeboard/freeboardDelete", 
 	            		type:"post",
-	            		data:"fb_num="+$("#fb_num").val(), 
+	            		data:"fb_num="+$("#fb_num").val(),
+	            		//data:"fb_num="+fb_num,
 	            		dataType:"text", 
 	            		error: function(){
 	            			alert("시스템 오류, 관리자에게 문의해주세요");
@@ -67,7 +68,38 @@
 	            });
 	            
 	            $("#boardUpdateFormBtn").click(function(){
-	            	console.log($("#fb_num"));
+	            	console.log($(fb_num).val());
+	            	/*$.ajax({
+	            		url:"/freeboard/freeboardUpdateForm",
+	            		type:"post",
+	            		data: "fb_num="+$(fb_num).val(),
+	            		dataType:"text",
+	            		error:function(){
+	            			alert("시스템 오류, 관리자에게 문의해주세요.");
+	            		}, 
+	            		success: function(){
+	            			console.log($(fb_num).val());
+	            			var abc = $(fb_num).val();
+	            			$(abc).submit();
+	            			location.href="/freeboard/freeboardUpdateForm";
+	            		}
+	            	});*/
+	            	
+					$.ajax({
+						url:"/freeboard/freeboardUpdateForm",
+						type:"post", 
+						data:$("#fb_num").val(), 
+						dataType:"text",
+						error: function(){
+							alert("시스템 오류, 관리자에게 문의하세요.");
+						}, 
+						success: function(){
+							var goUrl="/freeboard/freeboardUpdateForm";
+							$("#f_data").attr("action", goUrl);
+							$("#f_data").submit();
+						}
+					});
+	            	
 	            });
             	
            });
@@ -86,7 +118,8 @@
     	<form name="f_data" id="f_data" method="post">
     		<input type="hidden" id="fb_num" name="fb_num" value="${detail.fb_num}"/>
  		</form>
-        <%-- <div id="pwdChk" class="authArea">
+        
+ 		<%-- <div id="pwdChk" class="authArea">
 			<form name="f_pwd" id="f_pwd">
 				<!--<input type="hidden" name="num" id="num" value="${detail.num}" />-->
 				<label for="passwd" id="l_pwd">비밀번호 : &nbsp;</label>
@@ -114,6 +147,7 @@
 					<td>${detail.fb_num}</td>
 					<th class="th_date">작 성 일</th>
 					<td>${detail.fb_writeday}</td>
+					<td>조회수: ${detail.fb_readcnt}</td>
 				</tr>
 				<tr>
 					<th>글 제 목</th>

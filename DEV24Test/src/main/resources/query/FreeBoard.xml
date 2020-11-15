@@ -8,8 +8,30 @@
 		select fb_num, fb_author, fb_title, fb_readcnt, fb_content, 
 		fb_writeday, c_num, fb_img_url, fb_readcnt, 
 		(select count(fb_num) from freecmt where fb_num=freeboard.fb_num) as r_cnt        
-		from freeboard order by fb_num desc
+		from freeboard 
 		
+		<!-- 검색 기능 추가 -->
+		
+		<where>
+			<if test="search=='fb_title'">
+				<![CDATA[ upper(fb_title) LIKE '%' || upper(#{keyword}) || '%']]>
+			</if>
+			
+			<if test="search=='fb_author'">
+				<![CDATA[ upper(fb_author) LIKE '%' || upper(#{keyword}) || '%']]>
+			</if>
+			
+			<if test="search=='fb_content'">
+				<![CDATA[ upper(fb_content) LIKE '%' || upper(#{keyword}) || '%']]>
+			</if>
+			
+			<if test="search=='fb_num'">
+				<![CDATA[ upper(fb_num) LIKE '%' || upper(#{keyword}) || '%']]>
+			</if>
+			
+		</where>
+		
+		order by fb_num desc
 	</select>
 	
 	<update id="updateFBReadCount" parameterType="int">
@@ -17,7 +39,8 @@
 	</update>
 	
 	<select id="freeboardDetail" parameterType="freeboard" resultType="freeboard">
-		select fb_num, fb_author, fb_title, fb_content, fb_img_url from freeboard where fb_num=#{fb_num}
+		select fb_num, fb_author, fb_title, fb_content, fb_img_url, fb_readcnt
+		 from freeboard where fb_num=#{fb_num}
 	</select>
 	
 	<insert id="freeboardInsert" parameterType="freeboard">

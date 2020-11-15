@@ -8,6 +8,7 @@
 			<link rel="stylesheet" href="/resources/include/css/style_boot.css">
 		    <link rel="stylesheet" href="/resources/include/css/style_board_content.css">
 		    <script type="text/javascript" src="/resources/include/js/jquery-1.12.4.min.js"></script>
+		    <script type="text/javascript" src="/resources/include/js/common.js"></script>
     
     <script type="text/javascript">
     	$(function(){
@@ -29,6 +30,13 @@
     			location.href="/freeboard/freeboardWriteForm";	
     		});
     		
+    		$("#boardSearchBtn").click(function(){
+    			if($("#search").val()!="all"){
+					if(!chkSubmit("#keyword", "검색어를")) return;
+				}
+				goPage();
+    		});
+    		
     	});
     	
     	function goPage(){
@@ -37,7 +45,7 @@
 			}
 			$("#f_search").attr({
 				"method":"get", 
-				"action":"/board/boardList"
+				"action":"/freeboard/freeboardList"
 			});
 			$("#f_search").submit();
 		}
@@ -66,11 +74,11 @@
                 <form name="f_search" id="f_search">
                     <div class="form-group">
                         <label>검색조건</label>
-                        <select name="b_search" id="b_search">
+                        <select name="search" id="search">
                             <option value="all">전체</option>
-                            <option value="title">글제목</option>
-                            <option value="author">작성자</option>
-                            <option value="content">글내용</option>
+                            <option value="fb_title">글제목</option>
+                            <option value="fb_author">작성자</option>
+                            <option value="fb_content">글내용</option>
                         </select>
                         <input type="text" name="keyword" id="keyword" placeholder="검색어를 입력하세요" class="form-control" />
                         <input type="button" id="boardSearchBtn" value="검색" class="btn btn-default" />
