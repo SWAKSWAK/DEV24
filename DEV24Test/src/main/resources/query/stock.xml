@@ -43,6 +43,10 @@
 			<if test="category=='compt'"> catetwo_num=7</if>
 			<if test="category=='webc'"> catetwo_num=8</if>
 			
+			<if test="stk_regdate!=''">
+				 stk_regdate <![CDATA[ < ]]> #{stk_regdate} 
+			</if>
+			
 		</where>
 		order by stk_incp
 	</select> 

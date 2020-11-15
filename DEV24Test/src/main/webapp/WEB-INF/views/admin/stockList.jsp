@@ -136,6 +136,17 @@
 	    		 goCate(); 
 	    	  });
 	    	  
+				$("#searchDate").click(function(){
+					console.log($("#date_start").val()); 
+						
+					$("#dateSearch").attr({
+						"method":"get", 
+						"action":"/admin/stockList"
+					});
+						
+					$("#dateSearch").submit();
+				});
+	    	  
 	    	  
 	    	  
 	    	  //도서 제목을 클릭시 도서코드를 전달해주는 구문
@@ -151,6 +162,7 @@
 					$("#detailForm").submit()
 	    	  });
 	    	  
+	    	  
 	    	  $(".stkbInfo").click(function(){
 	    		  var stockcode= $(this).parents("tr").attr("data-num");
 		    		 $("#stk_incp").val(stockcode);
@@ -162,6 +174,8 @@
 	    	  $("#stockInsertBtn").click(function(){
 	    		 location.href="/admin/stockInsertForm";
 	    	  });
+	    	  
+	    	  
 	    	  
 	      });
 	      
@@ -257,6 +271,14 @@
 									<option value="webc">웹/컴퓨터/입문 활용</option>
 								</select>
 							<input type="button" name="searchStkCate" id="searchStkCate" value="검색" class="btn btn-info" />
+						</form>
+					</div>
+					
+					<div class="searchCategory form-inline">
+						<form id="dateSearch" name="dateSearch" class="form-group">
+							<label for ="stk_regdate">등록일자 검색</label>
+							<input type="date" id="stk_regdate" name="stk_regdate"/>
+							<button type="button" class="btn btn-primary btn-sm" id="searchDate">검색</button>
 						</form>
 					</div>
 					

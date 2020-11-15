@@ -39,7 +39,7 @@
 	</update>
 	
 	<select id="freeboardDetail" parameterType="freeboard" resultType="freeboard">
-		select fb_num, fb_author, fb_title, fb_content, fb_img_url, fb_readcnt
+		select fb_num, fb_author, fb_title, fb_content, fb_img_url, fb_readcnt, fb_writeday
 		 from freeboard where fb_num=#{fb_num}
 	</select>
 	
@@ -54,8 +54,8 @@
 		delete from freeboard where fb_num=#{fb_num}
 	</delete>
 	
-	<!--  <update id="freeboardUpdate" parameterType="freeboard">
+	<update id="freeboardUpdate" parameterType="freeboard">
 		update freeboard  set fb_title= #{fb_title} , fb_content=#{fb_content} where fb_num=#{fb_num}
-	</update> -->
+	</update>
 	
 </mapper>
