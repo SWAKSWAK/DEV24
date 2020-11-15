@@ -21,5 +21,6 @@
 		<typeAlias type="com.dev24.client.refund.vo.RefundVO" alias="refund"/>
 		<typeAlias type="com.dev24.client.mypage.refundhistory.vo.RefundhistoryVO" alias="refundhistory"/>
 		<typeAlias type="com.dev24.admin.refund.vo.AdminRefundViewVO" alias="adminRefund"/>
+		<typeAlias type="com.dev24.client.review.vo.ReviewVO" alias="review"/>
 	</typeAliases>
 </configuration>
