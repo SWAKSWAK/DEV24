@@ -657,8 +657,11 @@
 				</div>
 				
 				
-				
 			</div><!-- bookDetailWrap -->
+
+			<%-- 게시판 댓글 --%>
+			<jsp:include page="../review/review.jsp" />
+
 		</div><!-- contentWrap -->
 	</body>
 </html>

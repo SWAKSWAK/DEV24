@@ -147,8 +147,13 @@
 					<td>${detail.fb_num}</td>
 					<th class="th_date">작 성 일</th>
 					<td>${detail.fb_writeday}</td>
-					<td>조회수: ${detail.fb_readcnt}</td>
 				</tr>
+				
+				<tr>
+					<th>조회수:</th>
+					<td>${detail.fb_readcnt}</td>
+				</tr>
+				
 				<tr>
 					<th>글 제 목</th>
 					<td colspan="3">${detail.fb_title}</td>

@@ -67,6 +67,11 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 	public FreeBoardVO freeboardUpdateForm(FreeBoardVO fbvo) {
 		FreeBoardVO updateData = null;
 		updateData = freeboardDAO.freeboardDetail(fbvo);
+		
+		/*if(updateData!=null) {
+			updateData.setFb_content(updateData.getFb_content().toString().replaceAll("\n", "<br>"));
+		}*/
+		
 		return updateData;
 	}
 

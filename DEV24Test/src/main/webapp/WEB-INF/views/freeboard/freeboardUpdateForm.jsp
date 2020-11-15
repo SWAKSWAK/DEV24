@@ -25,13 +25,44 @@
 				});
 				
 				$("#boardUpdateFormBtn").click(function(){
-					alert("야 씨발!");
+					
+					console.log($("#fb_num").val());
+					console.log($("#fb_title").val());
+					console.log($("#fb_content").val());
+					
+					if(!chkSubmit("#fb_title", "제목을")) return;
+					else if (!chkSubmit("#fb_content", "내용을")) return;
+					else{
+						$("#updateForm").attr({
+							"method":"post", 
+							"action":"/freeboard/freeboardUpdate"
+						});
+						$("#updateForm").submit();
+					}
+						
 				});
+				
+				var textarea = $('#fb_content').val();
+				var replaced = ""; 
+				replaced =textarea.replaceAll("<br>", "");
+				$("#fb_content").val(replaced);
+				
+
+				$("#boardCancelBtn").click(function(){
+					$("#detail").each(function(){
+						this.reset();
+					});
+				});
+				
+				
 			});
+			
 		</script>
 		
 		<style>
-			#boardUpdateFormBtn{float:right;}
+			#boardUpdateFormBtn, #boardCancelBtn{float:right; margin:10px;}
+			
+			br{display:none;}
 		</style>
 		
 	</head>
@@ -41,7 +72,7 @@
     
     <div id="content_wrap">
     	<c:set var="updateData" value="${updateData}"/>
-    	<input type="hidden" id="fb_num" name="fb_num" value="${updateData.fb_num}"/>
+    	
     	
         <%-- <div id="pwdChk" class="authArea">
 			<form name="f_pwd" id="f_pwd">
@@ -64,7 +95,8 @@
 	
 			
 	
-		<form id="detail">
+		<form id="updateForm">
+			<input type="hidden" id="fb_num" name="fb_num" value="${updateData.fb_num}"/>
 			<table summary="게시판 상세 페이지" class="table" border="0">
 				<tr>
 					<th>글 번 호</th>
@@ -91,6 +123,7 @@
 				</tr> --%>
 			</table>
 			<input type="button" id="boardUpdateFormBtn" value="글수정" class="btn btn-success" />
+			<input type="button" value="취소" id="boardCancelBtn" class="btn btn-success"/>
 		</form>
     </div> <!-- content_wrap -->
     

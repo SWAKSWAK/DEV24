@@ -145,6 +145,13 @@
 				});
 				
 				
+				/* 도서명 클릭 시 도서상세페이지 이동 */
+				$(".td_title").click(function(){
+					var b_num = $(this).parents("tr").attr("data-num");
+					location.href="/book/detail/"+b_num;
+				});
+				
+				
 			}); // 최상위 종료
 			
 			
@@ -245,7 +252,7 @@
                     	<c:choose>
                     		<c:when test="${not empty rfhvo}">
                     			<c:forEach var="rfhvo" items="${rfhvo}">
-                    				<tr>
+                    				<tr data-num="${rfhvo.b_num}">
 			                            <td class="td_num">${rfhvo.rf_num}</td>
 			                            <td>${rfhvo.p_buydate}</td>
 			                            <td class="td_title">${rfhvo.b_name}</td>

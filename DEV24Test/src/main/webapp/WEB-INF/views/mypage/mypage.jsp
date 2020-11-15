@@ -23,7 +23,15 @@
 		<script src="/resources/include/js/jquery-1.12.4.min.js"></script>
     	<script src="/resources/include/js/jquery-3.5.1.min.js"></script>
 		<script src="https://kit.fontawesome.com/a333e3670c.js" crossorigin="anonymous"></script>
-		
+		<script>
+			$(function(){
+				/* 도서명 클릭 시 도서상세페이지 이동 */
+				$(".td_title").click(function(){
+					var b_num = $(this).parents("tr").attr("data-num");
+					location.href="/book/detail/"+b_num;
+				});
+			});
+		</script>
 
 	</head>
 	<body>
@@ -47,11 +55,32 @@
                     	<c:choose>
                     		<c:when test="${not empty ohvo}">
                     			<c:forEach var="ohvo" items="${ohvo}" begin="0" end="3" step="1">
-                    				<tr>
+                    				<tr data-num="${ohvo.b_num}">
 			                            <td>${ohvo.p_buydate}</td>
 			                            <td class="td_num">${ohvo.p_num}</td>
 			                            <td class="td_title">${ohvo.b_name}</td>
-			                            <td>배송예정</td>
+			                            <td>
+			                            	<c:choose>
+				                           	<c:when test="${ohvo.pd_orderstate == 'preShipping'}">
+				                           		배송예정
+				                           	</c:when>
+				                           	<c:when test="${ohvo.pd_orderstate == 'shipping'}">
+				                           		배송중
+				                           	</c:when>
+				                           	<c:when test="${ohvo.pd_orderstate == 'pConfirm'}">
+				                           		구매확정
+				                           	</c:when>
+				                           	<c:when test="${ohvo.pd_orderstate == 'reRequest'}">
+				                           		환불승인대기
+				                           	</c:when>
+				                           	<c:when test="${ohvo.pd_orderstate == 'cancel'}">
+				                           		주문취소
+				                           	</c:when>
+				                           	<c:otherwise>
+				                           		승인완료
+				                           	</c:otherwise>
+				                           	</c:choose>
+			                            </td>
 			                        </tr>
                     			</c:forEach>
                     		</c:when>
@@ -86,15 +115,23 @@
                     	<c:choose>
                     		<c:when test="${not empty rfhvo}">
                     			<c:forEach var="rfhvo" items="${rfhvo}" begin="0" end="3" step="1">
-                    				<tr>
+                    				<tr data-num="${rfhvo.b_num}">
 			                            <td>${rfhvo.p_buydate}</td>
 			                            <td class="td_num">${rfhvo.rf_num}</td>
 			                            <td class="td_title">${rfhvo.b_name}</td>
-<<<<<<< HEAD
-			                            <td>${rfhvo.pd_orderstate}</td>
-=======
-			                            <td>${rfhvo.rf_orderstate}</td>
->>>>>>> origin/master
+			                            <td>
+			                            	<c:choose>
+				                           	<c:when test="${rfhvo.rf_orderstate == 'reRequest'}">
+				                           		환불승인대기
+				                           	</c:when>
+				                           	<c:when test="${rfhvo.rf_orderstate == 'cancel'}">
+				                           		주문취소
+				                           	</c:when>
+				                           	<c:otherwise>
+				                           		승인완료
+				                           	</c:otherwise>
+				                           	</c:choose>
+			                            </td>
 			                            <td>${rfhvo.rf_confirmdate}</td>
 			                        </tr>
                     			</c:forEach>
