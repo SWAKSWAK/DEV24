@@ -117,9 +117,12 @@
                     </tbody>
                 </table>
             </div><!-- table_wrap -->
-
+			
+			
             <div id="button_wrap">
-                <input type="button" id="boardInsertFormBtn" value="글쓰기" class="btn btn-success" />
+            	<c:if test="${login.c_num != null}">
+                	<input type="button" id="boardInsertFormBtn" value="글쓰기" class="btn btn-success" />
+                </c:if>
             </div> <!-- button_wrap -->
         
         </div> <!-- content (width : 1200px) -->

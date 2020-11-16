@@ -39,7 +39,7 @@
 	</update>
 	
 	<select id="freeboardDetail" parameterType="freeboard" resultType="freeboard">
-		select fb_num, fb_author, fb_title, fb_content, fb_img_url, fb_readcnt, fb_writeday
+		select fb_num, fb_author, fb_title, fb_content, fb_img_url, fb_readcnt, fb_writeday, c_num
 		 from freeboard where fb_num=#{fb_num}
 	</select>
 	

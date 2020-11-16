@@ -21,7 +21,7 @@ import lombok.extern.log4j.Log4j;
 @RequestMapping("freeboard/*")
 @AllArgsConstructor
 //@SessionAttributes({"c_id", "c_num"})
-@SessionAttributes({ "c_id", "c_num", "c_nickname" })
+//@SessionAttributes({ "c_id", "c_num", "c_nickname" })
 public class FreeBoardController {
 	private FreeBoardService freeboardService;
 	
@@ -29,9 +29,9 @@ public class FreeBoardController {
 	public String freeboardList(@ModelAttribute("data") FreeBoardVO fbvo, Model model) {
 		log.info("freeboardList 호출 성공");
 		
-		model.addAttribute("c_id", "javakhang");
+		/*model.addAttribute("c_id", "javakhang");
 		model.addAttribute("c_num", 2);
-		model.addAttribute("c_nickname", "javaman");
+		model.addAttribute("c_nickname", "javaman");*/
 		
 		List<FreeBoardVO> freeboardList = freeboardService.freeboardList(fbvo);
 		model.addAttribute("freeboardList", freeboardList);

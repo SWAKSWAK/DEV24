@@ -49,8 +49,8 @@
 		<div id="content">
 			
 			<form id="f_writeForm" name="f_writeForm" class="form-horizontal">
-			<input type="hidden" name="c_num" id="c_num" value="${c_num}"/>
-			<input type="hidden" name="fb_author" id="fb_author" value="${c_nickname}"/>
+			<input type="hidden" name="c_num" id="c_num" value="${login.c_num}"/>
+			<input type="hidden" name="fb_author" id="fb_author" value="${login.c_nickname}"/>
 				<table class="table table-bordered">
 				<%--<colgroup>
 						<col width="20%"/>
@@ -64,7 +64,7 @@
 					</tr> --%>
 					<tr>
 						<td>작성자</td>
-						<td><input type="text" value="${c_nickname}" readonly="readonly"/></td>
+						<td><input type="text" value="${login.c_nickname}" readonly="readonly"/></td>
 					</tr>
 					
 					<tr>
