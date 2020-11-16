@@ -15,15 +15,11 @@
 		
 		<title>join</title>
 		
-		<link rel="stylesheet" type="text/css" href="/resources/include/dist/css/bootstrap.min.css" />
-      	<link rel="stylesheet" type="text/css" href="/resources/include/dist/css/bootstrap-theme.css" />
-      	
+		<link rel="stylesheet" href="/resources/include/css/style_boot.css" />
 		
 		<script type="text/javascript" src="/resources/include/js/jquery-1.12.4.min.js"></script>
       	<script type="text/javascript" src="/resources/include/js/common.js"></script>
       	<script type="text/javascript" src="/resources/include/js/join.js"></script>
-      	<script type="text/javascript" src="/resources/include/dist/js/bootstrap.min.js"></script>
-      	<script type="text/javascript" src="/resources/include/dist/css/bootstrap.min.css"></script>
 		
       	
 		<!-- 모바일 웹 페이지 설정 
@@ -35,6 +31,40 @@
 		<!--[if lt IE 9]>
 		<script src="../js/html5shiv.js"></script>
 		<![endif]-->
+		
+		<style>
+			.contentContainer{
+				width:1200px;
+				margin:0 auto;
+				padding-bottom : 150px;
+				padding-top : 40px;
+			}
+			div.form-group-sm{
+				margin-bottom:10px;
+			}
+			div.form-group-sm > *{
+				float:left;
+			}
+			div.form-group-sm:after{
+				clear:both;
+				display:block;
+				content:'';
+			}
+			div.col-sm-3{
+				margin-left:20px;
+				margin-right:20px;
+			}
+			input[type="checkbox"]{
+				margin-left:10px;
+			}
+			div.col-sm-offset-2{
+				text-align : center;
+			}
+			#emailConfirmBtn{
+				margin-left:10px;
+			}
+			
+		</style>
 		
 		<script>
 		function codeCheck(){
@@ -65,7 +95,7 @@
 							<input type="text" id="c_id" name="c_id" maxlength="12" class="form-control" placeholder="USER ID" />
 						</div>
 						<div class="col-sm-2">
-							<input type="button" id="idConfirmBtn" value="아이디 중복체크" class="form-control btn-primary" />
+							<input type="button" id="idConfirmBtn" value="아이디 중복체크" class="btn btn-primary" />
 						</div>
 						<div class="col-sm-5">
 							<p class="form-control-static error">
@@ -131,7 +161,7 @@
 							<input type="text" id="c_nickname" name="c_nickname" maxlength="10" class="form-control" placeholder="NICKNAME" />
 						</div>
 						<div class="col-sm-2">
-							<input type="button" id="nickConfirmBtn" value="별명 중복체크" class="form-control btn-primary" />
+							<input type="button" id="nickConfirmBtn" value="별명 중복체크" class="btn btn-primary" />
 						</div>
 						<div class="col-sm-5">
 							<p class="form-control-static error">
@@ -153,7 +183,7 @@
 								</select>
 						</div>
 						<div class="col-sm-2">
-							<input type="button" id="emailConfirmBtn" value="이메일 중복체크" class="form-control btn-primary" />
+							<input type="button" id="emailConfirmBtn" value="이메일 중복체크" class="btn btn-primary" />
 						</div>
 					</div>
 					
@@ -189,7 +219,7 @@
 					
 					<div class="form-group">
 						<div class="col-sm-offset-2 col-sm-6">
-							<input type="button" value="확인" id="joinInsert" class="btn btn-default" />
+							<input type="button" value="확인" id="joinInsert" class="btn btn-success" />
 							<input type="button" value="재작성" id="joinReset" class="btn btn-default" />
 							<input type="button" value="취소" id="joinCancelt" class="btn btn-default" />
 						</div>

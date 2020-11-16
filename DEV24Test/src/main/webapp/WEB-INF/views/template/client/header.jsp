@@ -1,7 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page trimDirectiveWhitespaces="true" %>
-
+<style>
+	#afterLogin{
+		clear:both;
+		margin-top:10px;
+	}
+</style>
 	<header>
         <div id="header_wrap">
             <div id="logo"><a href="/"><img src="/resources/image/logo.png" alt="로고"></a></div>
@@ -39,14 +44,16 @@
 		      </ul> <!-- gnb -->
 		      
 		      <ul id="util">
-				<c:if test="${empty login}">
+				<c:if test="${empty login.c_id}">
 				    <li id="toLogin"><a href="/customer/login"><i class="far fa-user"></i>로그인</a></li>
 				    <li id="toJoin"><a href="/customer/join"><i class="fas fa-user-tie"></i>회원가입</a></li>
 			    </c:if>
-			    <c:if test="${not empty login}">
+			    <c:if test="${not empty login.c_id}">
 				    <li id="toJoin"><a href="/customer/logout"><i class="fas fa-user-tie"></i>로그아웃</a></li>
 				    <li id="toMypage"><a href="/mypage/mypage"><i class="fas fa-user-tie"></i>마이페이지</a></li>
 				    <li><a href="/cart/cartList"><i class="fas fa-shopping-cart"></i>장바구니</a></li>
+				    
+				    <li id="afterLogin"><strong>[ ${login.c_nickname}] 님 반갑습니다.</strong></li>
 			    </c:if>
 			    
 			    

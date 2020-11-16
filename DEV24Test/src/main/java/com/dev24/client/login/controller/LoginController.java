@@ -33,7 +33,7 @@ public class LoginController {
 	 * 로그인 폼 처리
 	 **************************************************************/
 	@RequestMapping(value="/login", method = RequestMethod.GET)
-	public String loginForm() {		
+	public String loginForm() {
 		log.info("login.do get 호출 성공");
 		return "customer/login";
 	}
@@ -57,7 +57,7 @@ public class LoginController {
 			return mav; 
 		}else { // 일치하면
 			mav.addObject("login", loginCheckResult);
-			mav.setViewName("customer/login");
+			mav.setViewName("/index");
 			return mav;
 		}  
 	} 

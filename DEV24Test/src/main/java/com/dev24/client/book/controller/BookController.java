@@ -71,13 +71,22 @@ public class BookController {
 
 		return "book/bookList";
 	}
-	
+	/*
 	@RequestMapping(value="/detail/{b_num}")
 	public String bookDetail(@PathVariable int b_num ,Model model) {
 		BookVO vo = bookService.bookDetail(b_num);
 		log.info(vo.getB_date());
 		model.addAttribute("vo", vo);
 		return "book/bookDetail";
+	}*/
+	
+	@RequestMapping(value="/detail/{b_num}", method = {RequestMethod.GET, RequestMethod.POST})
+	public String bookDetail(@PathVariable int b_num ,Model model) {
+		BookVO vo = bookService.bookDetail(b_num);
+		log.info(vo.getB_date());
+		model.addAttribute("vo", vo);
+		return "book/bookDetail";
 	}
-//git test
+
+
 }
