@@ -6,7 +6,11 @@ import com.dev24.client.review.vo.ReviewVO;
 
 
 public interface ReviewDAO {
-	public List<ReviewVO> reviewList(int b_num);
+	public List<ReviewVO> reviewList(ReviewVO revo);
 	public ReviewVO getBookInfo(int b_num);
 	public int reviewInsert(ReviewVO revo);
+	public int ratingUpdate(ReviewVO revo);
+	public int reviewDelete(int re_num);
+	public ReviewVO reviewUpdateForm(int re_num);
+	public int reviewUpdate(ReviewVO revo);
 }

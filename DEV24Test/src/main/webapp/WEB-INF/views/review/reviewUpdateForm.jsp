@@ -106,12 +106,19 @@
 		
 		<script type="text/javascript">
 			$(function(){
-				var onOff = 0;
+				/* 평점에 따른 별 개수 출력 */
+				var re_score = "${reup.re_score}";
+				var getEmpty = '<i class="far fa-star"></i>';
+				var getStar = '<i class="fas fa-star"></i>';
+				for(var i=0; i<re_score; i++){
+					$(".stars > li").eq(i).html(getStar);
+				}
+					
 				/* 별 평점 클릭 */
 				$(".stars > li").click(function(){
 					var index = $(this).index();
-					var getEmpty = '<i class="far fa-star"></i>';
-					var getStar = '<i class="fas fa-star"></i>';
+					getEmpty = '<i class="far fa-star"></i>';
+					getStar = '<i class="fas fa-star"></i>';
 					var score = $(this).attr("data-score");
 					console.log(score);
 					$("#score").text(score+"점");
@@ -135,14 +142,14 @@
 				});
 				
 				
-				/* 취소 버튼 클릭 처리 */
+				/* 취소 버튼 클릭 처리 - 뒤로가기 */
 				$("#reviewCancelBtn").click(function(){
-					location.href="/mypage/orderHistory";
+					history.back(-1);
 				});
 				
 				
-				/* 저장 버튼 클릭 처리 */
-				$("#reviewInsertBtn").click(function(){
+				/* 수정 버튼 클릭 처리 */
+				$("#reviewUpdateBtn").click(function(){
 					var re_type = "";
 					
 					// 유효성 체크
@@ -287,16 +294,16 @@
 									<li data-score="4"><i class="far fa-star"></i></li>
 									<li data-score="5"><i class="far fa-star"></i></li>
 								</ul>
-								<span id="score"></span>
+								<span id="score">${reup.re_score}점</span>
 	                        </td>
 	                    </tr>
 	                    <tr>
 	                        <th>작성자</th>
-	                        <td class="td_nickname">${login.c_nickname}</td>
+	                        <td class="td_nickname">${reup.c_nickname}</td>
 	                    </tr>
 	                    <tr>
 	                        <th>리뷰내용</th>
-	                        <td><textarea id="re_content" name="re_content" rows="20" cols="100" class="form-control" placeholder="1000자 이내로 작성해주세요."></textarea>
+	                        <td><textarea id="re_content" name="re_content" rows="20" cols="100" class="form-control" placeholder="1000자 이내로 작성해주세요.">${reup.re_content}</textarea>
 	                        <br/>
 	                        <span style="color:#aaa", id="counter">(0 / 최대 1000자)</span></td>
 	                    </tr>
@@ -310,7 +317,7 @@
 	            </form>
 	
 	            <div id="button_wrap">
-	                <input type="button" id="reviewInsertBtn" class="btn btn-success" value="저장" />
+	                <input type="button" id="reviewUpdateBtn" class="btn btn-success" value="수정" />
 	                <input type="button" id="reviewCancelBtn" class="btn btn-default" value="취소" />
 	            </div>    
 	        

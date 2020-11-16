@@ -18,9 +18,9 @@ public class ReviewServiceImpl implements ReviewService {
 
 	// review list print on book detail page
 	@Override
-	public List<ReviewVO> reviewList(int b_num) {
+	public List<ReviewVO> reviewList(ReviewVO revo) {
 		List<ReviewVO> list = null;
-		list = reviewDAO.reviewList(b_num);
+		list = reviewDAO.reviewList(revo);
 		return list;
 	}
 
@@ -36,13 +36,48 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override
 	public int reviewInsert(ReviewVO revo) throws Exception {
 		int result = 0;
-		/*String fileName = FileUploadUtil.fileUpload(revo.getFile(), "review");
-		
-		if(!fileName.isEmpty()) {
+		String fileName = "";
+		if(revo.getFile()==null) {
 			result = reviewDAO.reviewInsert(revo);
-		}*/
-		result = reviewDAO.reviewInsert(revo);
+			
+		}else {
+			fileName = FileUploadUtil.fileUpload(revo.getFile(), "review");
+			
+			revo.setRe_imgurl(fileName);
+			if(!fileName.isEmpty()) {
+				result = reviewDAO.reviewInsert(revo);
+			}
+		}
+		
 		return result;
+	}
+
+	// rating table update after insert into review
+	@Override
+	public int ratingUpdate(ReviewVO revo) {
+		int result = 0;
+		result = reviewDAO.ratingUpdate(revo);
+		return result;
+	}
+
+	// review delete with image file
+	@Override
+	public int reviewDelete(int re_num) throws Exception {
+		int result = 0;
+		ReviewVO revo = new ReviewVO();
+		if(revo.getRe_imgurl() != "") {
+			FileUploadUtil.fileDelete(revo.getRe_imgurl());
+		}
+		result = reviewDAO.reviewDelete(re_num);
+		return result;
+	}
+
+	// review update form print
+	@Override
+	public ReviewVO reviewUpdateForm(int re_num) {
+		ReviewVO revo = null;
+		revo = reviewDAO.reviewUpdateForm(re_num);
+		return revo;
 	}
 	
 	

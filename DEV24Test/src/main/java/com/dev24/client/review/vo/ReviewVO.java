@@ -2,14 +2,19 @@ package com.dev24.client.review.vo;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dev24.client.mypage.orderhistory.vo.OrderhistoryVO;
+import com.dev24.common.vo.CommonVO;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReviewVO {
+@EqualsAndHashCode(callSuper=false)
+public class ReviewVO extends CommonVO {
 	private int re_num = 0;
 	private int re_score = 0; // 1 unit
 	private int c_num = 0;
@@ -28,5 +33,11 @@ public class ReviewVO {
 	private String b_pub = ""; // publish company
 	private int b_price = 0;
 	private String listcover_imgurl = "";
+	
+	private String reviewType_sort = "";
+	
+	// rating table elements
+	private int ra_num = 0; // sum of re_score
+	private int ra_count = 0; // count of reviews
 	
 }
