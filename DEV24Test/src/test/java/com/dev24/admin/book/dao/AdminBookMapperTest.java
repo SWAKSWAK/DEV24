@@ -54,7 +54,7 @@ public class AdminBookMapperTest {
 		BookVO bvo;
 
 		bvo = new BookVO();
-		bvo.setB_numArr(new int[] {3, 4, 5});
+		//bvo.setB_numArr(new int[] {3, 4, 5});
 //		bvo.setB_stateKeyword("reg");
 //		bvo.setB_stateKeyword("soldOut");
 		bvo.setB_stateKeyword("outOfPrint");
