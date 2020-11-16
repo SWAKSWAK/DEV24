@@ -28,7 +28,7 @@
     	}
     	</style>
     	<script type="text/javascript">
-    		var pattern = /^[0-9]*$/; // 숫자만 허용
+    		//var pattern = /^[0-9]*$/; // 숫자만 허용
     		
     		$(function(){
     			/* 각 상품 금액 콤마 찍기 */
@@ -89,12 +89,12 @@
            				return;
            			}
            			// 전화번호 형식 확인
-           			if(!chkTextFormat("#p_senderphone1", "전화번호 ", pattern)) return;
+           			/*if(!chkTextFormat("#p_senderphone1", "전화번호 ", pattern)) return;
            			if(!chkTextFormat("#p_senderphone2", "전화번호 ", pattern)) return;
            			if(!chkTextFormat("#p_senderphone3", "전화번호 ", pattern)) return;
            			if(!chkTextFormat("#p_receivephone1", "전화번호 ", pattern)) return;
            			if(!chkTextFormat("#p_receivephone2", "전화번호 ", pattern)) return;
-           			if(!chkTextFormat("#p_receivephone3", "전화번호 ", pattern)) return;
+           			if(!chkTextFormat("#p_receivephone3", "전화번호 ", pattern)) return;*/
            			
            			// 전화번호 조립하기(받는분)
            			var rph1 = $("#p_receivephone1").val();

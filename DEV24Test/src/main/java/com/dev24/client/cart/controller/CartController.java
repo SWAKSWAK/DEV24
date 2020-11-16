@@ -40,9 +40,16 @@ public class CartController {
 	 * cart_view를 이용해 장바구니 리스트 출력 일반도서, ebook (대분류) 나눠 출력하기
 	 **************/
 	@GetMapping("/cartList")
-	public String CartList(@ModelAttribute("data") CartVO cvo, Model model) {
+	public String CartList(@ModelAttribute("data") CartVO cvo, Model model, HttpSession session) {
 		log.info("cartList() 메서드 호출");
 
+		LoginVO lvo = (LoginVO) session.getAttribute("login");
+		int c_num = lvo.getC_num();
+		log.info(lvo);
+		log.info("c_num : "+c_num);
+		
+		cvo.setC_num(c_num);
+		
 		List<CartVO> list = cartService.cartList(cvo);
 		List<CartVO> list1 = new ArrayList<CartVO>();
 		List<CartVO> list2 = new ArrayList<CartVO>();

@@ -4,8 +4,9 @@
 
 	<!-- 장바구니 전체 조회 -->
 	<select id="cartList" parameterType="cart" resultType="cart">
-		select crt_num, b_num, b_name, b_price, crt_qty, crt_price, listcover_imgurl, cateone_num
+		select crt_num, b_num, b_name, b_price, c_num, crt_qty, crt_price, listcover_imgurl, cateone_num
 		from cart_view
+		where c_num = #{c_num}
 	</select>
 	
 	<!-- 장바구니 수량 변경 -->
