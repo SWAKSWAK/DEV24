@@ -4,7 +4,7 @@
 		<div id="sidemenu_wrap">
            <div id="tit_mypage">
                <div id="mypage_img">
-                   <span>${c_id}님, 반갑습니다.</span>
+                   <span>${login.c_nickname}님, 반갑습니다.</span>
                    <img src="/resources/image/member.jpg" />
                </div>
            </div> <!--tit_mypage-->

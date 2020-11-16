@@ -10,9 +10,9 @@
 		from refund_history_view
 		
 		<where>
-			
+			c_num = #{c_num}
 			<if test="date_start != ''">
-				<![CDATA[(to_char(p_buydate, 'YYYY-MM-DD') between #{date_start} and #{date_end}) ]]>
+				<![CDATA[AND (to_char(p_buydate, 'YYYY-MM-DD') between #{date_start} and #{date_end}) ]]>
 			
 				<if test="search=='rf_num'">
 					<![CDATA[AND (rf_num LIKE '%'||#{keyword}||'%')]]>

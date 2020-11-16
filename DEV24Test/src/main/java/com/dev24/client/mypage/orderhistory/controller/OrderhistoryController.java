@@ -40,6 +40,13 @@ public class OrderhistoryController {
 	public String orderHistory(@ModelAttribute("data") OrderhistoryVO ohvo, Model model, HttpSession session) {
 		log.info("orderHistory 호출 성공");
 		
+		LoginVO lvo = (LoginVO) session.getAttribute("login");
+		int c_num = lvo.getC_num();
+		log.info(lvo);
+		log.info("c_num : "+c_num);
+		
+		ohvo.setC_num(c_num);
+		
 		// 주문내역 조회
 		List<OrderhistoryVO> ohlist = orderhistoryService.orderhistoryList(ohvo);
 		model.addAttribute("ohvo", ohlist);
