@@ -25,9 +25,6 @@
 		delete from cart where crt_num = #{crt_num}
 	</delete>
 	
-	<select id="getCartCount" parameterType="int">
-		select count(*) from cart where b_num = #{b_num}
-	</select>
 	
 	<!-- 장바구니 삽입 (해당 b_num이 존재하면 update로 처리) -->
 	<!-- open: 쿼리문이 시작하기 전 추가될 문자 -->
