@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.dev24.client.login.vo.LoginVO;
 import com.dev24.client.mypage.orderhistory.service.OrderhistoryService;
 import com.dev24.client.mypage.orderhistory.vo.OrderhistoryVO;
 import com.dev24.client.purchase.vo.PurchaseVO;
@@ -58,7 +59,11 @@ public class RefundController {
 		int update = 0;
 		String path = "";
 		
-		int c_num = Integer.parseInt((String)session.getAttribute("c_num"));
+		LoginVO lvo = (LoginVO) session.getAttribute("login");
+		int c_num = lvo.getC_num();
+		log.info(lvo);
+		log.info("c_num : "+c_num);
+		
 		rfvo.setC_num(c_num);
 		rfvo.setRf_num(ohvo.getPd_num());
 		rfvo.setRf_orderstate(ohvo.getPd_orderstate());

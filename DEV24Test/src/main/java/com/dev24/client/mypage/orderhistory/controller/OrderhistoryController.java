@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dev24.client.cart.vo.CartVO;
+import com.dev24.client.login.vo.LoginVO;
 import com.dev24.client.mypage.orderhistory.service.OrderhistoryService;
 import com.dev24.client.mypage.orderhistory.vo.OrderhistoryVO;
 import com.dev24.client.pdetail.vo.PdetailVO;
@@ -58,7 +59,10 @@ public class OrderhistoryController {
 		String resultData = "";
 		int result = 0;
 		int refundInsert = 0;
-		int c_num = Integer.parseInt((String)session.getAttribute("c_num"));
+		LoginVO lvo = (LoginVO) session.getAttribute("login");
+		int c_num = lvo.getC_num();
+		log.info(lvo);
+		log.info("c_num : "+c_num);
 		rfvo.setC_num(c_num);
 		rfvo.setRf_reason("배송 전 주문취소");
 		

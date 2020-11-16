@@ -21,7 +21,6 @@ import lombok.extern.log4j.Log4j;
 @RequestMapping("book")
 @Log4j
 @AllArgsConstructor
-@SessionAttributes({ "c_id", "c_num" })
 public class BookController {
 
 	private BookService bookService;
@@ -62,10 +61,6 @@ public class BookController {
 		log.info(bookList.toString());
 		log.info(pagination.toString());
 		
-		// 임시 로그인용. 프로젝트 완료 시 삭제
-		model.addAttribute("c_id", "swak");
-		model.addAttribute("c_num", "2");
-
 		model.addAttribute("pagination", pagination);
 		model.addAttribute("bookList", bookList);
 

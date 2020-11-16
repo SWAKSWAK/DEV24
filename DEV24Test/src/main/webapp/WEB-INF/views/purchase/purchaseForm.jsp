@@ -28,7 +28,6 @@
     	}
     	</style>
     	<script type="text/javascript">
-    		var pattern = /^[0-9]*$/; // 숫자만 허용
     		
     		$(function(){
     			/* 각 상품 금액 콤마 찍기 */
@@ -88,13 +87,6 @@
            				alert("구매 동의사항에 체크해주세요.");
            				return;
            			}
-           			// 전화번호 형식 확인
-           			if(!chkTextFormat("#p_senderphone1", "전화번호 ", pattern)) return;
-           			if(!chkTextFormat("#p_senderphone2", "전화번호 ", pattern)) return;
-           			if(!chkTextFormat("#p_senderphone3", "전화번호 ", pattern)) return;
-           			if(!chkTextFormat("#p_receivephone1", "전화번호 ", pattern)) return;
-           			if(!chkTextFormat("#p_receivephone2", "전화번호 ", pattern)) return;
-           			if(!chkTextFormat("#p_receivephone3", "전화번호 ", pattern)) return;
            			
            			// 전화번호 조립하기(받는분)
            			var rph1 = $("#p_receivephone1").val();
@@ -102,7 +94,7 @@
         			var rph3 = $("#p_receivephone3").val();
         			var full_rph = rph1+"-"+rph2+"-"+rph3;
         			$("#p_receivephone").val(full_rph);
-        			//console.log($("#p_receivephone").val());
+        			console.log($("#p_receivephone").val());
         			
         			// 전화번호 조립하기(보내는분)
            			var sph1 = $("#p_senderphone1").val();
@@ -110,7 +102,7 @@
         			var sph3 = $("#p_senderphone3").val();
         			var full_sph = sph1+"-"+sph2+"-"+sph3;
         			$("#p_senderphone").val(full_sph);
-        			//console.log($("#p_senderphone").val());
+        			console.log($("#p_senderphone").val());
         			
         			
         			// ****** 결제하기 로직 시작
