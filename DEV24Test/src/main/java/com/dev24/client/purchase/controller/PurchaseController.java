@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.dev24.client.cart.vo.CartVO;
 import com.dev24.client.customer.vo.CustomerVO;
+import com.dev24.client.login.vo.LoginVO;
 import com.dev24.client.pdetail.vo.PdetailVO;
 import com.dev24.client.purchase.service.PurchaseService;
 import com.dev24.client.purchase.vo.PurchaseVO;
@@ -34,7 +35,6 @@ import lombok.extern.log4j.Log4j;
 @RequestMapping("/purchase/*")
 @Log4j
 @AllArgsConstructor
-@SessionAttributes({"c_id", "c_num"})
 public class PurchaseController {
 	private PurchaseService purchaseService;
 	
@@ -60,11 +60,11 @@ public class PurchaseController {
 	}
 	
 	/*******************
-	 * �썒�슣�닑�룇 �뜝�럥�쓡�뜝�럩逾좂춯�쉻�삕 占쎈퉲占쎈츊占쎌졑
+	 * 占쎌뜏占쎌뒩占쎈땻占쎈즵 占쎈쐻占쎈윥占쎌뱻占쎈쐻占쎈윪�얠쥉異�占쎌돸占쎌굲 �뜝�럥�돯�뜝�럥痢듿뜝�럩議�
 	 * *****/
 	@RequestMapping(value="/SingleItemPurchaseForm", method= {RequestMethod.GET, RequestMethod.POST})
 	public String SingleItemPurchaseForm(Model model, HttpSession session) {
-		log.info("purchaseForm �뜝�럩源덌옙鍮듿뜝占� �뜝�럡�뎽占썩뫅�삕");
+		log.info("purchaseForm 占쎈쐻占쎈윪繹먮뜉�삕�뜮�벩�쐻�뜝占� 占쎈쐻占쎈윞占쎈렰�뜝�뜦維낉옙�굲");
 		
 		@SuppressWarnings("unchecked")
 		List<CartVO> cvoList = (List<CartVO>) session.getAttribute("cvoList");
@@ -87,7 +87,7 @@ public class PurchaseController {
 	@PostMapping(value="/purchaseItems", produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
 	public String purchaseItems(@RequestBody List<Map<String, Object>> cartList, HttpSession session, Model model){
 		log.info("purchaseItem succsess call!");
-		log.info(session.getAttribute("c_id").toString());
+//		log.info(session.getAttribute("c_id").toString());
 
 		CartVO cvo = null;
 
@@ -109,14 +109,14 @@ public class PurchaseController {
 <<<<<<< HEAD
 	 * single item to purchase from cart
 =======
-	 * 占쎈뼊占쎌뵬占쎈퉮筌륅옙 �뤃�됤꼻�몴占� 占쎌맄占쎈립 session �빊遺쏙옙 占쎌삂占쎈씜
+	 * �뜝�럥堉듿뜝�럩逾у뜝�럥�돫嶺뚮쪋�삕 占쎈쨨占쎈맍瑗삼옙紐닷뜝占� �뜝�럩留꾢뜝�럥由� session 占쎈퉲�겫�룞�삕 �뜝�럩�굚�뜝�럥�뵜
 >>>>>>> origin/master
 	 * **********/
 	@ResponseBody
 	@PostMapping(value="/purchaseSingleItem", produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
 	public String purchaseSingleItem(@RequestBody CartVO cvo, HttpSession session, Model model){
 		log.info("purchaseSingleItem success call!");
-		log.info(session.getAttribute("c_id").toString());
+//		log.info(session.getAttribute("c_id").toString());
 
 		List<CartVO> cvoList = new ArrayList<CartVO>();
 		cvoList.add(cvo);
@@ -132,8 +132,13 @@ public class PurchaseController {
 	 * **********/
 	@ResponseBody
 	@GetMapping(value="/{c_num}", produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
-	public ResponseEntity<CustomerVO> getSenderInfo(@PathVariable("c_num") Integer c_num){
-		log.info("getSenderInfo �뜝�럩源덌옙鍮듿뜝占� �뜝�럡�뎽占썩뫅�삕");
+	public ResponseEntity<CustomerVO> getSenderInfo(@PathVariable("c_num") int c_num, HttpSession session){
+		log.info("getSenderInfo success call!");
+		LoginVO lvo = (LoginVO) session.getAttribute("login");
+		c_num = lvo.getC_num();
+		log.info(lvo);
+		log.info("c_num : "+c_num);
+		
 		ResponseEntity<CustomerVO> entity = null;
 		entity = new ResponseEntity<CustomerVO>(purchaseService.getSenderInfo(c_num), HttpStatus.OK);
 		return entity;
@@ -145,13 +150,16 @@ public class PurchaseController {
 	@RequestMapping(value="/purchaseInsert", method= {RequestMethod.POST, RequestMethod.GET}, produces = "text/plain; charset=utf8")
 	@ResponseBody
 	public String purchaseInsert(@ModelAttribute("pvo") PurchaseVO pvo, @RequestBody List<Map<String, Object>> pdvoList, HttpSession session, Model model) {
-		log.info("purchaseInsert �뜝�럩源덌옙鍮듿뜝占� �뜝�럡�뎽占썩뫅�삕");
+		log.info("purchaseInsert 占쎈쐻占쎈윪繹먮뜉�삕�뜮�벩�쐻�뜝占� 占쎈쐻占쎈윞占쎈렰�뜝�뜦維낉옙�굲");
 		
 		int p_num = 0;
 		int result = 0;
 		String resultData = "";
 		
-		int c_num = Integer.parseInt(session.getAttribute("c_num")+"");
+		LoginVO lvo = (LoginVO) session.getAttribute("login");
+		int c_num = lvo.getC_num();
+		log.info(lvo);
+		log.info("c_num : "+c_num);
 		
 		log.info(pdvoList.get(0).get("p_receiver") + "");
 		log.info(pdvoList.get(1).get("p_price") + "");
@@ -212,7 +220,11 @@ public class PurchaseController {
 		PdetailVO pdvo = null;
 		String resultData = "";
 		
-		int c_num = Integer.parseInt(session.getAttribute("c_num")+"");
+		LoginVO lvo = (LoginVO) session.getAttribute("login");
+		int c_num = lvo.getC_num();
+		log.info(lvo);
+		log.info("c_num : "+c_num);
+		
 		int p_num = Integer.parseInt(session.getAttribute("p_num")+"");
 		log.info("p_num =>>>>>>" + p_num);
 		
@@ -257,7 +269,7 @@ public class PurchaseController {
 	 * **********/
 	@PostMapping(value="/purchasefinish")
 	public String purchasefinish(@ModelAttribute("data") PurchaseVO pvo, Model model) {
-		log.info("purchasefinish �뜝�럩源덌옙鍮듿뜝占� �뜝�럡�뎽占썩뫅�삕");
+		log.info("purchasefinish 占쎈쐻占쎈윪繹먮뜉�삕�뜮�벩�쐻�뜝占� 占쎈쐻占쎈윞占쎈렰�뜝�뜦維낉옙�굲");
 		
 		model.addAttribute("pvo", pvo);
 		return "purchase/purchasefinish";
