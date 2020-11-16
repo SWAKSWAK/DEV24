@@ -89,4 +89,5 @@ public class AdminIndexServiceImpl implements AdminIndexService {
 		return result;
 	}
 
+
 }

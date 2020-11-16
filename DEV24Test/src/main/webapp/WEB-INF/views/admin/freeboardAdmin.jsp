@@ -52,6 +52,20 @@
 					}
 					goPage();
 				});
+				
+				$(".goDetail").click(function(){
+					var fb_num= $(this).parents("tr").attr("data-num");
+					$("#fb_num").val(fb_num);
+					console.log("글번호: "+fb_num);
+					//상세 페이지로 이동하기 위해 form 추가(id:detailForm)
+					
+					$("#detailForm").attr({
+						"method":"get", 
+						"action":"/freeboard/freeboardDetail"
+					});
+					$("#detailForm").submit();
+				});
+				
 			});
 			
 			 function goPage(){
@@ -89,6 +103,10 @@
 				</div> <!-- center -->
 			</div> <!-- upper -->
 			
+			<form id="detailForm">
+				<input type="hidden" id="fb_num" name="fb_num"/>
+			</form>
+			
 			<div id="table">
 				<table class="table table-striped listTable" border="1">
 					<thead>
@@ -107,7 +125,9 @@
 								<c:forEach var="free" items="${adminfbList}" varStatus="status">
 									<tr class="text-center" data-num="${free.fb_num}">
 										<td>${free.fb_num}</td>
-										<td>${free.fb_title}</td>
+										<td class="goDetail">
+											${free.fb_title}
+										</td>
 										<td>${free.fb_author}</td>
 										<td>${free.fb_writeday}</td>
 										<td>${free.fb_readcnt}</td>

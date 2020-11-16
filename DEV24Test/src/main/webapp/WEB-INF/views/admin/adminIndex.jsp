@@ -279,7 +279,7 @@
          
          =========================================================================
       --%>
-          <h2 class="sub-header">오늘 최대 매출 도서</h2> <p class="date"></p>
+       <%-- <h2 class="sub-header">오늘 최대 매출 도서</h2> <p class="date"></p>
           <div class="table-responsive">
             <table class="table table-striped">
               <thead>
@@ -293,13 +293,13 @@
               </thead>
               <tbody>
               <%-- jstl 테스팅을 위한 변수 선언 --%>
-              <c:set var="title" value="강자바의 자바 조지기"/>
+            <%--  <c:set var="title" value="강자바의 자바 조지기"/>
               <c:set var="author" value="강자바"/>
               <c:set var="publisher" value="강자바 컴퍼니"/>
               <c:set var="price" value="25000"/>
               <c:set var="category" value="프로그래밍 언어"/>
               <%-- <c:forEach begin="0" end="10" varStatus="loop"> </c:forEach> --%> 
-                <tr>
+            <%--    <tr>
                   <td>${title}</td>
                   <td>${author}</td>
                   <td>${publisher}</td>
@@ -342,7 +342,9 @@
              
               </tbody>
             </table>
-          </div>
+          </div> --%>
+          
+          
         </div>
       </div>
     </div>

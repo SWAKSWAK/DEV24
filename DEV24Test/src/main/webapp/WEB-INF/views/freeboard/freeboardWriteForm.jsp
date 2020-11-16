@@ -39,6 +39,10 @@
 		
 		<style type="text/css">
 			#content{width:1000px;}
+			
+			#fb_content{
+				height: 200px;
+			}
 		</style>
 		
 		<title>freeboardWriteForm.jsp</title>
@@ -74,7 +78,7 @@
 					
 					<tr>
 						<td>글내용</td>
-						<td><textarea rows="10" cols="100" name="fb_content" id="fb_content" class="form-control" rows="8" style="resize:none"></textarea></td>
+						<td><textarea rows="100" cols="100" name="fb_content" id="fb_content" class="form-control" rows="8" style="resize:none"></textarea></td>
 					</tr>
 				
 					<%--<tr>

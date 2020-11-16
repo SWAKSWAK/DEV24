@@ -13,4 +13,5 @@ public interface AdminIndexService {
 	public int qnaCount();
 	public int neCount();
 	public int fbCount();
+	
 }

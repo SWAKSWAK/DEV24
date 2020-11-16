@@ -29,7 +29,7 @@
 					console.log($("#c_num").val());
 					
 					if(!chkSubmit("#fbc_content", "댓글 내용을")) return;
-					else if(!chkSubmit("#c_num", "로그인을"))  return;
+					else if(!chkSubmit("#c_num", "로그인 후 댓글을"))  return;
 					var insertUrl="/freecmt/freecmtInsert";
 					var value = JSON.stringify({
 						fb_num: fb_num,
@@ -52,11 +52,11 @@
 						dataType:"text", 
 						data : value,
 						error: function(){
-							if(fbc_author != null){
+							/*if(fbc_author != null){
 								alert("시스템 오류입니다. 관리자에게 문의하세요.");
 							}else if(fbc_author == null){
 								alert("로그인 후 댓글 등록을 해주세요.");
-							}
+							}*/
 							alert("시스템 오류입니다. 관리자에게 문의하세요.");
 						},
 						success: function(result){
