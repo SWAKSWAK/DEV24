@@ -61,7 +61,7 @@
 					
 					$("#detailForm").attr({
 						"method":"get", 
-						"action":"/freeboard/freeboardDetail"
+						"action":"/admin/freeboardAdminDetail"
 					});
 					$("#detailForm").submit();
 				});

@@ -35,6 +35,9 @@
     	div.sidebar{
     		width:260px;
     	}
+    	
+    	
+		*{font-family: 'Noto Sans KR', sans-serif;}
     </style>
     
     <script> 

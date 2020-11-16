@@ -29,4 +29,13 @@ public class AdminFreeBoardController {
 		return"admin/freeboardAdmin";
 	}
 	
+	@RequestMapping(value="/freeboardAdminDetail", method=RequestMethod.GET)
+	public String freeboardAdminDetail(@ModelAttribute("data") FreeBoardVO fbvo, Model model) {
+		
+		FreeBoardVO adminfreeDetail = freeboardService.freeboardDetail(fbvo);
+		model.addAttribute("adminfreeDetail", adminfreeDetail);
+		
+		return "admin/freeboardAdminDetail";
+	}
+	
 }
