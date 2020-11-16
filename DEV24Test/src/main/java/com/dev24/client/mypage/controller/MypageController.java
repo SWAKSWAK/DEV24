@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.dev24.client.login.vo.LoginVO;
 import com.dev24.client.mypage.orderhistory.service.OrderhistoryService;
 import com.dev24.client.mypage.orderhistory.vo.OrderhistoryVO;
 import com.dev24.client.mypage.refundhistory.service.RefundhistoryService;
@@ -32,6 +33,14 @@ public class MypageController {
 	@RequestMapping(value="/mypage", method= {RequestMethod.GET})
 	public String mypage(OrderhistoryVO ohvo, RefundhistoryVO rfhvo, Model model, HttpSession session) {
 		log.info("mypage 호출 성공");
+		
+		LoginVO lvo = (LoginVO) session.getAttribute("login");
+		int c_num = lvo.getC_num();
+		log.info(lvo);
+		log.info("c_num : "+c_num);
+		
+		ohvo.setC_num(c_num);
+		rfhvo.setC_num(c_num);
 		
 		// 주문내역 조회
 		List<OrderhistoryVO> ohlist = orderhistoryService.orderhistoryList(ohvo);
