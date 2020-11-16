@@ -48,7 +48,7 @@
 				var url = "/review/all/"+b_num; //+".json"
 				
 				// getJSON(요청url, 파라미터값, success fn, fail fn)
-				/*$.getJSON(url, function(data){ // success
+				$.getJSON(url, function(data){ // success
 					console.log("list count : "+data.length); // 리뷰 개수
 					replyCnt = data.length;
 					$(data).each(function(){
@@ -62,34 +62,19 @@
 						var pd_num = this.pd_num;
 						var re_imgurl = this.re_imgurl;
 						
+						$("#c_nickname").text(c_nickname);
+						$("#re_writedate").text(re_writedate);
+						$("#re_score").text(re_score);
+						$("#re_content").text(re_content);
+						$("#re_imgurl").text(re_imgurl);
+						
 						re_content = re_content.replace(/(\r\n|\r|\n)/g,"<br/>");
 					});
 				
 				}).fail(function(){ // error
 					alert("리뷰 목록을 불러오는데 실패했습니다. 잠시 후에 다시 시도해 주세요.");
-				});*/
-				/*
-				$.ajax({
-					url : "url",
-					type:"post",
-					data:"r_num="+r_num+"&r_pwd="+pwd.val(),
-					dataType:"text",
-					error:function(){
-						alert("시스템 오류. 관리자에게 문의하세요.");
-					},
-					success : function(resultData){
-						console.log("resultData : "+resultData);
-						// 비동기 함수 success 콜백 함수에 def.resolve() 함수 호출
-						if(resultData==0){
-							msg.addClass("msg_error");
-							msg.text("입력한 비밀번호가 일치하지 않습니다.");
-							pwd.select();
-						}else if(resultData==1){
-							def.resolve(resultData);
-							$(pwd).parents("div.panel .panel-heading .pwdArea").remove();
-						}
-					}
-				});*/
+				});
+				
 				
 				
 				
@@ -127,14 +112,14 @@
 	            	<c:when test="${not empty revoList}">
 	            		<table class="table review_table">
 			                <tr>
-			                    <td>${revoList.c_nickname} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${revoList.re_writedate}</td>
-			                    <td>평점 : ${revoList.re_score}</td>
+			                    <td><span id="c_nickname"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="re_writedate"></span></td>
+			                    <td>평점 : <span id="re_score"></span></td>
 			                </tr>
 			                <tr>
-			                    <td colspan="2">${revoList.re_content}</td>
+			                    <td colspan="2"><span id="re_content"></span></td>
 			                </tr>
 			                <tr>
-			                    <td colspan="2">${revoList.re_imgurl}</td>
+			                    <td colspan="2"><span id="re_imgurl"></span></td>
 			                </tr>
 			                <tr class="tr_revcmtInsert">
 			                    <td colspan="2">
