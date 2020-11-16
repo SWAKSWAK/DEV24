@@ -12,7 +12,7 @@
 		<li><a href="">FAQ 게시판 관리페이지</a></li>
 		<li><a href="">QnA 게시판 관리페이지</a></li>
 		<li><a href="/admin/freeboardAdmin">자유게시판 관리페이지</a></li>
-		<li><a href="/admin/purchaseList">구매관리</a></li>
+		<li><a href="/admin/purchaseList">구매관리 페이지</a></li>
 		<li><a href="">리뷰관리 페이지</a></li>
 		<li><a href="">공지사항/이벤트 관리 페이지</a></li>
 		<li><a href="/admin/refundList">환불처리 페이지</a></li>

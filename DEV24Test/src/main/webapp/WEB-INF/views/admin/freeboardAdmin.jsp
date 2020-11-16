@@ -83,7 +83,7 @@
 		<div id="content_wrap">
 			<div id="upper">
 				<div class="center">
-					<h2 id="tit">게시판 관리자 페이지</h2>
+					<h2 id="tit">자유 게시판 관리자 페이지</h2>
 					
 					<form id="searchForm">
 						<div class="form-inline" id="searchCategory">
