@@ -30,16 +30,16 @@ public class AdminBookMapperTest {
 //	public void testBookList() {
 //		BookViewVO bvo;
 //		ArrayList<BookViewVO> bList = bookDAO.bookList();
-//		log.info("bvo °¡Á®¿À±â");
+//		log.info("bvo ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 //		
-//		//¸ðµç µ¥ÀÌÅÍ
+//		//ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //		for (int i = 0 ; i < bList.size() ; i++) {
 //			bvo = bList.get(i);
 //			log.info(bvo.toString());
 //					
 //		}
 //		
-//		//index 0, ¸¶Áö¸· µ¥ÀÌÅÍ¸¸
+//		//index 0, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½
 //		String first = bList.get(0).toString();
 //		String last = bList.get(bookList.size() - 1).toString();
 //		
@@ -49,11 +49,18 @@ public class AdminBookMapperTest {
 //	}
 	
 	@Test public void testUpdateBookState() {
-		log.info("testUpdateBookState Å×½ºÆ® ½ÃÀÛ");
+		log.info("testUpdateBookState ï¿½×½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½");
 		
 		BookVO bvo;
 
 		bvo = new BookVO();
+
+		List<Integer> bNumList = new ArrayList<Integer>();
+		bNumList.add(3);
+		bNumList.add(4);
+		bNumList.add(5);
+		bvo.setBNumList(bNumList);
+		
 		//bvo.setB_numArr(new int[] {3, 4, 5});
 //		bvo.setB_stateKeyword("reg");
 //		bvo.setB_stateKeyword("soldOut");
