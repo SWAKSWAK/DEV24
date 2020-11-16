@@ -53,9 +53,9 @@ public class FreeCmtController {
 		log.info("FreeCmtVO"+fcmtvo);
 		int result =0;
 		
-		model.addAttribute("c_id", "javakhang");
+		/*model.addAttribute("c_id", "javakhang");
 		model.addAttribute("c_num", 2);
-		model.addAttribute("c_nickname", "javaman");
+		model.addAttribute("c_nickname", "javaman");*/
 		
 		result = freecmtService.freeCmtInsert(fcmtvo);
 		return result==1? new ResponseEntity<String>("SUCCESS", HttpStatus.OK):

@@ -132,10 +132,10 @@
 		</div> --%>
 		
 		<div class="text-right btnArea">
-			<c:if test="${c_num != null}">
-		    <input type="button" id="boardUpdateFormBtn" value="글수정" class="btn btn-success" />
-            <input type="button" id="boardDeleteBtn" value="글삭제" class="btn btn-success" />
-            <!-- <input type="button" id="boardReplyBtn" value="글답변" class="btn btn-success" /> -->
+			<c:if test="${login.c_num eq detail.c_num}">
+			    <input type="button" id="boardUpdateFormBtn" value="글수정" class="btn btn-success" />
+	            <input type="button" id="boardDeleteBtn" value="글삭제" class="btn btn-success" />
+	            <!-- <input type="button" id="boardReplyBtn" value="글답변" class="btn btn-success" /> -->
             </c:if>
             <input type="button" id="boardListBtn" value="글목록" class="btn btn-primary" />
 		</div>

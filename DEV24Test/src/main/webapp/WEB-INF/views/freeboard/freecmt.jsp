@@ -18,7 +18,7 @@
 			$(function(){
 				
 				var fb_num = ${freeDetail.fb_num};
-				var fbc_author = "${c_nickname}";
+				var fbc_author = $("#fbc_author").val();
 			
 				listAll(fb_num);
 				
@@ -29,6 +29,7 @@
 					console.log($("#c_num").val());
 					
 					if(!chkSubmit("#fbc_content", "댓글 내용을")) return;
+					else if(!chkSubmit("#c_num", "로그인 후 댓글을"))  return;
 					var insertUrl="/freecmt/freecmtInsert";
 					var value = JSON.stringify({
 						fb_num: fb_num,
@@ -38,6 +39,8 @@
 						fbc_author: fbc_author,
 						c_num:$("#c_num").val()
 					});
+					
+					
 					
 					$.ajax({
 						url:insertUrl, 
@@ -49,6 +52,11 @@
 						dataType:"text", 
 						data : value,
 						error: function(){
+							/*if(fbc_author != null){
+								alert("시스템 오류입니다. 관리자에게 문의하세요.");
+							}else if(fbc_author == null){
+								alert("로그인 후 댓글 등록을 해주세요.");
+							}*/
 							alert("시스템 오류입니다. 관리자에게 문의하세요.");
 						},
 						success: function(result){
@@ -170,7 +178,8 @@
 			<div class="text-right btnArea">
 				<form id="commentContent">
 					<input type="hidden" name="fb_num" id="fb_num"/>
-					<input type="hidden" name="c_num" id="c_num" value="${c_num}"/>
+					<input type="hidden" name="c_num" id="c_num" value="${login.c_num}"/>
+					<input type="hidden" name="fbc_author" id="fbc_author" value="${login.c_nickname }"/>
 					<textarea id="fbc_content" name="fbc_content" cols="130" style="resize:none"></textarea>
 					<input type="button" class="btn btn-success" value="댓글등록" id="replyInsertFormBtn"/>
 				</form>

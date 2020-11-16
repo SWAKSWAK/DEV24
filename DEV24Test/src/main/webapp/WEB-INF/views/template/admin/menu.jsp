@@ -5,17 +5,17 @@
 	<ul class="nav nav-sidebar">
 		<li class="active"><a href="/admin/book/bookInsertForm">도서등록<span
 				class="sr-only">(current)</span></a></li>
-		<li><a href="/admin/stockList">재고관리 </a></li>
-		<li><a href="/admin/book/00">도서목록</a></li>
+		<li><a href="/admin/stockList">재고관리 페이지 </a></li>
+		<li><a href="/admin/book/00">도서목록 페이지</a></li>
 	</ul>
 	<ul class="nav nav-sidebar">
-		<li><a href="../jsp/faqAdmin.jsp">FAQ 관리페이지</a></li>
-		<li><a href="">QnA 관리페이지</a></li>
-		<li><a href="/admin/freeboardAdmin">자유게시판관리</a></li>
-		<li><a href="/admin/purchaseList">구매관리</a></li>
-		<li><a href="">리뷰관리</a></li>
-		<li><a href="">공지사항/이벤트 관리</a></li>
-		<li><a href="/admin/refundList">환불처리</a></li>
+		<li><a href="">FAQ 게시판 관리페이지</a></li>
+		<li><a href="">QnA 게시판 관리페이지</a></li>
+		<li><a href="/admin/freeboardAdmin">자유게시판 관리페이지</a></li>
+		<li><a href="/admin/purchaseList">구매관리 페이지</a></li>
+		<li><a href="">리뷰관리 페이지</a></li>
+		<li><a href="">공지사항/이벤트 관리 페이지</a></li>
+		<li><a href="/admin/refundList">환불처리 페이지</a></li>
 	</ul>
 
 </div>

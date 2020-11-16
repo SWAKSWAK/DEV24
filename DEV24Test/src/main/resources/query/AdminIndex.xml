@@ -38,4 +38,5 @@
 		select nvl(count(fb_num),0) from freeboard where trunc(fb_writeday) = TO_DATE(sysdate,'yy/mm/dd')
 	</select>
 	
+	
 </mapper>

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.dev24.client.login.vo.LoginVO;
 import com.dev24.client.review.service.ReviewService;
 import com.dev24.client.review.vo.ReviewVO;
 
@@ -81,7 +82,11 @@ public class ReviewController {
 		log.info("ReviewVO : "+ revo);
 		int result = 0;
 
-		int c_num = Integer.parseInt(session.getAttribute("c_num")+"");
+		LoginVO lvo = (LoginVO) session.getAttribute("login");
+		int c_num = lvo.getC_num();
+		log.info(lvo);
+		log.info("c_num : "+c_num);
+		
 		revo.setC_num(c_num);
 		
 		//int b_num = revo.getB_num();
@@ -95,7 +100,10 @@ public class ReviewController {
 		
 		int result = 0;
 		String url = "";
-		int c_num = Integer.parseInt(session.getAttribute("c_num")+"");
+		LoginVO lvo = (LoginVO) session.getAttribute("login");
+		int c_num = lvo.getC_num();
+		log.info(lvo);
+		log.info("c_num : "+c_num);
 		revo.setC_num(c_num);
 		
 		int b_num = revo.getB_num();
