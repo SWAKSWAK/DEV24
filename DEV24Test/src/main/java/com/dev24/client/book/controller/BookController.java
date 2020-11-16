@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,6 +34,8 @@ public class BookController {
 						@RequestParam(required = false, defaultValue = "1") int startPage,
 						@RequestParam(required = false, defaultValue = "20") int listRange,
 						@RequestParam(required = false, defaultValue = "best") String b_sort,
+						@RequestParam(required = false, defaultValue = "") String b_searchKeyword,
+						@RequestParam(required = false, defaultValue = "") String b_searchSelect,
 						Model model
 	) {
 		int cateOne_num = 0;
@@ -59,8 +62,9 @@ public class BookController {
 		Pagination pagination = new Pagination(bookLength, startPage, page, cateOne_num, cateTwo_num, listRange, b_sort, "regOrOop");
 		//얻어낸 pagination객체를 통해 bookList() 호출
 		ArrayList<BookVO> bookList = bookService.bookList(pagination);
+		
 		log.info(bookList.toString());
-		log.info(pagination.toString());
+//		log.info(pagination.toString());
 		
 		// 임시 로그인용. 프로젝트 완료 시 삭제
 		model.addAttribute("c_id", "swak");

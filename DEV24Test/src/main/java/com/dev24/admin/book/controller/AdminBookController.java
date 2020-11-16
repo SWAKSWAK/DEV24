@@ -1,7 +1,6 @@
 package com.dev24.admin.book.controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -54,11 +53,12 @@ public class AdminBookController {
 			@RequestParam(required = false, defaultValue = "20") int listRange,
 			@RequestParam(required = false, defaultValue = "best") String b_sort,
 			@RequestParam(required = false, defaultValue = "all") String b_stateKeyword,
+			@RequestParam(required = false, defaultValue = "") String b_searchKeyword,
+			@RequestParam(required = false, defaultValue = "") String b_searchSelect,
 			Model model
 	) {
 
 		log.info("bookList 호출 성공");
-		log.info(page);
 
 		int cateOne_num = 0;
 		int cateTwo_num = 0;
@@ -75,10 +75,11 @@ public class AdminBookController {
 		// Pagination 객체 생성
 		int bookLength = bookService.getBookListCnt(bvo);
 		Pagination pagination = new Pagination(bookLength, startPage, page, cateOne_num, cateTwo_num, listRange, b_sort, b_stateKeyword);
+		pagination.setB_searchSelect(b_searchSelect);
+		pagination.setB_searchKeyword(b_searchKeyword);
 
 		// 얻어낸 pagination객체를 통해 bookList() 호출
 		ArrayList<BookVO> bList = bookService.bookList(pagination);
-		
 		log.info(pagination.toString());
 		
 		// 임시 로그인용. 프로젝트 완료 시 삭제

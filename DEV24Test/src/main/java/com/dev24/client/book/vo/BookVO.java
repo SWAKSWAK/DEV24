@@ -7,11 +7,11 @@ import org.springframework.web.multipart.MultipartFile;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-/*
+/**************************************************************
  * equals와 hashCode 메소드 자동 생성 시 부모 클래스의 필드까지 감안할지 안 할지에 대해서 설정시
  * callSuper = true 부모 클래스 필드 값들도 동일 한지 체크
  * callSuper = false 부모 클래스 필드 값들도 동일 한지 체크안함
- */
+ **************************************************************/
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -56,16 +56,25 @@ public class BookVO {
 	//판매량을 조회할 수 있다.
 	private int b_salesRate;
 	
-	/****************
+	/*************************************************************
 	 * 등록/미등록/절판 여부를 판단하기 위한 필드
 	 * null 또는 "" 또는 "all"	:모두 조회
 	 * "null"				:등록상품만 조회
 	 * "unreg"				:미등록 상품만 조회
 	 * "outOfPrint"				:절판 상품만 조회
 	 * "reg or oop"			:등록 과 절판 모두 출력
-	 ****************/
+	 *************************************************************/
 	private String b_stateKeyword = "all";
 	
-	//관리자페이지에서 도서 체크 후 일괄 처리에 사용하는 항목
+	//관리자페이지에서 도서 체크 후 일괄 처리에 사용하는 항목s
 	private List<Integer> bNumList;
+	
+	/*************************************************************
+	 * 검색관련
+	 * 	- searchSelect : select박스를 통해 어떤 항목을 검색할지 결정
+	 * 					all, b_name, b_author, b_pub, b_info
+	 *  - searchKeyword : 입력한 검색어
+	 ************************************************************/
+	private String b_searchSelect = "";
+	private String b_searchKeyword = "";
 }

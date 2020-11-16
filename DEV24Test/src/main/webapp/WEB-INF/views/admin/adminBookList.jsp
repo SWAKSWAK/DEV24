@@ -25,6 +25,7 @@
 		<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
 		<script src="/resources/include/js/jquery-1.12.4.min.js"></script>
     	<script src="/resources/include/js/jquery-3.5.1.min.js"></script>
+    	<script src="/resources/include/js/common.js"></script>
     	<style>
     		#content_wrap{padding-top:30px;}
     	
@@ -267,6 +268,24 @@
 					updateBookState(data);
 				});
 				
+				$("#searchBtn").click(function(){
+					
+					var b_searchSelect = $("#searchSelect").val();
+					var b_searchKeyword = $("#searchKeyword").val();
+					console.log(b_searchKeyword);
+					console.log(b_searchSelect);
+					
+					if(!chkData("#searchKeyword", "검색어를")) return;
+					
+					$("#b_searchSelect").val(b_searchSelect);
+					$("#b_searchKeyword").val(b_searchKeyword);
+					$("#b_sort").val("");
+					$("#b_startPage").val(1);
+					$("#b_stateKeyword").val("all");
+					
+					goURL("00");
+				});
+				
 				
 			});//onload
 			
@@ -290,7 +309,6 @@
 						alert("도서 등록에 실패하였습니다.");
 					}
 				});
-				
 			};
 			
 			//패이지 이동 URI값 조합 함수
@@ -343,11 +361,21 @@
 				<input type="hidden" name="b_sort" id="b_sort" value="" />
 				<input type="hidden" name="b_stateKeyword" id="b_stateKeyword" value="${pagination.b_stateKeyword}" />
 				<input type="hidden" name="b_searchKeyword" id="b_searchKeyword" value=""/>
+				<input type="hidden" name="b_searchSelect" id="b_searchSelect" value=""/>
 			</form>
 			<div class="contentHeader">
 				<div class="contentHeaderTop">
-					<form ></form>
-					<select name="" id=""></select>
+					<form id="searchForm">
+						<select name="searchSelect" id="searchSelect" class='form-control'>
+							<option value="all" selected="selected">전체</option>
+							<option value="b_name">책제목</option>
+							<option value="b_author">저자</option>
+							<option value="b_pub">출판사</option>
+							<option value="b_info">책정보</option>
+						</select>
+						<input type="text" name="searchKeyword" id="searchKeyword" class='form-control' value=''/>
+						<button type="button" name="searchBtn" id='searchBtn' class='btn btn-default'>검색</button>
+					</form>
 				</div>
 				<div class="contentHeaderBottom">
 					<!-- pagination -->
@@ -384,7 +412,8 @@
 								<option value="reg">등록</option>
 								<option value="unreg">미등록</option>
 								<option value="regOrOop">등록 또는 절판</option>
-								<option value="oop">절판</option>
+								<option value="outOfPrint">절판</option>
+								<option value="soldOut">품절</option>
 							</select>
 							<select id="listRangeSelect" class="pull-right form-control">
 								<option value="20">20개씩 보기</option>
@@ -421,8 +450,9 @@
 								<a class="nav-link sort active" href="#">높은 가격순</a>
 							</li>
 						</ul>
-						<button type="button" class="btn btn-default pull-right updateBookStateBtn" id="selectedOOP" value="outOfPrint" >선택항목 절판 처리</button>
-						<button type="button" class="btn btn-default pull-right updateBookStateBtn" id="selectedREG" value="reg" >선택항목 등록</button>
+						<button type="button" class="btn btn-default pull-right updateBookStateBtn" id="selectedOOP" value="outOfPrint" >절판</button>
+						<button type="button" class="btn btn-default pull-right updateBookStateBtn" id="selectedREG" value="reg" >등록</button>
+						<button type="button" class="btn btn-default pull-right updateBookStateBtn" id="selectedREG" value="soldOut" >품절</button>
 					</div>
 				</div><!-- bottom -->
 			</div> <!-- contentHeader -->

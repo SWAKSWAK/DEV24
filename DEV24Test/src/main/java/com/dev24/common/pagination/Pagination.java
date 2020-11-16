@@ -7,15 +7,15 @@ public class Pagination {
 
 	private int listRange;	// 한페이지에 출력될 도서의 개수
 	private int range 			= 10;	// 한번에 숫자로 보여질 페이지 범위 -1(기본값 10)
-	private int page; 					// 현재 목록의 페이지 번호
+	private int page 			= 0;	// 현재 목록의 페이지 번호
 	private int startPage 		= 1;	// 각 페이지 범위 시작 번호 (기본값 1)
-	private int endPage; 				// 각 페이지 범위 끝 번호 (기본값 5)
-	private int pageLength; 			// 총 페이지 개수 (where절에 따라 가변)
-	private int bookLength; 			// 전체 도서 개수 (where절에 따라 가변)
-	private int startRownum; 			// 한페이지에 출력되는 첫번째 상품의 rownum
-	private int lastRownum; 			// 한페이지에 출력되는 마지막 상품의 rownum
-	private boolean prev; 				// 이전 페이지 여부
-	private boolean next;				 // 다음 페이지 여부
+	private int endPage 		= 0;	// 각 페이지 범위 끝 번호 (기본값 5)
+	private int pageLength		= 0;	// 총 페이지 개수 (where절에 따라 가변)
+	private int bookLength		= 0;	// 전체 도서 개수 (where절에 따라 가변)
+	private int startRownum		= 0;	// 한페이지에 출력되는 첫번째 상품의 rownum
+	private int lastRownum		= 0;	// 한페이지에 출력되는 마지막 상품의 rownum
+	private boolean prev		= false;// 이전 페이지 여부
+	private boolean next		= false;// 다음 페이지 여부
 
 	// 카테고리 조건에 맞춰서 페이징 출력을 하기 위함
 	private int cateOne_num = 0; // 대분류 코드
@@ -25,15 +25,24 @@ public class Pagination {
 	// dev24 / best / new / lowp / highp
 	String b_sort = "best";
 	
-	/****************
+	/*************************************************************
 	 * 등록/미등록/절판 여부를 판단하기 위한 필드
 	 * null 또는 "" 또는 "all"	:모두 조회
 	 * "null"				:등록상품만 조회
 	 * "unreg"				:미등록 상품만 조회
-	 * "outOfPrint"			:절판 상품만 조회
+	 * "outOfPrint"				:절판 상품만 조회
 	 * "reg or oop"			:등록 과 절판 모두 출력
-	 ****************/
-	String b_stateKeyword = "null";
+	 *************************************************************/
+	private String b_stateKeyword = "all";
+	
+	/*************************************************************
+	 * 검색관련
+	 * 	- searchSelect : select박스를 통해 어떤 항목을 검색할지 결정
+	 * 					all, b_name, b_author, b_pub, b_info
+	 *  - searchKeyword : 입력한 검색어
+	 ************************************************************/
+	private String b_searchSelect = "";
+	private String b_searchKeyword = "";
 
 	/******************************************************************
 	 * 페이징 처리를 위한 메소드
@@ -95,5 +104,7 @@ public class Pagination {
 		// 0일 경우 BookView.xml에서 where절이 작동하지 않음
 		this.cateOne_num = cateOne_num;
 		this.cateTwo_num = cateTwo_num;
+		
+		
 	}
 }
