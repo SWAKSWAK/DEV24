@@ -9,5 +9,6 @@ public interface BookService {
 	public ArrayList<BookVO> bookList(Pagination pagination);
 	public int getBookListCnt(BookVO bvo);
 	public int bookInsert(BookVO bvo) throws Exception;
+	public int bookUpdate(BookVO bvo) throws Exception;
 	public BookVO bookDetail(int b_num);
 }

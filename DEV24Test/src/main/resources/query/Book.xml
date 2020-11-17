@@ -53,6 +53,12 @@
 			AND b_state is null
 			OR b_state = 'OutOfPrint'
 		</if>
+		<!-- 등록 과 절판 모두 출력 (사용자 페이지에서는 해당출력) -->
+		<if test="b_stateKeyword == 'regOrOopOrSoldOut'">
+			AND b_state is null
+			OR b_state = 'OutOfPrint'
+			OR b_state = 'soldOut'
+		</if>
 		<!-- 미등록 -->
 		<if test="b_stateKeyword == 'unreg'">
 			AND b_state = 'unreg'
@@ -212,46 +218,22 @@
 				b_num = #{b_num}
 	</select>
 	
-	
-<!-- 	<update id="addToCart" parameterType="java.util.List">
-		MERGE INTO
-			book b
-		USING (
-			<foreach collection="list" item="cvo" separator="union all"> 
-				SELECT
-					  #{cvo.b_num} as b_num
-					, #{cvo.crt_price} as crt_price
-					, #{cvo.c_num} as c_num
-					, #{cvo.crt_qty} as crt_qty
-				FROM
-					dual
-			</foreach>
-		) d
-		ON (c.b_num = d.b_num)
-		WHEN MATCHED THEN
-			UPDATE
-			<set>
-				  c.crt_price = c.crt_price + d.crt_price
-				, c.c_num = d.c_num
-				, c.crt_qty = c.crt_qty + d.crt_qty
-			</set>
-		WHEN NOT MATCHED THEN
-			INSERT 
-			 <trim prefix="(" suffix=")" suffixOverrides="," >
-			 	  crt_num
-				, b_num
-				, crt_price
-				, c_num
-				, crt_qty
-			</trim>
-			<trim prefix="values (" suffix=")" suffixOverrides="," >
-				  crt_num_seq.nextval
-				, d.b_num
-				, d.crt_price
-				, d.c_num
-				, d.crt_qty
-			</trim>
-	</update> -->
+	<update id="bookUpdate" parameterType="book">
+		UPDATE book
+		SET
+			b_name = #{b_name},
+			b_date = #{b_date},
+			b_list = #{b_list},
+			b_author = #{b_author},
+			b_pub = #{b_pub},
+			b_authorinfo = #{b_authorinfo},
+			b_info = #{b_info},
+			b_price = #{b_price},
+			cateOne_num = #{cateOne_num},
+			cateTwo_num = #{cateTwo_num}
+		WHERE 
+			b_num = #{b_num}
+	</update>
 	
 	
 	<!-- 추출해낸 크롤링 데이터를 넣기 위한 작업 -->

@@ -17,6 +17,9 @@ public interface BookDAO {
 	public int bookNumber();
 	public int bookInsert(BookVO bvo);
 	
+	//update
+	public int bookUpdate(BookVO bvo);
+	
 	//merge into
 	public int mergeBookData(List<BookVO> list);
 	public int mergeBookImgData(List<BookVO> list);

@@ -65,7 +65,9 @@ public class BookServiceImpl implements BookService {
 		MultipartFile listcoverFile = bvo.getListcoverFile();
 		MultipartFile detailcoverFile = bvo.getDetailcoverFile();
 		MultipartFile detailFile = bvo.getDetailFile();
-
+		
+		log.info(bvo.getListcoverFile());
+		
 		if (listcoverFile != null)
 			listcoverPath = FileUploadUtil.bookImgUpload(listcoverFile, bvo, "listcover");
 		if (detailcoverFile != null)
@@ -80,7 +82,7 @@ public class BookServiceImpl implements BookService {
 		bookimgVO = new BookImgVO();
 		bookimgVO.setB_num(b_num);
 		bookimgVO.setListcover_imgurl(listcoverPath);
-		bookimgVO.setDetail_imgurl(detailcoverPath);
+		bookimgVO.setDetailcover_imgurl(detailcoverPath);
 		bookimgVO.setDetail_imgurl(detailPath);
 		
 		bookimgDAO.bookImgInsert(bookimgVO);
@@ -89,8 +91,55 @@ public class BookServiceImpl implements BookService {
 	}
 	
 	@Override
+	public int bookUpdate(BookVO bvo) throws Exception {
+		int result = 0;
+		String listcoverPath = null;
+		String detailcoverPath = null;
+		String detailPath = null;
+
+		BookImgVO bookimgVO = null;
+
+		result = bookDAO.bookUpdate(bvo);
+
+		MultipartFile listcoverFile = bvo.getListcoverFile();
+		MultipartFile detailcoverFile = bvo.getDetailcoverFile();
+		MultipartFile detailFile = bvo.getDetailFile();
+		
+		log.info("getListcoverFile: " + bvo.getListcoverFile());
+		
+		
+		if (listcoverFile != null)
+			listcoverPath = FileUploadUtil.bookImgUpload(listcoverFile, bvo, "listcover");
+		if (detailcoverFile != null)
+			detailcoverPath = FileUploadUtil.bookImgUpload(detailcoverFile, bvo, "detailcover");
+		if (detailFile != null)
+			detailPath = FileUploadUtil.bookImgUpload(detailFile, bvo, "detail");
+
+		log.info("listcoverPath: "+listcoverPath);
+		log.info("detailcoverPath: "+detailcoverPath);
+		log.info("detailPath: "+detailPath);
+
+		bookimgVO = new BookImgVO();
+		bookimgVO.setB_num(bvo.getB_num());
+		bookimgVO.setListcover_imgurl(listcoverPath);
+		bookimgVO.setDetailcover_imgurl(detailcoverPath);
+		bookimgVO.setDetail_imgurl(detailPath);
+		
+		log.info("getListcoverFile : "+bookimgVO.getListcover_imgurl());
+		
+		boolean imgTrue = listcoverPath != null || detailcoverPath != null || detailPath != null;
+		
+		if (imgTrue) {
+			log.info("imgTrue");
+			bookimgDAO.bookImgUpdate(bookimgVO);
+		}
+		return result;
+	}
+	
+	@Override
 	public BookVO bookDetail(int b_num) {
 		BookVO vo = bookDAO.bookDetail(b_num);
 		return vo;
 	}
+	
 }

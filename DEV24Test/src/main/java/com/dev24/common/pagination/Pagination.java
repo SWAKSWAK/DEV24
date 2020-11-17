@@ -6,10 +6,10 @@ import lombok.Data;
 public class Pagination {
 
 	private int listRange;	// 한페이지에 출력될 도서의 개수
-	private int range 			= 10;	// 한번에 숫자로 보여질 페이지 범위 -1(기본값 10)
-	private int page 			= 0;	// 현재 목록의 페이지 번호
+	private int range 			= 10;	// 한번에 숫자로 보여질 페이지 범위 (기본값 10)
+	private int page 			= 1;	// 현재 목록의 페이지 번호
 	private int startPage 		= 1;	// 각 페이지 범위 시작 번호 (기본값 1)
-	private int endPage 		= 0;	// 각 페이지 범위 끝 번호 (기본값 5)
+	private int endPage 		= 10;	// 각 페이지 범위 끝 번호 (기본값 10)
 	private int pageLength		= 0;	// 총 페이지 개수 (where절에 따라 가변)
 	private int bookLength		= 0;	// 전체 도서 개수 (where절에 따라 가변)
 	private int startRownum		= 0;	// 한페이지에 출력되는 첫번째 상품의 rownum
@@ -54,10 +54,13 @@ public class Pagination {
 	 * @param cateTwo_num : 소분휴 코드
 	 ******************************************************************/
 	public Pagination(int bookLength, int startPage, int page, int cateOne_num, int cateTwo_num, int listRange, String b_sort, String b_stateKeyword) {
-		this.page = page;
+		if (page != 0) {
+			this.page = page;
+		}
 		this.listRange = listRange;
 		this.b_stateKeyword = b_stateKeyword;
 		this.b_sort = b_sort;
+		this.endPage = this.startPage + this.range - 1;
 
 		// 한 페이지에 출력될 첫번째 상품 rownum
 		// 예: 1페이지의 minRownum은 1이므로 (1-1)*10+1==1
@@ -80,10 +83,8 @@ public class Pagination {
 		if (startPage != 0) {
 			this.startPage = startPage;
 		}
-		
-		if(startPage + range <= pageLength)
-			this.endPage = startPage + range -1;
-		else
+		this.endPage = (int)(Math.ceil((double)this.page/range) * range);
+		if(endPage > pageLength)
 			this.endPage = pageLength;
 		
 		// 이전버튼을 활성화 시킬지 여부

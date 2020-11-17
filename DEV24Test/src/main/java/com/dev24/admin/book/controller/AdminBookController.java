@@ -57,7 +57,7 @@ public class AdminBookController {
 			@RequestParam(required = false, defaultValue = "") String b_searchSelect,
 			Model model
 	) {
-
+		
 		log.info("bookList 호출 성공");
 
 		int cateOne_num = 0;
@@ -81,10 +81,6 @@ public class AdminBookController {
 		// 얻어낸 pagination객체를 통해 bookList() 호출
 		ArrayList<BookVO> bList = bookService.bookList(pagination);
 		log.info(pagination.toString());
-		
-		// 임시 로그인용. 프로젝트 완료 시 삭제
-		model.addAttribute("adm_id", "admin");
-		model.addAttribute("adm_num", 2);
 
 		model.addAttribute("pagination", pagination);
 		model.addAttribute("bList", bList);
@@ -152,13 +148,6 @@ public class AdminBookController {
 		bvo.setB_stateKeyword(b_stateKeyword);
 		bvo.setBNumList(bNumList);
 		
-		
-//		BookVO bvo = (BookVO)data;
-//		log.info(bvo.toString());
-//		log.info(bNumList.size());
-		
-//		log.info(dataList.get("b_stateKeyword"));
-		
 		ResponseEntity<String> entity;
 		int result = adminBookService.updateBookState(bvo);
 		
@@ -170,4 +159,49 @@ public class AdminBookController {
 		
 		return entity;
 	}
+	
+	@RequestMapping(value="/detail/{b_num}", method = {RequestMethod.GET, RequestMethod.POST})
+	public String adminBookDetail(@PathVariable int b_num ,Model model) {
+		BookVO vo = bookService.bookDetail(b_num);
+		log.info("adminBookDetail 호출 성공");
+		model.addAttribute("vo", vo);
+		return "admin/adminBookDetail";
+	}
+	
+	@RequestMapping(value="/bookUpdateForm/{b_num}", method = {RequestMethod.GET, RequestMethod.POST})
+	public String bookUpdateForm (@PathVariable int b_num, Model model) {
+		BookVO vo = bookService.bookDetail(b_num);
+		log.info("bookUpdateForm 호출 성공");
+		model.addAttribute("vo", vo);
+		return "admin/bookUpdateForm";
+	}
+	
+	/***
+	 * 도서정보 수정
+	 * @param bvo
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/bookUpdate")
+	public ResponseEntity<String> bookUpdate(@ModelAttribute("data") BookVO bvo, Model model) throws Exception {
+		log.info("bookUpdate 호출 성공");
+		log.info("bvo" + bvo);
+		
+		int result = 0;
+		String url = "";
+		
+		result = bookService.bookUpdate(bvo);
+		ResponseEntity<String> entity;
+		
+		if(result == 1) {
+			url = "/admin/book/detail/00";
+			entity = new ResponseEntity<String>("redirect:" + url, HttpStatus.OK);
+		} else {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+		
+		return entity;
+	}
+	
 }

@@ -29,6 +29,10 @@
     	<style>
     		#content_wrap{padding-top:30px;}
     	
+    		.bookWrap *{
+    			overflow: hidden;
+			    text-overflow: ellipsis;
+    		}
     		.contentHeaderCartMsg > *{
     			display: inline-block;
     		}
@@ -100,9 +104,11 @@
 									 .append("<option value='7'>컴퓨터 수험서</option>")
 									 .append("<option value='8'>웹/컴퓨터 입문&활용</option>");
 				}
+				
 				//동적 태그 생성 후 선정
 				$("#cateTwo_num").val(cateTwo_num).attr("selected", "true");
 				
+				//정렬버튼 클릭시 연결 동작
 				$(".b_sort > .nav-link").click(function(){
 					var index = $(".nav-link").index(this);
 					var sortArr = ["best", "new", "old", "lowPrice", "highPrice"];
@@ -118,20 +124,18 @@
 					}
 				});
 				
-				/* 대분류, 소분류 선택에 따른 처리 */
+				/* 대분류, 소분류 선택에 따른 페이지 이동 처리 */
 				$("#cateOne_num").change(function(){
 					var cateOneSelected = $("#cateOne_num").select().val();
+					$("#startPage").val(1);
+					$("#page").val(1);
 					goURL(cateOneSelected);
 				});
 				$("#cateTwo_num").change(function(){
+					$("#startPage").val(1);
+					$("#page").val(1);
 					var cateTwoSelected = $("#cateTwo_num").select().val();
 					goURL(cateOne_num + cateTwoSelected + "");
-				});
-				
-				/* 보기버튼 클릭처리 */
-				$("#cateView").click(function(){
-					category = $("#cateOne_num").select().val() + $("#cateTwo_num").select().val() + "";
-					location.href = location.href="/admin/book/"+category+"?listRange="+listRange;
 				});
 				
 				/*	페이징 처리 관련 */
@@ -152,11 +156,13 @@
 				$(".prevBtn").click(function(){
 					if (startPage > 1){
 						if (startPage-10 > 0){
-						startPage = (Number(startPage)-10);
-							$("#page").val(Number(startPage));
+						startPage = startPage-10;
+							$("#startPage").val(startPage);
+							$("#page").val(startPage);
 							goURL(category);
 						} else {
-							$("#page").val("1");
+							$("#startPage").val(1);
+							$("#page").val(1);
 							goURL(category);
 						}
 					}
@@ -181,10 +187,9 @@
 				$(".nextRangeBtn").click(function(){
 					if(startPage+10 <= pageLength){
 						$("#page").val(pageLength);
-						$("#startPage").val(pageLength - pageLength%range + 1);
+						$("#startPage").val(parseInt(pageLength - (pageLength%range) + 1));
 						goURL(category);
 					}
-						
 				});
 				
 				$(".pageNumBtn").click(function(){
@@ -280,7 +285,8 @@
 					$("#b_searchSelect").val(b_searchSelect);
 					$("#b_searchKeyword").val(b_searchKeyword);
 					$("#b_sort").val("");
-					$("#b_startPage").val(1);
+					$("#startPage").val(1);
+					$("#page").val(1);
 					$("#b_stateKeyword").val("all");
 					
 					goURL("00");
@@ -322,36 +328,11 @@
 				$("#goURL").submit();
 			};
 
-			//장바구니 추가 함수
-			function addCart(data) {
-				var returnVal = "";
-
-				$.ajax({
-					url : "/cart/addToCart",
-					type : "POST",
-					data : data,
-					async : false,
-					headers : {
-						"Content-Type" : "application/json",
-						"X-HTTP-Method-Override" : "POST"
-					},
-					dataType : "text",
-					success : function(result) {
-						returnVal = 'SUCCESS';
-					},
-					error : function() {
-						alert("장바구니 담기에 실패했습니다.\n관리자에게 문의해 주세요.");
-						returnVal = 'FAIL';
-					}
-				});
-				console.log(returnVal);
-				return returnVal;
-			};
 		</script>
 	</head>
 	<body>
 		<div id="content_wrap">
-			<form id="goURL">
+			<form id="goURL" name="goURL">
 				<input type="hidden" name="page" id="page" value="${pagination.page}"/>
 				<input type="hidden" name="startPage" id="startPage" value="${pagination.startPage}" />
 				<input type="hidden" name="endPage" id="endPage" value="${pagination.endPage}" />
@@ -411,7 +392,8 @@
 								<option value="all">모두</option>
 								<option value="reg">등록</option>
 								<option value="unreg">미등록</option>
-								<option value="regOrOop">등록 또는 절판</option>
+								<option value="regOrOop">등록/절판</option>
+								<option value="regOrOopOrSoldOut">등록/절판/품절</option>
 								<option value="outOfPrint">절판</option>
 								<option value="soldOut">품절</option>
 							</select>
@@ -458,9 +440,20 @@
 			</div> <!-- contentHeader -->
 			<h1 id="listTitle"></h1>
 			<table class="listWrap table table-hover">
+				<colgroup>
+					<col width="4%"/>
+					<col width="40%"/>
+					<col width="20%"/>
+					<col width="10%"/>
+					<col width="11%"/>
+					<col width="5%"/>
+					<col width="4%"/>
+					<col width="5%"/>
+					<col width="1%"/>
+				</colgroup>
 				<tr>
 					<th class="text-center">도서코드</th>
-					<th class="text-left">도서명</th>
+					<th class="text-center">도서명</th>
 					<th class="text-center">저자</th>
 					<th class="text-center">출판사</th>
 					<th class="text-center">출간 날짜</th>
@@ -474,49 +467,51 @@
 				<c:choose>
 					<c:when test="${ not empty bList }">
 						<c:forEach var="bl" items="${ bList }">
-							<tr class="bookWrap" data-num="${ bl.b_num }">
-								<td class="b_num text-center">
-									${bl.b_num}
-								</td>
-								<td class="b_name text-left" title="${ bl.b_name }">
-									<span class="b_nameText" >${ bl.b_name }</span>
-								</td>
-								<td class="b_author text-center">${ bl.b_author }</td>
-								<td class="b_pub text-center">${ bl.b_pub }</td>
-								<td class="b_pub text-center">${ bl.b_date }</td>
-								<td class="b_price text-center">
-									<span class="b_price_hidden"  style="display: none" >${ bl.b_price }</span>
-									<fmt:formatNumber value="${ bl.b_price }"/>
-								</td>
-								<td class="b_salesRate text-center">
-									<span class="b_salesRate">${ bl.b_salesRate }</span>
-								</td>
-								<td class="b_state text-center">
-										<c:if test="${ empty bl.b_state }">
-											<span class="b_state" style="color:blue">
-												등록
-											</span>
-										</c:if>
-										<c:if test="${ bl.b_state == 'outOfPrint' }">
-											<span class="b_state" style="color:gray">
-												절판
-											</span>
-										</c:if>
-										<c:if test="${ bl.b_state == 'unreg' }">
-											<span class="b_state" style="color:red">
-												미등록
-											</span>
-										</c:if>
-										<c:if test="${ bl.b_state == 'soldOut' }">
-											<span class="b_state" style="color:orange">
-												품절
-											</span>
-										</c:if>
-								</td>
-								<td class="chkWrap">
-									<input type="checkbox" class="checkbox text-center" value="${ bl.b_num }" />
-								</td>
-							</tr><!-- .bookWrap -->
+							<tbody>
+								<tr class="bookWrap" data-num="${ bl.b_num }">
+									<td class="b_num text-center">
+										${bl.b_num}
+									</td>
+									<td class="b_name text-left" title="${ bl.b_name }">
+										<span class="b_nameText" >${ bl.b_name }</span>
+									</td>
+									<td class="b_author text-center">${ bl.b_author }</td>
+									<td class="b_pub text-center">${ bl.b_pub }</td>
+									<td class="b-date text-center">${ bl.b_date }</td>
+									<td class="b_price text-center">
+										<span class="b_price_hidden"  style="display: none" >${ bl.b_price }</span>
+										<fmt:formatNumber value="${ bl.b_price }"/>
+									</td>
+									<td class="b_salesRate text-center">
+										<span class="b_salesRate">${ bl.b_salesRate }</span>
+									</td>
+									<td class="b_state text-center">
+											<c:if test="${ empty bl.b_state }">
+												<span class="b_state" style="color:blue">
+													등록
+												</span>
+											</c:if>
+											<c:if test="${ bl.b_state == 'outOfPrint' }">
+												<span class="b_state" style="color:gray">
+													절판
+												</span>
+											</c:if>
+											<c:if test="${ bl.b_state == 'unreg' }">
+												<span class="b_state" style="color:red">
+													미등록
+												</span>
+											</c:if>
+											<c:if test="${ bl.b_state == 'soldOut' }">
+												<span class="b_state" style="color:orange">
+													품절
+												</span>
+											</c:if>
+									</td>
+									<td class="chkWrap">
+										<input type="checkbox" class="checkbox text-center" value="${ bl.b_num }" />
+									</td>
+								</tr><!-- .bookWrap -->
+							</tbody>
 						</c:forEach>
 					</c:when>
 				</c:choose>

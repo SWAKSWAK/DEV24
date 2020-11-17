@@ -143,7 +143,7 @@
        			padding-top: 5px;
        		}
        		.priceWrap {
-       			padding: 3px 0 10px;
+       			padding: 0 0 5px 0;
        			font-size: 20px;
        			font-weight: bold;
        		}
@@ -154,11 +154,10 @@
        		}
        		.authorPub, .priceWrap {
        			color: #959595;
-    			padding-top: 10px;
+    			padding-top: 5px;
        		}
        		.b_rating *{
        			font-size: 22px;
-      			padding-top: 15px;
        		}
        		.fa-star, .fa-star-half-alt, .avgVal {
        			color: #736794;
@@ -321,37 +320,80 @@
 			    color: #424874;
 			}
 
+
+			/*정렬*/
+    		.sort{
+    			display: inline-block;
+    			margin: 0 10px;
+    		}
+    		
+    		.sort:hover {
+    			cursor: pointer;
+    		}
+    		
+    		.b_nameText:hover {
+    			cursor: pointer;
+    		}
+    		
+    		.form-control {
+    			width: auto;
+    			display: inline-block;
+    		}
+    		ul.sort, ul.sort * {
+    			display: inline-block !important;
+    		}
+    		
+    		.b_sort > .nav-link:hover {
+    			text-shadow : 1px 1px 1px lightgray;
+    		}
+    		
+    		/*품절, 절판 메세지*/
+    		.stateWrap {
+    			text-align: center;
+    		}
+    		
+    		.stateText {
+    			color: gray;
+   			    font-size: 24px;
+   				padding-top: 5px;
+    		}
+    		
+    		.stateImage {
+    			width: 60%;
+    			padding-top: 40px
+    		}
     	</style>
 		
 		<script src="/resources/include/js/jquery-1.12.4.min.js"></script>
     	<script src="/resources/include/js/jquery-3.5.1.min.js"></script>
     	<script>
+			var sortArr = ["best", "new", "old", "lowPrice", "highPrice"];
+			
     		$(function() {
     			
     			//pagination 정보  변수에 담기
-    			var page = parseInt(${pagination.page});//현재페이지
-    			var startPage = parseInt(${pagination.startPage});//지금 길이의 시작페이지
-    			var endPage = parseInt(${pagination.endPage});
-    			var pageLength = parseInt(${pagination.pageLength});
-    			var cateOne_num = parseInt(${pagination.cateOne_num});
-    			var cateTwo_num = parseInt(${pagination.cateTwo_num});
-    			var range = parseInt(${pagination.range});
-    			var listRange = parseInt(${pagination.listRange});
+				//listRangeSelect 받아온 값으로 활성화
+    			var listRange = Number($("#listRange").val());
+				$("#listRangeSelect").val(listRange).attr("selected", "true");
+				
+    			var page = Number($("#page").val());//현재페이지
+    			var startPage = Number($("#startPage").val());//지금 길이의 시작페이지
+    			var endPage = Number($("#endPage").val());
+    			var pageLength = Number($("#pageLength").val());
+    			var cateOne_num = Number(${pagination.cateOne_num});
+    			var cateTwo_num = Number(${pagination.cateTwo_num});
+    			var range = Number($("#range").val());
+    			var category = Number(window.location.pathname.substr(6, 8));// "/book/00" 에서  "00"만 추출
     			
-    			console.log(listRange);
-    			console.log($("#listRange").val());
-    			
-    			$("#listRange").val(listRange);
-				$("#listRange").val(listRange).attr("selected", "true");
+    			//정렬 버튼 클릭시 연결 동작
+				$(".b_sort > .nav-link").click(function(){
+					var index = $(".nav-link").index(this);
+					$("#b_sort").val(sortArr[index]);
+					$("#page").val(1);
+					$("#startPage").val(1);
+					goURL(category);
+				});
 
-    			console.log($("#listRange").val());
-    			
-    			/* $("#listRange").find("option").each(function(){
-	    			if (this.value == ${pagination.listRange})
-	    				$(this).attr("selected", "true");
-    				
-    			}); */
-    			
     			//수량 실시간 갑지 (1~99)
     			$(".crt_qty").on("propertychange change keyup paste input", function(){
     				crt_qtyRange(this);
@@ -458,83 +500,106 @@
 				
     			
 
-    			/*
-    				페이징 처리 관련
-    			*/
-    			if (page > pageLength){
-    				page = pageLength;
-    			}
-    			
-    			if (startPage-1 <= 0){
-    				$(".prevBtn").css("cursor", "default");
+				/*	페이징 처리 관련 */
+				if (page > pageLength){
+					page = pageLength;
+				}
+				
+				if (startPage-1 <= 0){
+					$(".prevBtn").css("cursor", "default");
 					$(".prevRangeBtn").css("cursor", "default");
-    			}
-
+				}
+	
 				if(startPage+10 > pageLength){
 					$(".nextBtn").css("cursor", "default");
 					$(".nextRangeBtn").css("cursor", "default");
 				}
 				
-				var uri = "/book/"+cateOne_num+cateTwo_num+"?page=";
+				$(".prevBtn").click(function(){
+					if (startPage > 1){
+						if (startPage-10 > 0){
+						startPage = startPage-10;
+							$("#startPage").val(startPage);
+							$("#page").val(startPage);
+							goURL(category);
+						} else {
+							$("#startPage").val(1);
+							$("#page").val(1);
+							goURL(category);
+						}
+					}
+				});
+	
+				$(".nextBtn").click(function(){
+					if(startPage+10 <= pageLength){
+						$("#startPage").val(startPage+10);
+						$("#page").val(startPage);
+						goURL(category);
+					}
+				});
+	
+				$(".prevRangeBtn").click(function(){
+					if (startPage-1 > 1){
+						$("#page").val(1);
+						$("#startPage").val(1);
+						goURL(category);
+					}
+				});
+	
+				$(".nextRangeBtn").click(function(){
+					if(startPage+10 <= pageLength){
+						$("#page").val(pageLength);
+						if (pageLength%range != 0){
+							$("#startPage").val(parseInt(pageLength - (pageLength%range) + 1));
+						}
+						if (pageLength%range == 0){
+							$("#startPage").val(parseInt(pageLength - 9));
+						}
+						goURL(category);
+					}
+						
+				});
 				
-    			$(".prevBtn").click(function(){
-    				if (startPage-1 <= 0){
-    					startPage = (startPage-10);
-   						location.href = uri+(startPage)+"&startPage="+(startPage)+"&listRange="+listRange;
-    				}
-    			});
-
-    			$(".nextBtn").click(function(){
-    				if(startPage+10 <= pageLength){
-    					startPage = (startPage+10);
-    					location.href = uri+(startPage)+"&startPage="+(startPage)+"&listRange="+listRange;
-    				}
-    			});
-
-    			$(".prevRangeBtn").click(function(){
-    				if (startPage-1 <= 0){
-    					location.href = uri+"1&startPage=1&listRange="+listRange;
-    				}
-    			});
-
-    			$(".nextRangeBtn").click(function(){
-    				if(startPage+10 <= pageLength)
-    					location.href = uri+(pageLength-9)+"&startPage="+(pageLength)+"&listRange="+listRange;
-    			});
+				$(".pageNumBtn").click(function(){
+					var page = $(this).html();
+					$("#page").val(page);
+					goURL(category);
+				});
+				
+				$(".pageNum[data-num='"+page+"'] > a.pageNumBtn")
+											.css("font-weight", "bold")
+											.css("text-decoration", "underline");
+				
+				$(".b_name").click(function(){
+					var b_num = $(this).parents(".bookWrap").attr("data-num");
+					location.href = "/book/detail/"+b_num;
+				});
+	
+				// #listRange 값이 바뀔 때마다 맞춰 출력
+				$("#listRangeSelect").change(function(){
+					var listRangeSelect = $("#listRangeSelect").val();
+					$("#listRange").val(listRangeSelect);
+					goURL(category);
+				});
+				//페이징 처리 종료
     			
-    			$(".pageNumBtn").click(function(){
-    				location.href = uri+$(this).html()+"&startPage="+startPage+"&listRange="+listRange;
-    			});
-    			
-    			$(".pageNum[data-num='"+page+"'] > a.pageNumBtn")
-    										.css("font-weight", "bold")
-    										.css("text-decoration", "underline");
-    			
-    			$(".b_name").click(function(){
-    				var b_num = $(this).parents(".bookWrap").attr("data-num");
-    				location.href = "/book/detail/"+b_num;
-    			});
-
-    			$(".listcover").click(function(){
-    				var b_num = $(this).parents(".bookWrap").attr("data-num");
-    				location.href = "/book/detail/"+b_num;
-    			});
-    			
-    			// "/book/00" 에서  "00"만 추출
-    			var category = window.location.pathname.substr(6, 8);
-    			$("#"+category).css("font-weight", "900")
-    						   .css("text-shadow", "2px 2px 6px grey");
-    			
-    			// #listRange 값이 바뀔 때마다 맞춰 출력
-    			$("#listRange").change(function(){
-    				listRange = $("#listRange").select().val();
-    				$(this).attr("selected", "true");
-    				location.href="/book/"+category+"?listRange="+listRange;
-    			});
-    			//페이징 처리 종료
-    			
-    			
-    			
+				$("#searchBtn").click(function(){
+					
+					var b_searchSelect = $("#searchSelect").val();
+					var b_searchKeyword = $("#searchKeyword").val();
+					console.log(b_searchKeyword);
+					console.log(b_searchSelect);
+					
+					if(!chkData("#searchKeyword", "검색어를")) return;
+					
+					$("#b_searchSelect").val(b_searchSelect);
+					$("#b_searchKeyword").val(b_searchKeyword);
+					$("#b_sort").val("");
+					$("#b_startPage").val(1);
+					$("#b_stateKeyword").val("all");
+					
+					goURL("00");
+				});
     			
     			/*구매버튼 클릭시 이벤트*/
     			$(".buyBtn").click(function(){
@@ -576,17 +641,27 @@
     				console.log("order() 호출 후");
     				
     			});
+    			
+    			//category에 맞는 leftbar 강조
+    			$("#"+category).css("font-weight", "900")
+    						   .css("text-shadow", "2px 2px 6px grey");
+    			
+    			
+    			//정렬버튼 클릭후 해당버튼 강조
+    			$(".b_sort > .nav-link").each(function(){
+    				var idx = $(".b_sort > .nav-link").index(this);
+    				if (sortArr[idx] == $("#b_sort").val()){
+		    			$(".b_sort > .nav-link:eq("+idx+")").css("font-weight", "900")
+						   									.css("text-decoration", "underline");
+    				}
+    			});
     		
     			$(".sort").click(function(){
     				var sort = $(this).val();
     				console.log(sort);
     			});
 				
-				
 			});//onload
-			
-			
-			
 			
     		//false : range에서 벗어남
     		function crt_qtyRange(selector) {
@@ -676,24 +751,55 @@
 	               }
 	            });
 	         };
+	         
+			//패이지 이동 URI값 조합 함수
+			function goURL(category){
+				var url = "/book/"+category;
+				$("#goURL").attr({
+						"method" : "get",
+						"action" : url
+				});
+				
+				$("#goURL").submit();
+			};
     	</script>
 	</head>
 	<body>
 		<div class="contentWrap">
+			<form id="goURL" name="goURL">
+				<input type="hidden" name="page" id="page" value="${pagination.page}"/>
+				<input type="hidden" name="startPage" id="startPage" value="${pagination.startPage}" />
+				<input type="hidden" name="endPage" id="endPage" value="${pagination.endPage}" />
+				<input type="hidden" name="pageLength" id="pageLength" value="${pagination.pageLength}" />
+				<input type="hidden" name="range" id="range" value="${pagination.range}" />
+				<input type="hidden" name="listRange" id="listRange" value="${pagination.listRange}" />
+				<input type="hidden" name="b_sort" id="b_sort" value="${ pagination.b_sort }" />
+				<input type="hidden" name="b_searchKeyword" id="b_searchKeyword" value=""/>
+				<input type="hidden" name="b_searchSelect" id="b_searchSelect" value=""/>
+			</form>
 		<div class="contentHeader">
 			<div class="top">
 				<div class="topLeftDiv">
-					<span class="sort dev24">
-						<input type="hidden" name="sort" value="dev24" />
-						DEV24 랭킹순
-					</span>
-					<span class="sort best">판매량순</span>
-					<span class="sort new">신상품순</span>
-					<span class="sort lowPrice">낮은가격순</span>
-					<span class="sort highPrice">높은가격순</span>
+					<ul class="nav sort justify-content-center">
+						<li class="nav-item sort b_sort">
+							<a class="nav-link sort active" href="#">판매순</a>
+						</li>
+						<li class="nav-item sort b_sort">
+							<a class="nav-link sort active" href="#">신상품순</a>
+						</li>
+						<li class="nav-item sort b_sort">
+							<a class="nav-link sort active" href="#">오래된순</a>	
+						</li>
+						<li class="nav-ite sortm b_sort">
+							<a class="nav-link sort active" href="#">낮은 가격순</a>
+						</li>
+						<li class="nav-item sort b_sort">
+							<a class="nav-link sort active" href="#">높은 가격순</a>
+						</li>
+					</ul>
 				</div>
 				<div class="topRightDiv">
-					<select id="listRange">
+					<select id="listRangeSelect">
 						<option value="20">20개씩 보기</option>
 						<option value="40">40개씩 보기</option>
 					</select>
@@ -703,7 +809,7 @@
 				<!-- pagination -->
 				<div class="bottomLeftDiv">
 					<div class="paginationBox">
-						<ul class="pagination">
+<%-- 						<ul class="pagination">
 							<li class="pageBtn prevRangeBtn" >
 								<i class="fas fa-angle-double-left"></i>
 							</li>
@@ -718,6 +824,31 @@
 							</li>
 							<li class="pageBtn nextRangeBtn">
 								<i class="fas fa-angle-double-right"></i>
+							</li>
+						</ul> --%>
+						<ul class="pagination">
+							<li class="pageBtn prevRangeBtn page-item" >
+								<a class="page-link"  href="#">
+									<i class="fas fa-angle-double-left"></i>
+								</a>
+							</li>
+							<li class="pageBtn prevBtn page-item" >
+								<a class="page-link"  href="#">
+									<i class="fas fa-angle-left page-link"></i>
+								</a>
+							</li>
+							<c:forEach var="i" begin="${pagination.startPage}" end="${pagination.endPage}">
+								<li class="pageNum page-item" data-num="${i}"><a class="pageNumBtn page-link" href="#">${i}</a></li>
+							</c:forEach>
+							<li class="pageBtn nextBtn page-item">
+								<a class="page-link"  href="#">
+									<i class="fas fa-angle-right page-link"></i>
+								</a>
+							</li>
+							<li class="pageBtn nextRangeBtn page-item">
+								<a class="page-link"  href="#">
+									<i class="fas fa-angle-double-right page-link"></i>
+								</a>
 							</li>
 						</ul>
 					</div>
@@ -773,7 +904,7 @@
 											<h1 class="b_name" title="${ bl.b_name }">
 												<span class="b_nameText" >${ bl.b_name }</span>
 											</h1>
-											<span class="authorPub">${ bl.b_author } 저 | ${ bl.b_pub }</span>
+											<p class="authorPub">${ bl.b_author } 저 | ${ bl.b_pub } <br/>${ bl.b_date }</p>
 											<p class="priceWrap">
 												<span class="b_price" style="display: none" >${ bl.b_price }</span>
 													<fmt:formatNumber value="${ bl.b_price }"/>
@@ -815,26 +946,37 @@
 											</p>
 										</div>
 										<div class="btnWrap">
-											<div class="cntWrap">
-												<input type="number" value="1" class="crt_qty" min="0" max="99"/>
-												<button type="button" class="upBtn" ><i class="fas fa-caret-up"></i></button>
-												<button type="button" class="downBtn" ><i class="fas fa-caret-down"></i></button>
+											<c:if test="${ empty bl.b_state }">
+												<div class="cntWrap">
+													<input type="number" value="1" class="crt_qty" min="0" max="99"/>
+													<button type="button" class="upBtn" ><i class="fas fa-caret-up"></i></button>
+													<button type="button" class="downBtn" ><i class="fas fa-caret-down"></i></button>
+												</div>
+												<!-- <input type="number" class="number text-right" name="cartCnt" value="0" min="0"/> -->
+												
+												<button type="button" class="btn text-right cartBtn">장바구니 담기</button>
+												<div class="cartMsg" style="display: none;">
+													<p class="cartMsgText">
+														<span class="cartMsgTextBold">상품이 장바구니에 담겼습니다.</span><br />
+														바로 확인하시겠습니까?
+													</p>
+													<div class="cartBtnWrap">
+														<button type="button" class="btn goCartBtn">예</button>
+														<button type="button" class="btn noCartBtn">아니오</button>
+													</div>											
+												</div>
+												<button type="button" class="btn text-right buyBtn">구매</button>
+											</c:if>
+											<div class="stateWrap">
+												<c:if test="${ bl.b_state == 'outOfPrint' }">
+													<img src="/resources/image/footer_logo.png" class="stateImage"/>
+													<h1 class="stateText">절판된 도서입니다.</h1>
+												</c:if>
+												<c:if test="${ bl.b_state == 'soldOut' }">
+													<img src="/resources/image/footer_logo.png" class="stateImage"/>
+													<h1 class="stateText">품절된 도서입니다.</h1>
+												</c:if>
 											</div>
-											<!-- <input type="number" class="number text-right" name="cartCnt" value="0" min="0"/> -->
-											
-											<button type="button" class="btn text-right cartBtn">장바구니 담기</button>
-											<div class="cartMsg" style="display: none;">
-												<p class="cartMsgText">
-													<span class="cartMsgTextBold">상품이 장바구니에 담겼습니다.</span><br />
-													바로 확인하시겠습니까?
-												</p>
-												<div class="cartBtnWrap">
-													<button type="button" class="btn goCartBtn">예</button>
-													<button type="button" class="btn noCartBtn">아니오</button>
-												</div>											
-											</div>
-											<button type="button" class="btn text-right buyBtn">구매</button>
-											
 										</div>
 										<div class="chkWrap">
 											<input type="checkbox" class="checkbox" value="${ bl.b_num }" />

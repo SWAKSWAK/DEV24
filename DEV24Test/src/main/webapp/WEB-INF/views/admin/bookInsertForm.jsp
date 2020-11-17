@@ -48,18 +48,30 @@
 					if (!chkSubmit("#cateOne_num", "대분류를")) return;
 					if (!chkSubmit("#cateTwo_num", "소분류를")) return;
 					
-					//파일 chkFile 함수로 보내기
-					/* if ($("#listcoverFile").val() != ""){
-						if(!chkFile($(this))) return;
-					} 
-					if ($("#listcoverFile").val() != ""){
-						if(!chkFile($(this))) return;
-					}
-					if ($("#listcoverFile").val() != ""){
-						if(!chkFile($(this))) return;
-					} */
+					//개행, 들여쓰기, 공백 치환
+					var b_info = $("#b_info").val()
+											.replace(/ /g, '&nbsp;')
+											.replace(/\t/g, '&nbsp;&nbsp;&nbsp;')
+											.replace(/(\n|\r\n)/g, '<br/>');
+											
+					var b_authorinfo = $("#b_authorinfo").val()
+											.replace(/ /g, '&nbsp;')
+											.replace(/\t/g, '&nbsp;&nbsp;&nbsp;')
+											.replace(/(\n|\r\n)/g, '<br/>');
+					
+					var b_list = $("#b_list").val()
+											.replace(/ /g, '&nbsp;')
+											.replace(/\t/g, '&nbsp;&nbsp;&nbsp;')
+											.replace(/(\n|\r\n)/g, '<br/>');
+					
+					$("#b_info").val(b_info);
+					$("#b_authorinfo").val(b_authorinfo);
+					$("#b_list").val(b_list);
+					
+					console.log($("#b_list").val());
 					
 					var requestParam = new XMLHttpRequest();
+					
 					//도서 입력값 bookInsert로 전송
 					$("#f_bookInsert").attr({
 						"method" : "post",
