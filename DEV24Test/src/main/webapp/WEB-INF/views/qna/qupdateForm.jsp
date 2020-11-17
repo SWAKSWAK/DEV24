@@ -7,13 +7,20 @@
 <meta charset="UTF-8">
 <title>qnaUpdateForm</title>
 		
-		<link rel="stylesheet" type="text/css" href="/resources/include/dist/css/bootstrap.min.css" />
-      	<link rel="stylesheet" type="text/css" href="/resources/include/dist/css/bootstrap-theme.css" />
-      	
+		<link rel="stylesheet" href="/resources/include/css/style_boot.css">
+		<link rel="stylesheet" href="/resources/include/css/style_board_content.css">
+		
       	<style type="text/css">
       		#boardList .rCount{font-size:10px; color:red;}
       		
       		.required{color:red;}
+      		
+      		#q_content{
+				height:200px;
+			}
+			#content{
+				margin-bottom: 150px;
+			}
       	</style>
 		
 		
@@ -74,7 +81,7 @@
 </head>
 <body>
 	
-	<div class="contentContainer container">
+	<div id="content">
 		
 			<%-- ================= 상세정보 보여주기 시작=============== --%>
 			<div class="contentTB text-center">

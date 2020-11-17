@@ -15,8 +15,8 @@
 		
 		<title>qnaDetail</title>
 		
-		<link rel="stylesheet" type="text/css" href="/resources/include/dist/css/bootstrap.min.css" />
-      	<link rel="stylesheet" type="text/css" href="/resources/include/dist/css/bootstrap-theme.css" />
+		<link rel="stylesheet" href="/resources/include/css/style_boot.css">
+ 	   <link rel="stylesheet" href="/resources/include/css/style_board_detail.css">
       	
 		
 		<script type="text/javascript" src="/resources/include/js/jquery-1.12.4.min.js"></script>
@@ -82,9 +82,9 @@
 		
 	</head>
 	<body>
-		<div class="container">
+		<div id="content_wrap">
 		
-		<div align="center"><h3>글상세</h3></div>
+		<!-- <div align="center"><h3>글상세</h3></div> -->
 		
 		<form name="q_data" id="q_data" method="post">
 			<input type="hidden" name="q_num" value="${detail.q_num}" />
@@ -93,7 +93,7 @@
 				
 				
 			<div class="btnArea col-md-4 text-right">
-			<c:if test="${login.c_num != null                                                                     }">
+			<c:if test="${login.c_num != null}">
 				<input type="button" id="qnaUpdateBtn" class="btn btn-primary btn-sm" value="수정" />	
 				<input type="button" id="qnaDeleteBtn" class="btn btn-primary btn-sm"  value="삭제" />	
 				<input type="button" id="qnaReplyBtn" class="btn btn-primary btn-sm"  value="답변" />

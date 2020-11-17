@@ -88,6 +88,13 @@
 		
             <div id="table_wrap">
                 <table summary="게시판 리스트" class="table" border="0">
+                	<colgroup>
+	                      <col width="10%" />
+	                      <col width="40%" />
+	                      <col width="20%" /> 
+	                      <col width="20%" />
+	                      <col width="10%" />
+	                  </colgroup>
                     <thead>
                         <tr>
                            <th>번호</th>

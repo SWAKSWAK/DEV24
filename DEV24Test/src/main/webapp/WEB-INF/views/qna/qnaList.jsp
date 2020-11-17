@@ -15,8 +15,8 @@
 		
 		<title>qnaList</title>
 		
-		<link rel="stylesheet" type="text/css" href="/resources/include/dist/css/bootstrap.min.css" />
-      	<link rel="stylesheet" type="text/css" href="/resources/include/dist/css/bootstrap-theme.css" />
+		<link rel="stylesheet" type="text/css" href="/resources/include/css/style_boot.css" />
+      	<link rel="stylesheet" type="text/css" href="/resources/include/css/style_board_content.css" />
       	
       	<style type="text/css">
       		#boardList .rCount{font-size:10px; color:red;}
@@ -124,84 +124,98 @@
 		
 	</head>
 	<body>
-		<div class="container-fluid">
-			<div class="text-center"><h3>글목록</h3></div>
+		<div class="content_wrap">
+			<div id="title">
+	            <div id="tit_content">
+	                <h3>QNA</h3>
+	            </div>
+	        </div>
 			
 			<form name="qdetailForm" id="qdetailForm">
 				<input type="hidden" name="q_num" id="q_num" />
 			</form>
 			
-			<%-- =============검색기능 시작================== --%>	
-			<div id="qnaSearch" class="text-right">
-				<form id="q_search" name="q_search" class="form-inline">
-					<div class="form-group">
-						<label>검색조건</label>
-						<select id="search" name="search" class="form-control">
-							<option value="all">전체</option>
-							<option value="q_title">제목</option>
-							<option value="q_content">내용</option>
-							<option value="c_nickname">작성자</option>
-						</select>
-						<input type="text" name="keyword" id="keyword" value="검색어를 입력하세요" class="form-control" />
-						<button type="button" id="searchData" class="btn btn-primary">검색</button>
-					</div>
-				</form>
+			<div id="content">
+				<%-- =============검색기능 시작================== --%>	
+				<div id="board_search" class="text-right">
+					<form id="q_search" name="q_search" class="form-inline">
+						<div class="form-group">
+							<label>검색조건</label>
+							<select id="search" name="search" class="form-control">
+								<option value="all">전체</option>
+								<option value="q_title">제목</option>
+								<option value="q_content">내용</option>
+								<option value="c_nickname">작성자</option>
+							</select>
+							<input type="text" name="keyword" id="keyword" value="검색어를 입력하세요" class="form-control" />
+							<button type="button" id="searchData" class="btn btn-primary">검색</button>
+						</div>
+					</form>
+				</div>
+				<%-- =============검색기능 끝================== --%>
+				
+				<%-- ================== 리스트 시작 ======================= --%>
+				<div id="qnaList">
+					<table summary="Q&A 게시판 리스트" class="table table-hover">
+						<colgroup>
+	                      <col width="10%" />
+	                      <col width="40%" />
+	                      <col width="20%" /> 
+	                      <col width="20%" />
+	                      <col width="10%" />
+	                  </colgroup>
+						<thead>
+							<tr>
+								<th class="text-center">번호</th>
+								<th class="text-center">제목</th>
+								<th>작성자</th>
+								<th>작성일</th>
+								<th>조회수</th>
+							</tr>
+						</thead>
+						<tbody id="list" class="table-striped">
+							<c:choose>
+								<c:when test="${not empty qnaList}" >
+									<c:forEach var="qna" items="${qnaList}" varStatus="status">
+										<tr class="text_center" data-num="${qna.q_num }">
+											<td>${qna.q_num}</td>
+											<%-- <td class="tal"><span class="goDetail">${vo.title}</span></td> --%>
+											<td class="tal">
+												<c:if test="${qna.q_repStep>0}">
+													<c:forEach begin="1" end="${qna.q_repIndent}">
+														&nbsp;&nbsp;&nbsp;												
+													</c:forEach>
+													<img src="/resources/image/rep.gif" />
+												</c:if>
+												<span class="goDetail">${qna.q_title}</span>
+											</td>
+											
+											<td>${qna.c_nickname}</td>
+											<td>${qna.q_writedate}</td>
+											<td>${qna.q_readcnt}</td>
+										</tr>	
+									</c:forEach>
+								</c:when>
+								<c:otherwise>
+									<tr>
+										<td colspan="5" class="text-center">등록된 게시물이 존재하지 않습니다.</td>
+									</tr>
+								</c:otherwise>	
+							</c:choose>
+						</tbody>		
+					</table>
+				</div>
+				<!-- =========================== 리스트 종료 ======================== -->
+				
+				
+				
+				<%------------- 글쓰기 버튼 출력시작 ----------------%>
+				<div class="contentBtn text-right" id="button_wrap">
+					<input type="button" value="글쓰기" id="qwriteFormBtn" class="btn btn-success" />
+				</div>
+			
+			
 			</div>
-			<%-- =============검색기능 끝================== --%>
-			
-			<%-- ================== 리스트 시작 ======================= --%>
-			<div id="qnaList">
-				<table summary="Q&A 게시판 리스트" class="table table-hover">
-					<thead>
-						<tr>
-							<th class="text-center">번호</th>
-							<th class="text-center">제목</th>
-							<th>작성자</th>
-							<th>작성일</th>
-							<th>조회수</th>
-						</tr>
-					</thead>
-					<tbody id="list" class="table-striped">
-						<c:choose>
-							<c:when test="${not empty qnaList}" >
-								<c:forEach var="qna" items="${qnaList}" varStatus="status">
-									<tr class="text_center" data-num="${qna.q_num }">
-										<td>${qna.q_num}</td>
-										<%-- <td class="tal"><span class="goDetail">${vo.title}</span></td> --%>
-										<td class="tal">
-											<c:if test="${qna.q_repStep>0}">
-												<c:forEach begin="1" end="${qna.q_repIndent}">
-													&nbsp;&nbsp;&nbsp;												
-												</c:forEach>
-												<img src="/resources/image/rep.gif" />
-											</c:if>
-											<span class="goDetail">${qna.q_title}</span>
-										</td>
-										
-										<td>${qna.c_nickname}</td>
-										<td>${qna.q_writedate}</td>
-										<td>${qna.q_readcnt}</td>
-									</tr>	
-								</c:forEach>
-							</c:when>
-							<c:otherwise>
-								<tr>
-									<td colspan="4" class="text-center">등록된 게시물이 존재하지 않습니다.</td>
-								</tr>
-							</c:otherwise>	
-						</c:choose>
-					</tbody>		
-				</table>
-			</div>
-			<!-- =========================== 리스트 종료 ======================== -->
-			
-			
-			
-			<%------------- 글쓰기 버튼 출력시작 ----------------%>
-			<div class="contentBtn text-right">
-				<input type="button" value="글쓰기" id="qwriteFormBtn" class="btn btn-success" />
-			</div>
-			
 		</div>
 	</body>
 </html>

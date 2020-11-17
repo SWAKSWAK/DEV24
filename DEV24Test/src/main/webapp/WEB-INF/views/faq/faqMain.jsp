@@ -15,50 +15,31 @@
 		
 		<title>FAQ MAIN</title>
 		
-		<link rel="stylesheet" type="text/css" href="/resources/include/dist/css/bootstrap.min.css" />
-      	<link rel="stylesheet" type="text/css" href="/resources/include/dist/css/bootstrap-theme.css" />
+      	<link rel="stylesheet" type="text/css" href="/resources/include/css/style_boot.css" />
+      	<link rel="stylesheet" type="text/css" href="/resources/include/css/style_board_content.css" />
       	
       	<style type="text/css">
-      		#faq_header h2{
+      	#title{
+      		height :300px;
+      	}
+      		#tit_content h2{
 		text-align: center;
 		color: #424874;
 		line-height: 50px;
 		font-size: 40px;
 		font-weight: 500;
 		display: block;
+		padding-top : 60px;
 		}
 		
-		#faq_header h3{
+		#tit_content h3{
 		text-align: center;
 		line-height: 50px;
 		font-weight: 500;
 		display: block;
 		color: #245580;
-		font-size: 44px;		
-		}
-		
-		.faqMainBoxArea {
-	    margin: 0 auto;
-	    padding: 57px 0 60px;
-	    width: 1130px;
-	    border: solid 1px #d8d8d8;
-	    background-color: #fff;
-		}	#faq_header h2{
-		text-align: center;
-		color: #424874;
-		line-height: 50px;
-		font-size: 40px;
-		font-weight: 500;
-		display: block;
-		}
-		
-		#faq_header h3{
-		text-align: center;
-		line-height: 50px;
-		font-weight: 500;
-		display: block;
-		color: #245580;
-		font-size: 44px;		
+		font-size: 44px;
+		padding-bottom : 30px;		
 		}
 		
 		.faqMainBoxArea {
@@ -68,10 +49,80 @@
 	    border: solid 1px #d8d8d8;
 	    background-color: #fff;
 		}
-      	
+		
       	.col-lg-4 {
 	    width: 19.333333%;
 		}
+		
+		.text-center{
+			text-align: center;
+		}
+		#keyword{
+			height:26px;
+		}
+		.list-inline{
+			width: 560px;
+		    margin: 0 auto;
+		}
+		.list-inline > li{
+			float : left;
+		}
+		.list-inline:after{
+			clear : both;
+			display:block;
+			content:'';
+		}
+		.list-inline > li:after{
+			content : '|';
+			margin-left: 10px;
+			margin-right: 10px;
+		}
+		.list-inline > li:last-child:after{
+			content : '';
+		}
+		
+		
+		.tit h2:before{
+		    content: '';
+		    display: inline-block;
+		    width: 7px;
+		    height: 20px;
+		    background-color: #a6b1e1;
+		    margin-right: 10px;
+		    border-radius: 5px;
+		}
+		
+		.tit h2{
+		    height: 20px;
+		    display: inline-block;
+		    margin-top : 30px;
+		}
+		
+		#qna_wrap > div:first-child{
+			float : left;
+		}
+		#qna_wrap > div:last-child{
+			float : right;
+		}
+		#qna_wrap:after{
+			clear : both;
+			display:block;
+			content:'';
+		}
+		.col-md-4{
+			width:45%;
+			margin-top:20px;
+			padding : 20px;
+			background-color: #eee;
+   			border-radius: 20px;
+		}
+		.col-md-4 > h2{
+			margin-bottom:10px;
+		}
+		.col-md-4 a{
+			margin-top:10px;
+		}
+
       	</style>
 		
 		
@@ -165,12 +216,12 @@
 	</head>
 	<body>
 	
-	<div class="container" >
-
-      <div class="jumbotron" style="background-image: URL(/resources/image/dev24image1.jpg);">
-      	<div id="faq_header" class="text-center">
-        <h2>DEV24 고객센터입니다.</h2>
-        <h3>무엇이든 물어보세요</h3>
+	<div id="content_wrap" >
+	 
+      <div id="title" style="background-image: URL(/resources/image/dev24image1.jpg);">
+      	<div id="tit_content" class="text-center">
+	        <h2>DEV24 고객센터입니다.</h2>
+	        <h3>무엇이든 물어보세요</h3>
         </div>
         <form name="detailForm" id="detailForm">
 				<input type="hidden" name="num" id="num" />
@@ -181,7 +232,7 @@
 				<form id="faqMain_search" name="faqMain_search" class="form-inline">
 					<div class="form-group">
 						<input type="text" name="keyword" id="keyword" value="검색어를 입력하세요" class="form-control" />
-						<button type="button" title="검색" id="searchData" class="btn btn-success"><span class="glyphicon glyphicon-hand-right"></span></button>
+						<button type="button" title="검색" id="searchData" class="btn btn-success"><span class="glyphicon glyphicon-hand-right">검색</span></button>
 						<!-- <button type="button" class="btn btn-success">이동하기 <span class="glyphicon glyphicon-hand-right"></span></button> -->
 					</div>
 				</form>
@@ -189,86 +240,97 @@
 			<%-- =============검색기능 끝================== --%>
 			
 			<div class="text-center">
-		    <dl>
-		        <!-- <dt>인기 검색어</dt> -->
-		        <dd>
-		            <ul class="list-inline">
-		            	<li>인기 검색어</li>
-		                <li><a href="">북클럽 </a></li>
-		                <li><a href="">배송 </a></li>
-		                <li><a href="">회원정보 확인/변경 </a></li>
-		                <li><a href="">중고매장 </a></li>
-		                <li><a href="">공연예매 수수료 </a></li>
-		            </ul>
-		        </dd>
-		    </dl>
+			     <ul class="list-inline">
+	            	<li>인기 검색어</li>
+	                <li><a href="">북클럽 </a></li>
+	                <li><a href="">배송 </a></li>
+	                <li><a href="">회원정보 확인/변경 </a></li>
+	                <li><a href="">중고매장 </a></li>
+	                <li><a href="">공연예매 수수료 </a></li>
+	            </ul>
 			</div>
       </div>
     
 	
 	<!-- ####################00000 FAQ 영역 시작 00000#################### -->
 	
-	<h2 class="sub-header">FAQ</h2>
-	<div class="table-responsive">
-            <table class="table table-striped" style="text-align:center">
-              <thead >
-                <tr>
-                  <th><a href="">상품</a></th>
-                  <th><a href="">구매환불</a></th>
-                  <th><a href="">게시판</a></th>
-                  <th><a href="">회원관리</a></th>
-                  <th><a href="">기타 </a></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><a href="">도서 </a></td>
-                  <td><a href="">구매상세</a></td>
-                  <td><a href="">이용수칙 </a></td>
-                  <td><a href="">회원가입 </a></td>
-                  <td><a href="">DEV24? </a></td>
-                </tr>
-                <tr>
-                  <td><a href="">ebook</a></td>
-                  <td><a href="">주문 </a></td>
-                  <td><a href="">회원정지</a></td>
-                  <td><a href="">회원정보확인 </a></td>
-                </tr>
-                <tr>
-                  <td><a href="">절판 </a></td>
-                  <td><a href="">환불승인</a></td>
-                  <td><a href="">회원관리 </a></td>
-                  <td><a href="">회원탈퇴</a></td>
-                </tr>
-                
-
-              </tbody>
-            </table>
-          </div>
+		<div id="content">
+			 <div class="tit">
+                 <h2>FAQ</h2>
+             </div>
+			<div class="table-responsive">
+		            <table class="table table-striped" style="text-align:center">
+		              <colgroup>
+	                      <col width="20%" />
+	                      <col width="20%" />
+	                      <col width="20%" /> 
+	                      <col width="20%" />
+	                      <col width="20%" />
+	                  </colgroup>
+		              <thead>
+		                <tr>
+		                  <th><a href="">상품</a></th>
+		                  <th><a href="">구매환불</a></th>
+		                  <th><a href="">게시판</a></th>
+		                  <th><a href="">회원관리</a></th>
+		                  <th><a href="">기타 </a></th>
+		                </tr>
+		              </thead>
+		              <tbody>
+		                <tr>
+		                  <td><a href="">도서 </a></td>
+		                  <td><a href="">구매상세</a></td>
+		                  <td><a href="">이용수칙 </a></td>
+		                  <td><a href="">회원가입 </a></td>
+		                  <td><a href="">DEV24? </a></td>
+		                </tr>
+		                <tr>
+		                  <td><a href="">ebook</a></td>
+		                  <td><a href="">주문 </a></td>
+		                  <td><a href="">회원정지</a></td>
+		                  <td><a href="">회원정보확인 </a></td>
+		                  <td></td>
+		                </tr>
+		                <tr>
+		                  <td><a href="">절판 </a></td>
+		                  <td><a href="">환불승인</a></td>
+		                  <td><a href="">회원관리 </a></td>
+		                  <td><a href="">회원탈퇴</a></td>
+		                  <td></td>
+		                </tr>
+		                
+		
+		              </tbody>
+		            </table>
+		          </div>
+			
+			
+			<!-- ####################00000 FAQ 영역 끝 00000#################### -->
+			
+			<!-- ####################00000 QNA 영역 시작 00000#################### -->
+			
+			<div class="tit">
+                 <h2>QNA</h2>
+             </div>
+			
+			<div id="qna_wrap">
+				<div class="col-md-4">
+			          <h2>질문 게시판</h2>
+			          <p>DEV24는 고객 분들의 다양한 의견을 수렴하기 위해서, 질문게시판을 운용하고 있습니다.<br/> 문의가 있으실 경우 이곳을 통해 문의주시기 바랍니다.</p>
+			          <p><a class="btn btn-default" href="/qna/qnaList" role="button">게시판 이동하기 »</a></p>
+			     </div>
+			     <div class="col-md-4">
+			          <h2>공지사항 게시판</h2>
+			          <p>DEV24 도서 쇼핑몰 공지사항 게시판 입니다. DEV24의 소식을 발빠르게 전달하도록 하겠습니다.</p>
+			          <p><a class="btn btn-default" href="#" role="button">게시판 이동하기 »</a></p>
+			     </div>
+			</div>
+			
+			<!-- ####################00000 QNA 영역 끝 00000#################### -->
+			
+		</div><!-- /content -->
 	
-	
-	<!-- ####################00000 FAQ 영역 끝 00000#################### -->
-	
-	<!-- ####################00000 QNA 영역 시작 00000#################### -->
-	
-	<h2 class="sub-header">QNA</h2>
-	
-	<div class="col-md-4">
-          <h2>질문 게시판</h2>
-          <p>DEV24는 고객 분들의 다양한 의견을 수렴하기 위해서, 질문게시판을 운용하고 있습니다. 문의가 있으실 경우 이곳을 통해 문의주시기 바랍니다.</p>
-          <p><a class="btn btn-default" href="/qna/qnaList" role="button">게시판 이동하기 »</a></p>
-     </div>
-     <div class="col-md-4">
-          <h2>공지사항 게시판</h2>
-          <p>DEV24 도서 쇼핑몰 공지사항 게시판 입니다. DEV24의 소식을 발빠르게 전달하도록 하겠습니다.</p>
-          <p><a class="btn btn-default" href="#" role="button">게시판 이동하기 »</a></p>
-     </div>
-	
-	
-	<!-- ####################00000 QNA 영역 끝 00000#################### -->
-	
-	
-	</div> <!-- /container -->
+	</div> <!-- /content_wrap -->
 	</body>
 </html>
     

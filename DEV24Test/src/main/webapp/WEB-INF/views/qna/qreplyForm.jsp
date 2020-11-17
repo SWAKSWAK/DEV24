@@ -15,13 +15,19 @@
 		
 		<title>qnaList</title>
 		
-		<link rel="stylesheet" type="text/css" href="/resources/include/dist/css/bootstrap.min.css" />
-      	<link rel="stylesheet" type="text/css" href="/resources/include/dist/css/bootstrap-theme.css" />
+		<!-- <link rel="stylesheet" type="text/css" href="/resources/include/dist/css/bootstrap.min.css" />
+      	<link rel="stylesheet" type="text/css" href="/resources/include/dist/css/bootstrap-theme.css" /> -->
+      	<link rel="stylesheet" href="/resources/include/css/style_boot.css">
+  	  <link rel="stylesheet" href="/resources/include/css/style_board_detail.css">
       	
       	<style type="text/css">
       		#boardList .rCount{font-size:10px; color:red;}
       		
       		.required{color:red;}
+      		
+      		#q_content{
+				height:200px;
+			}
       	</style>
 		
 		
@@ -88,6 +94,7 @@
 		
 	</head>
 	<body>
+	<div id="content_wrap">
 		<form id="q_replyForm" name="q_replyForm">
 			<!-- 답변글 필요 -->
 			<input type="hidden" name="q_num" value="${qreplyData.q_num}">
@@ -113,7 +120,7 @@
 				</div>
 				<label>글내용</label>
 				<div>
-					<textarea name="q_content" id="q_content" class="form-control" rows="7" maxlength="2000" required="required" >${qreplyData.q_content}</textarea>
+					<textarea name="q_content" id="q_content" class="form-control" rows="7" cols="100" maxlength="2000" required="required" >${qreplyData.q_content}</textarea>
 				</div>
 				
 				<p align="right">
@@ -125,7 +132,7 @@
 			</div>
 			
 		</form>
-		
+	</div>	
 	</body>
 </html>
     

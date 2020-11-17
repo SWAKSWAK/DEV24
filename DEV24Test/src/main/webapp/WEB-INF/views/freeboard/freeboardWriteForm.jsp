@@ -68,7 +68,7 @@
 					</tr> --%>
 					<tr>
 						<td>작성자</td>
-						<td><input type="text" value="${login.c_nickname}" readonly="readonly"/></td>
+						<td><input type="text" value="${login.c_nickname}" class="form-control" readonly="readonly"/></td>
 					</tr>
 					
 					<tr>

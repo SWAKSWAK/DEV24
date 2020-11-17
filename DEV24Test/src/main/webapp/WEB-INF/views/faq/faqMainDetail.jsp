@@ -6,11 +6,14 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+
+ <link rel="stylesheet" href="/resources/include/css/style_boot.css">
+    <link rel="stylesheet" href="/resources/include/css/style_board_detail.css">
 <body>
 	
 	
 	<!------------------------ 아코디언 메인 시작 --------------------------->
-	<div class="container ">
+	<div id="content_wrap">
     <div class="panel-group" id="faqAccordion">
         <div class="panel panel-default ">
             <div class="panel-heading accordion-toggle question-toggle collapsed" data-toggle="collapse" data-parent="#faqAccordion" data-target="#question0" aria-expanded="false">

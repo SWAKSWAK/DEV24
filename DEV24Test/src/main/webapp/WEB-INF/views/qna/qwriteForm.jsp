@@ -14,8 +14,8 @@
 		
 		<title>qwriteForm</title>
 		
-		<link rel="stylesheet" type="text/css" href="/resources/include/dist/css/bootstrap.min.css" />
-      	<link rel="stylesheet" type="text/css" href="/resources/include/dist/css/bootstrap-theme.css" />
+		<link rel="stylesheet" href="/resources/include/css/style_boot.css">
+		<link rel="stylesheet" href="/resources/include/css/style_board_content.css">
       	
       	<style type="text/css">
       		#boardList .rCount{font-size:10px; color:red;}
@@ -40,6 +40,15 @@
 		<!--[if lt IE 9]>
 		<script src="../js/html5shiv.js"></script>
 		<![endif]-->
+		
+		<style>
+			#q_content{
+				height:200px;
+			}
+			#content{
+				margin-bottom: 150px;
+			}
+		</style>
 		
 		<script>
 		$(function(){
@@ -80,8 +89,7 @@
 		
 	</head>
 	<body>
-			<body>
-		<div class="container">
+		<div id="content">
 			<div class="text-center">
 				<form id="q_writeForm" name="q_writeForm" class="form-horizontal">
 					<table class="table table-bordered">
@@ -104,7 +112,7 @@
 							</tr>
 							<tr>
 								<td>문의내용</td>
-								<td><textarea name="q_content" id="q_content" class="form-control" rows="8"></textarea></td>
+								<td><textarea name="q_content" id="q_content" class="form-control" rows="100" cols="100" style="resize:none"></textarea></td>
 							</tr>
 							<tr>
 								<td>첨부파일</td>
@@ -124,7 +132,6 @@
 			</div>
 		</div>
 		
-	</body>
 	</body>
 </html>
     
