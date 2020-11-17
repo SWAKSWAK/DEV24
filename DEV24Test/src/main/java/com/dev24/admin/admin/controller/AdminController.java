@@ -29,11 +29,6 @@ public class AdminController {
 	private AdminService adminService;
 	private AdminIndexService adminIndexService;
 	
-	@RequestMapping(value="/admin/adminLoginForm")
-	public String adminLoginForm() {
-		return "/admin/adminLoginForm";
-	}
-	
 	@ResponseBody
 	@RequestMapping(value="/pwdConfirm", method=RequestMethod.POST, produces="text/plain; charset=UTF-8")
 	public String adminPasswordCheck(@ModelAttribute("data") AdminVO avo, Model model, HttpSession session) {

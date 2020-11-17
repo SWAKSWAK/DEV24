@@ -92,6 +92,14 @@
 			}
 		 
 		 	$(function(){
+		 		
+		 		//로그인시 엔터키 기능 작동
+		 		$("#adm_passwd").on("keypress", function(e){
+		 			if(e.keyCode == "13"){
+		 				$("#login").click();
+		 			}
+		 		});
+		 		
 		 		$("#login").click(function(){
 		 			boardPwdConfirm();
 		 			//console.log("아이디="+ $("#adm_id").val()+ "adm_passwd="+ $("#adm_passwd").val());
