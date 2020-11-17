@@ -22,16 +22,15 @@
                <div class="info">
                   <p class="tit">나의 정보</p>
                    <ul>
-                       <li><a href="/mypage/modify">회원정보</a></li>
+                       <li><a href="/mypage/modify">회원정보수정</a></li>
                        <li><a href="#">회원탈퇴</a></li>
-                       <li><a href="#">내가 쓴 글</a></li> <!--답변글포함-->
                    </ul>
                </div>
 
-<!--                <div id="info2">
-                   <a href="#"><span>나의 문의내역</span></a>
-                   <a href="#"><span>나의 리뷰</span></a>
+                <div id="info2">
+                   <a href="#"><span>나의 문의</span></a>
+                   <!-- <a href="#"><span>나의 리뷰</span></a> -->
                </div>
- -->               
+               
            </div><!--info_mypage-->
        </div> <!--sidemenu_wrap-->

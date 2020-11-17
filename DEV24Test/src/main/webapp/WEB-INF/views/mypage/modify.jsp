@@ -33,11 +33,24 @@
 		<script src="../js/html5shiv.js"></script>
 		<![endif]-->
 		<style>
-			.contentContainer{
-				width:1200px;
-				margin:0 auto;
-				padding-bottom : 150px;
+			.well{
+				margin-left:230px;
+			}
+			.tit_mypage{
 				padding-top : 40px;
+				padding-left:220px;
+			}
+			#memberForm{
+				padding-top:30px;
+			}
+			#memberForm > div{
+				margin-bottom: 10px;
+			}
+			.col-sm-3, .col-sm-2, .col-sm-5{
+				display:inline-block;
+			}
+			.col-sm-5 p{
+				font-size:13px;
 			}
 		</style>
 		<script>
@@ -58,18 +71,22 @@
 	</head>
 	<body>
 		<div class="contentContainer">
+			<div class="tit_mypage">
+                <h3>회원정보수정</h3>
+            </div>
+		
 			<div class="well">
 				<form id="memberForm" class="form-horizontal">
 					<input type="hidden" name="c_num" id="c_num" value="${customer.c_num}" />
 					<input type="hidden" name="c_email" id="c_email" />
 					<div class="form-group form-group-sm">
-						<label for="c_id" class="col-sm-2 control-label">사용자 ID</label>
+						<label for="c_id" class="col-sm-2 control-label">사용자 ID : </label>
 						<div class="col-sm-3">
 							${customer.c_id}
 						</div>
 					</div>
 					<div class="form-group form-group-sm">
-						<label for="oldUserPw" class="col-sm-2 control-label">기존 비밀 번호</label>
+						<label for="oldUserPw" class="col-sm-2 control-label">기존 비밀 번호 : </label>
 						<div class="col-sm-3">
 							<input type="password" id="oldUserPw" name="oldUserPw" maxlength="15" class="form-control" placeholder="기존 비밀번호 입력" >
 						</div>
@@ -78,7 +95,7 @@
 						</div>
 					</div>
 					<div class="form-group form-group-sm">
-						<label for="userPw" class="col-sm-2 control-label">변경할 비밀 번호</label>
+						<label for="userPw" class="col-sm-2 control-label">변경할 비밀 번호 : </label>
 						<div class="col-sm-3">
 							<input type="password" id="c_passwd" name="c_passwd" maxlength="15" class="form-control" placeholder="변경할 비밀번호 입력" >
 						</div>
@@ -87,7 +104,7 @@
 						</div>
 					</div>
 					<div class="form-group form-group-sm">
-						<label for="userPwCheck" class="col-sm-2 control-label">변경할 비밀번호 확인</label>
+						<label for="userPwCheck" class="col-sm-2 control-label">변경할 비밀번호 확인 : </label>
 						<div class="col-sm-3">
 							<input type="password"  id="userPwCheck" name="userPwCheck" maxlength="15" class="form-control" placeholder="변경할 비밀번호 입력 확인" >
 						</div>
@@ -96,7 +113,7 @@
 						</div>
 					</div>
 					<div class="form-group form-group-sm">
-						<label for="c_phone" class="col-sm-2 control-label">핸드폰 번호</label>
+						<label for="c_phone" class="col-sm-2 control-label">핸드폰 번호 : </label>
 						<div class="col-sm-3">
 							<input type="text" id="c_phone" name="c_phone" maxlength="15" class="form-control" value="${customer.c_phone}">	
 						</div>
@@ -105,33 +122,33 @@
 						</div>
 					</div>	
 					<div class="form-group form-group-sm">
-						<label for="birth" class="col-sm-2 control-label">생년월일</label>
+						<label for="birth" class="col-sm-2 control-label">생년월일 : </label>
 						<div class="col-sm-3">	
 							${customer.c_pinno}******
 						</div>
 					</div>										
 					<div class="form-group form-group-sm">
-						<label for="userName" class="col-sm-2 control-label">회원이름</label>
+						<label for="userName" class="col-sm-2 control-label">회원이름 : </label>
 						<div class="col-sm-3">
 							${customer.c_name}
 						</div>						
 					</div>
 					<div class="form-group form-group-sm">
-						<label for="c_nickname" class="col-sm-2 control-label">회원별명</label>
+						<label for="c_nickname" class="col-sm-2 control-label">회원별명 : </label>
 						<div class="col-sm-3">
 							${customer.c_nickname}
 						</div>						
 					</div>
 					<div class="form-group form-group-sm">
-						<label for="c_address" class="col-sm-2 control-label">주소</label>
+						<label for="c_address" class="col-sm-2 control-label">주소 : </label>
 						<div class="col-sm-3">
 							${customer.c_address}
 						</div>						
 					</div>
 					<div class="form-group form-group-sm">
-						<label for="emailName" class="col-sm-2 control-label">회원 이메일</label>
+						<label for="emailName" class="col-sm-2 control-label">회원 이메일 : </label>
 						<div class="col-sm-3">
-							<input type="text" id="emailName" name="emailName" maxlength="60" class="form-control" value="${c_email[0]}">
+							<input type="text" id="emailName" name="emailName" maxlength="60" class="form-control" value="${c_email[0]}"> @ 
 	 					</div>
 	 					<div class="col-sm-2">
 	 						<select id="emailDomain" class="form-control">
@@ -146,7 +163,7 @@
 					</div>
 					<div class="form-group">	
 						<div class="col-sm-offset-2 col-sm-6">
-							<input type="button" value="확인" id="modify" class="btn btn-default" /> 
+							<input type="button" value="확인" id="modify" class="btn btn-success" /> 
 							<input type="button" value="재작성" id="modifyReset" class="btn btn-default" />
 							<input type="button" value="취소" id="modifyCancel" class="btn btn-default" />						
 						</div>	

@@ -77,7 +77,7 @@ public class MypageController {
 		
 		CustomerVO vo = customerService.customerSelect(login.getC_id());             
 		mav.addObject("customer", vo);
-		mav.setViewName("/mypage/modify");	
+		mav.setViewName("mypage/modify");	
 		return mav;
 	} 
 
