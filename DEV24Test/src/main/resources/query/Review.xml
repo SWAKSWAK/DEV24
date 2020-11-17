@@ -53,6 +53,13 @@
 		delete from review where re_num = #{re_num}
 	</delete>
 	
+	<!-- 리뷰 삭제 시 rating 테이블 값 자동 수정 -->
+	<update id="ratingMinus" parameterType="review">
+		update rating
+		set ra_sum = ra_sum - #{re_score}, ra_count = ra_count - 1
+		where b_num = #{b_num}
+	</update>
+	
 	<!-- 리뷰 수정폼 출력 시 리뷰 내용 조회 -->
 	<select id="reviewUpdateForm" parameterType="review" resultType="review">
 		select re_num, re_score, c_num, c_nickname, to_char(re_writedate, 'YYYY-MM-DD') re_writedate,
@@ -60,5 +67,13 @@
 		 from review
 		 where re_num = #{re_num}
 	</select>
+	
+	<!-- 리뷰 수정 처리 -->
+	<update id="reviewUpdate" parameterType="review">
+		update review
+		set re_writedate=sysdate, re_content=#{re_content},
+		 re_type=#{re_type}, re_imgurl=#{re_imgurl, jdbcType=VARCHAR}
+		where re_num = #{re_num}
+	</update>
 	
 </mapper>

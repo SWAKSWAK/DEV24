@@ -8,7 +8,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.dev24.client.customer.service.CustomerService;
+import com.dev24.client.customer.vo.CustomerVO;
 import com.dev24.client.login.vo.LoginVO;
 import com.dev24.client.mypage.orderhistory.service.OrderhistoryService;
 import com.dev24.client.mypage.orderhistory.vo.OrderhistoryVO;
@@ -26,15 +30,18 @@ public class MypageController {
 	
 	private OrderhistoryService orderhistoryService;
 	private RefundhistoryService refundhistoryService;
+	private CustomerService customerService;
 	
 	/************************************************
 	 *  mypage main print
 	 *  ****************/
 	@RequestMapping(value="/mypage", method= {RequestMethod.GET})
-	public String mypage(OrderhistoryVO ohvo, RefundhistoryVO rfhvo, Model model, HttpSession session) {
+	public String mypage(OrderhistoryVO ohvo, RefundhistoryVO rfhvo, Model model, @SessionAttribute("login") LoginVO lvo) {
 		log.info("mypage 호출 성공");
-		
-		LoginVO lvo = (LoginVO) session.getAttribute("login");
+			
+		if(lvo == null){
+			return "redirect:/customer/login";
+		}
 		int c_num = lvo.getC_num();
 		log.info(lvo);
 		log.info("c_num : "+c_num);
@@ -52,6 +59,26 @@ public class MypageController {
 		
 		return "mypage/mypage";
 	}
-//git add test
+
+	
+	/**************************************************************
+	 * 회원 수정 폼
+	 * @SessionAttribute: 메소드에 @SessionAttribute가 있을 경우 파라미터로 지정된 이름으로 등록된 세션 정보를 읽어와서 변수에 할당한다.
+	 **************************************************************/
+	@RequestMapping(value="/modify", method = RequestMethod.GET)	
+	public ModelAndView customerModify(@SessionAttribute("login") LoginVO login){
+		log.info("modify get 방식에 의한 메서드 호출 성공");
+		ModelAndView mav=new ModelAndView();
+
+		if(login==null){
+			mav.setViewName("customer/login");	
+			return mav;
+		}
+		
+		CustomerVO vo = customerService.customerSelect(login.getC_id());             
+		mav.addObject("customer", vo);
+		mav.setViewName("/mypage/modify");	
+		return mav;
+	} 
 
 }

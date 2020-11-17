@@ -102,6 +102,9 @@
        		.td_nickname{
        			padding-left:20px;
        		}
+       		.td_img span{
+       			display:block;
+       		}
 		</style>
 		
 		<script type="text/javascript">
@@ -160,70 +163,75 @@
 						re_type = "text";
 					}
 					
-					var re_score = $("#score").text().substring(0,1);
-					var c_nickname = $(".td_nickname").text();
-					var b_num = $(".bookWrap").attr("data-num");
-					var pd_num = "${pd_num}";
-					
-					$("#re_score").val(re_score);
-					$("#c_nickname").val(c_nickname);
-					$("#b_num").val(b_num);
-					$("#pd_num").val(pd_num);
-					$("#re_type").val(re_type);
-					
-					
-					/* JSON.stringify() : JavaScript 값이나 객체를 JSON문자열로 변환 */
-					var value = JSON.stringify({
-							re_score : re_score,
-							c_nickname : c_nickname,
-							b_num : b_num,
-							pd_num : pd_num,
-							re_type : re_type,
-							re_content : $("#re_content").val()
-					});
-					
-					if(re_type=="image"){
-						$("#f_writeForm").ajaxForm({
-							url : "/review/reviewInsert",
-							type : "post",
-							enctype: 'multipart/form-data',
-							dataType : "text",
-							error : function(){
-								alert("시스템 오류입니다. 관리자에게 문의하세요.");
-							},
-							success : function(result){
-								if(result=="SUCCESS"){
-									alert("리뷰 등록이 완료되었습니다.");
-									
-									location.href="/book/detail/"+b_num;
-								}
-							}
-						});
-						$("#f_writeForm").submit();
+					if(confirm("평점은 수정할 수 없습니다. 리뷰 등록하시겠습니까?")){
+						var re_score = $("#score").text().substring(0,1);
+						var c_nickname = $(".td_nickname").text();
+						var b_num = $(".bookWrap").attr("data-num");
+						var pd_num = "${pd_num}";
 						
-					}else if(re_type=="text"){
-						var insertUrl = "/review/reviewInsert";
-						$.ajax({
-							url : insertUrl,
-							type : "post",
-							/* headers : { // 전달할 값이 json형태이기 때문에 headers 필요!
-								"Content-Type" : "application/json",
-								"X-HTTP-Method-Override" : "POST"
-							}, */
-							dataType : "text",
-							data : $("#f_writeForm").serialize(),
-							error : function(){
-								alert("시스템 오류입니다. 관리자에게 문의하세요.");
-							},
-							success : function(result){
-								if(result=="SUCCESS"){
-									alert("리뷰 등록이 완료되었습니다.");
-									
-									location.href="/book/detail/"+b_num;
-								}
-							}
+						$("#re_score").val(re_score);
+						$("#c_nickname").val(c_nickname);
+						$("#b_num").val(b_num);
+						$("#pd_num").val(pd_num);
+						$("#re_type").val(re_type);
+						
+						
+						/* JSON.stringify() : JavaScript 값이나 객체를 JSON문자열로 변환 */
+						var value = JSON.stringify({
+								re_score : re_score,
+								c_nickname : c_nickname,
+								b_num : b_num,
+								pd_num : pd_num,
+								re_type : re_type,
+								re_content : $("#re_content").val()
 						});
+						
+						if(re_type=="image"){
+							$("#f_writeForm").ajaxForm({
+								url : "/review/reviewInsert",
+								type : "post",
+								enctype: 'multipart/form-data',
+								dataType : "text",
+								error : function(){
+									alert("시스템 오류입니다. 관리자에게 문의하세요.");
+								},
+								success : function(result){
+									if(result=="SUCCESS"){
+										alert("리뷰 등록이 완료되었습니다.");
+										
+										location.href="/book/detail/"+b_num;
+									}
+								}
+							});
+							$("#f_writeForm").submit();
+							
+						}else if(re_type=="text"){
+							var insertUrl = "/review/reviewInsert";
+							$.ajax({
+								url : insertUrl,
+								type : "post",
+								/* headers : { // 전달할 값이 json형태이기 때문에 headers 필요!
+									"Content-Type" : "application/json",
+									"X-HTTP-Method-Override" : "POST"
+								}, */
+								dataType : "text",
+								data : $("#f_writeForm").serialize(),
+								error : function(){
+									alert("시스템 오류입니다. 관리자에게 문의하세요.");
+								},
+								success : function(result){
+									if(result=="SUCCESS"){
+										alert("리뷰 등록이 완료되었습니다.");
+										
+										location.href="/book/detail/"+b_num;
+									}
+								}
+							});
+						}
+						
+						
 					}
+
 							
 				});
 				
@@ -298,12 +306,13 @@
 	                        <th>리뷰내용</th>
 	                        <td><textarea id="re_content" name="re_content" rows="20" cols="100" class="form-control" placeholder="1000자 이내로 작성해주세요."></textarea>
 	                        <br/>
-	                        <span style="color:#aaa", id="counter">(0 / 최대 1000자)</span></td>
+	                        <span style="color:#aaa" id="counter">(0 / 최대 1000자)</span></td>
 	                    </tr>
 	                    <tr>
 	                    	<th>이미지첨부</th>
-	                    	<td>
+	                    	<td class="td_img">
 	                    		<input type="file" name="file" id="file" class="form-control" />
+	                    		<span>사진은 1장만 업로드할 수 있습니다.</span>
 	                    	</td>
 	                    </tr>
 	                </table>

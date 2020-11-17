@@ -26,35 +26,16 @@
          <script type="text/javascript" src="/resources/include/js/jquery-1.12.4.min.js"></script>
          <script type="text/javascript" src="/resources/include/dist/js/bootstrap.js"></script>
          <script type="text/javascript" src="/resources/include/js/common.js"></script>
+         <style>
+         .listTable tbody tr:hover{
+         	background-color:rgba(0,0,0,0.1);
+         }
+         </style>
 		<script>
     
 	        $(function(){
 	            var rows = $(".listTable > tbody > tr").length;
 	            console.log(rows);
-	            
-	            // 환불승인대기 건 식별하기
-	            for(var i=0; i<rows; i++){
-	                var orderstate = $("tbody td.td_orderstate").eq(i);
-	                if(orderstate.text()=="reRequest"){
-	                    orderstate.css({
-	                        "color":"red",
-	                        "font-weight":"bold"
-	                    });
-	                };
-	            };
-	            
-	            
-	            /* 금액 콤마 찍기 */
-				var l = $(".listTable").find("tbody tr").length;
-				var sum = 0;
-				for(var i=0; i<l; i++){
-					var price = $(".listTable").find("tbody tr").eq(i).find("td.td_price").text();
-					sum += parseInt(price);
-					$(".listTable").find("tbody tr").eq(i).find("td.td_price").text(addComma(price));
-				}
-    			$("#total_count").text(addComma(l)); // 전체 구매 횟수
-				$("#total_price").text(addComma(sum)); // 전체 금액
-				
 				
 				/* 메인으로 이동 버튼 */
 				$("#goMainBtn").click(function(){
@@ -125,48 +106,17 @@
 				});
 				
 				
-				/* 승인처리 버튼 처리 */
-				$(".refundConfirmBtn").click(function(){
-					var rf_num = $(this).parents("td").siblings(".td_rfnum").text();
-					var rf_orderstate = "rfConfirm";
-					console.log(rf_num);
+				/* 자세히 버튼 눌렀을 때 해당 구매의 구매상세 페이지로 이동 */
+				$(".adminPdetailBtn").click(function(){
+					var p_num = $(this).parents("tr").attr("data-num");
+					$("#p_num").val(p_num);
+					//console.log(p_num);
 					
-					$.ajax({
-						url:"/admin/refundStateUpdate",
-						type:"get",
-						data : "rf_num="+rf_num+"&rf_orderstate="+rf_orderstate,
-						dataType:"text",
-						error:function(){
-							alert("시스템 오류. 관리자에게 문의하세요.");
-						},
-						success:function(result){
-							console.log("result => "+result);
-							location.href="/admin/refundList";
-						}
+					$("#detailForm").attr({
+						"method": "get",
+						"action": "/admin/pdetailList"
 					});
-					
-				});
-				
-				
-				/* 주문취소완료 버튼 처리 */
-				$(".orderCancelBtn").click(function(){
-					var rf_num = $(this).parents("td").siblings(".td_rfnum").text();
-					var rf_orderstate = "cancel";
-					console.log(rf_num);
-					
-					$.ajax({
-						url:"/admin/refundStateUpdate",
-						type:"get",
-						data : "rf_num="+rf_num+"&rf_orderstate="+rf_orderstate,
-						dataType:"text",
-						error:function(){
-							alert("시스템 오류. 관리자에게 문의하세요.");
-						},
-						success:function(result){
-							console.log("result => "+result);
-							location.href="/admin/refundList";
-						}
-					});
+					$("#detailForm").submit();
 					
 				});
 				
@@ -182,7 +132,7 @@
 				
 				$("#f_searchText").attr({
 					"method" : "get",
-					"action" : "/admin/refundList"
+					"action" : "/admin/reviewList"
 				});
 				$("#f_searchText").submit();
 			}

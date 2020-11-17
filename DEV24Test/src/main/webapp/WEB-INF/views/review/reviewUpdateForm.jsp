@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page trimDirectiveWhitespaces="true" %>
 <!DOCTYPE html>
@@ -102,6 +103,15 @@
        		.td_nickname{
        			padding-left:20px;
        		}
+       		.imgFile{
+       			width:300px;
+       			vertical-align: middle;
+			    margin-bottom: 10px;
+			    margin-left: 10px;
+       		}
+       		.td_img span{
+       			display:block;
+       		}
 		</style>
 		
 		<script type="text/javascript">
@@ -113,22 +123,6 @@
 				for(var i=0; i<re_score; i++){
 					$(".stars > li").eq(i).html(getStar);
 				}
-					
-				/* 별 평점 클릭 */
-				$(".stars > li").click(function(){
-					var index = $(this).index();
-					getEmpty = '<i class="far fa-star"></i>';
-					getStar = '<i class="fas fa-star"></i>';
-					var score = $(this).attr("data-score");
-					console.log(score);
-					$("#score").text(score+"점");
-
-					$(".stars > li").eq(index).html(getStar);
-					$(".stars > li").eq(index).prevAll("li").html(getStar);
-					$(".stars > li").eq(index).nextAll("li").html(getEmpty);
-
-				});
-				
 				
 				/* 글자수 제한 */
 				$("#re_content").keyup(function(){
@@ -142,10 +136,32 @@
 				});
 				
 				
+				/* 파일 개수 제한 */
+				$("#file").click(function(){
+					if($(".imgFile").attr("src") != ""){ // 파일이 이미 존재할 때
+						alert("사진은 하나만 올릴 수 있습니다. 이전 사진은 자동 삭제됩니다.");
+					}
+				});
+				
+				$("#file").change(function(){
+					if($("#file").val() != ""){
+						$(".imgFile").attr("src", "");
+						$("#deleteImageBtn").hide();
+					}
+				});
+				
+				
+				
+				/* 이미지삭제 버튼 처리 */
+				$("#deleteImageBtn").click(function(){
+					$(".imgFile").attr("src", "");
+				});
+				
 				/* 취소 버튼 클릭 처리 - 뒤로가기 */
 				$("#reviewCancelBtn").click(function(){
 					history.back(-1);
 				});
+				
 				
 				
 				/* 수정 버튼 클릭 처리 */
@@ -168,30 +184,29 @@
 					}
 					
 					var re_score = $("#score").text().substring(0,1);
-					var c_nickname = $(".td_nickname").text();
+					var re_num = $("#re_num").val();
 					var b_num = $(".bookWrap").attr("data-num");
-					var pd_num = "${pd_num}";
+					var re_imgurl = $(".imgFile").attr("data-url");
 					
 					$("#re_score").val(re_score);
-					$("#c_nickname").val(c_nickname);
-					$("#b_num").val(b_num);
-					$("#pd_num").val(pd_num);
 					$("#re_type").val(re_type);
+					$("#b_num").val(b_num);
+					$("#re_imgurl").val(re_imgurl);
 					
 					
 					/* JSON.stringify() : JavaScript 값이나 객체를 JSON문자열로 변환 */
 					var value = JSON.stringify({
 							re_score : re_score,
-							c_nickname : c_nickname,
-							b_num : b_num,
-							pd_num : pd_num,
+							re_num : re_num,
 							re_type : re_type,
-							re_content : $("#re_content").val()
+							re_content : $("#re_content").val(),
+							b_num : b_num,
+							re_imgurl : re_imgurl
 					});
 					
 					if(re_type=="image"){
 						$("#f_writeForm").ajaxForm({
-							url : "/review/reviewInsert",
+							url : "/review/reviewUpdate",
 							type : "post",
 							enctype: 'multipart/form-data',
 							dataType : "text",
@@ -200,7 +215,7 @@
 							},
 							success : function(result){
 								if(result=="SUCCESS"){
-									alert("리뷰 등록이 완료되었습니다.");
+									alert("리뷰 수정이 완료되었습니다.");
 									
 									location.href="/book/detail/"+b_num;
 								}
@@ -209,7 +224,7 @@
 						$("#f_writeForm").submit();
 						
 					}else if(re_type=="text"){
-						var insertUrl = "/review/reviewInsert";
+						var insertUrl = "/review/reviewUpdate";
 						$.ajax({
 							url : insertUrl,
 							type : "post",
@@ -224,7 +239,7 @@
 							},
 							success : function(result){
 								if(result=="SUCCESS"){
-									alert("리뷰 등록이 완료되었습니다.");
+									alert("리뷰 수정이 완료되었습니다.");
 									
 									location.href="/book/detail/"+b_num;
 								}
@@ -274,10 +289,10 @@
 	        
 	            <form id="f_writeForm">
 	            	<input type="hidden" name="re_score" id="re_score" />
-	            	<input type="hidden" name="c_nickname" id="c_nickname" />
-	            	<input type="hidden" name="b_num" id="b_num" />
-	            	<input type="hidden" name="pd_num" id="pd_num" />
 	            	<input type="hidden" name="re_type" id="re_type" />
+	            	<input type="hidden" name="b_num" id="b_num" />
+	            	<input type="hidden" name="re_num" id="re_num" value="${reup.re_num}" />
+	            	<input type="hidden" name="re_imgurl" id="re_imgurl" />
 	            
 	                <table class="table" border="1">
 	                    <colgroup>
@@ -305,12 +320,17 @@
 	                        <th>리뷰내용</th>
 	                        <td><textarea id="re_content" name="re_content" rows="20" cols="100" class="form-control" placeholder="1000자 이내로 작성해주세요.">${reup.re_content}</textarea>
 	                        <br/>
-	                        <span style="color:#aaa", id="counter">(0 / 최대 1000자)</span></td>
+	                        <span style="color:#aaa" id="counter">(0 / 최대 1000자)</span></td>
 	                    </tr>
 	                    <tr>
 	                    	<th>이미지첨부</th>
-	                    	<td>
+	                    	<td class="td_img">
 	                    		<input type="file" name="file" id="file" class="form-control" />
+	                    		<span>사진은 1장만 업로드할 수 있습니다.</span>
+	                    		<c:if test="${not empty reup.re_imgurl}">
+		                    		<img src="/uploadStorage/review/${reup.re_imgurl}" class="imgFile" data-url="${reup.re_imgurl}" />
+		                    		<button type="button" id="deleteImageBtn">이미지삭제</button>
+	                    		</c:if>
 	                    	</td>
 	                    </tr>
 	                </table>

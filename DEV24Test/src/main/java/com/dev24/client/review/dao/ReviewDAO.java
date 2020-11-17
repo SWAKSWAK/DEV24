@@ -10,7 +10,8 @@ public interface ReviewDAO {
 	public ReviewVO getBookInfo(int b_num);
 	public int reviewInsert(ReviewVO revo);
 	public int ratingUpdate(ReviewVO revo);
-	public int reviewDelete(int re_num);
+	public int ratingMinus(ReviewVO revo);
+	public int reviewDelete(ReviewVO revo);
 	public ReviewVO reviewUpdateForm(int re_num);
 	public int reviewUpdate(ReviewVO revo);
 }

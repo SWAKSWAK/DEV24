@@ -79,7 +79,6 @@ public class ReviewController {
 		log.info("reviewInsert 호출 성공");
 		log.info("ReviewVO : "+ revo);
 		int result = 0;
-		int resultRating = 0;
 
 		LoginVO lvo = (LoginVO) session.getAttribute("login");
 		int c_num = lvo.getC_num();
@@ -92,27 +91,23 @@ public class ReviewController {
 		
 		log.info(revo.getB_num());
 		log.info(revo.getRe_score());
-		if(result == 1) {
-			resultRating = reviewService.ratingUpdate(revo);
-		}else {
-			resultRating = 0;
-		}
+
 		
-		return resultRating==1 ? new ResponseEntity<String>("SUCCESS", HttpStatus.OK) : new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+		return result==1 ? new ResponseEntity<String>("SUCCESS", HttpStatus.OK) : new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	
 	/************************************************
 	 * delete review
 	 * ****************/
-	@DeleteMapping(value="/{re_num}", produces= {MediaType.TEXT_PLAIN_VALUE})
+	@DeleteMapping(value="/reviewDelete", produces= {MediaType.TEXT_PLAIN_VALUE})
 	@ResponseBody
-	public ResponseEntity<String> reviewDelete(@PathVariable("re_num") Integer re_num) throws Exception{
+	public ResponseEntity<String> reviewDelete(ReviewVO revo) throws Exception{
 		log.info("reviewDelete 호출 성공");
-		log.info("re_num : "+re_num);
 		
 		int result = 0;
-		result = reviewService.reviewDelete(re_num);
+		result = reviewService.reviewDelete(revo);
+		log.info("result : "+result);
 		
 		return result==1 ? new ResponseEntity<String>("SUCCESS", HttpStatus.OK) : new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
@@ -130,6 +125,22 @@ public class ReviewController {
 		model.addAttribute("reup", reup);
 		model.addAttribute("pd_num", revo.getPd_num());
 		return "review/reviewUpdateForm";
+	}
+	
+	
+	/************************************************
+	 * review update
+	 * *****************/
+	@PostMapping(value="/reviewUpdate")
+	@ResponseBody
+	public ResponseEntity<String> reviewUpdate(@ModelAttribute ReviewVO revo) throws Exception {
+		log.info("reviewUpdate success call");
+		
+		int result = 0;
+		
+		result = reviewService.reviewUpdate(revo);
+
+		return result==1 ? new ResponseEntity<String>("SUCCESS", HttpStatus.OK) : new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	

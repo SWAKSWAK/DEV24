@@ -36,6 +36,7 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override
 	public int reviewInsert(ReviewVO revo) throws Exception {
 		int result = 0;
+		int resultRating = 0;
 		String fileName = "";
 		if(revo.getFile()==null) {
 			result = reviewDAO.reviewInsert(revo);
@@ -49,27 +50,37 @@ public class ReviewServiceImpl implements ReviewService {
 			}
 		}
 		
-		return result;
+		// rating table update after insert into review
+		if(result == 1) {
+			resultRating = reviewDAO.ratingUpdate(revo); 
+		}else {
+			resultRating = 0;
+		}
+		
+		return resultRating;
 	}
-
-	// rating table update after insert into review
-	@Override
-	public int ratingUpdate(ReviewVO revo) {
-		int result = 0;
-		result = reviewDAO.ratingUpdate(revo);
-		return result;
-	}
+	
 
 	// review delete with image file
+	@Transactional
 	@Override
-	public int reviewDelete(int re_num) throws Exception {
+	public int reviewDelete(ReviewVO revo) throws Exception {
 		int result = 0;
-		ReviewVO revo = new ReviewVO();
+		int resultRating = 0;
+		//log.info("revo.getRe_imgurl() > "+revo.getRe_imgurl());
 		if(revo.getRe_imgurl() != "") {
 			FileUploadUtil.fileDelete(revo.getRe_imgurl());
 		}
-		result = reviewDAO.reviewDelete(re_num);
-		return result;
+		result = reviewDAO.reviewDelete(revo);
+		
+		// rating table update after delete from review
+		if(result == 1) {
+			resultRating = reviewDAO.ratingMinus(revo); 
+		}else {
+			resultRating = 0;
+		}
+		
+		return resultRating;
 	}
 
 	// review update form print
@@ -78,6 +89,36 @@ public class ReviewServiceImpl implements ReviewService {
 		ReviewVO revo = null;
 		revo = reviewDAO.reviewUpdateForm(re_num);
 		return revo;
+	}
+
+	// review update
+	@Transactional
+	@Override
+	public int reviewUpdate(ReviewVO revo) throws Exception {
+		int result = 0;
+		String fileName = "";
+		
+		// if exsiting image already, 
+		if(revo.getRe_imgurl() != "") { 
+			// delete image
+			FileUploadUtil.fileDelete(revo.getRe_imgurl());
+
+			if(revo.getFile()!=null) {
+				//delete exsited one and upload new one again
+				revo.setRe_imgurl(FileUploadUtil.fileUpload(revo.getFile(), "review"));
+			}
+		}else {
+			
+			// if no-exsiting image, upload image
+			if(revo.getFile()!=null) {
+				fileName = FileUploadUtil.fileUpload(revo.getFile(), "review");
+				revo.setRe_imgurl(fileName);
+			}
+		}
+		
+		result = reviewDAO.reviewUpdate(revo);
+
+		return result;
 	}
 	
 	

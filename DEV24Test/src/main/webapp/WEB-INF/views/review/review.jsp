@@ -112,13 +112,16 @@
 				/* 리뷰 삭제 처리 */
 				$(document).on("click",".reviewDeleteBtn",function(){
 					var re_num = $(this).parents("tr").attr("data-renum");
-					console.log("re_num : "+re_num);
+					var re_score = $(this).siblings("span.re_score").text();
+					var re_imgurl = $(this).parents("tr.tr1").siblings("tr.tr2").find("span.re_imgurl").attr("data-url");
+					console.log("re_imgurl : "+re_imgurl);
+					
 					orderby_when = $("#orderby_when").val();
 					var reviewType_sort = $("#review_tab > div.on").attr("id");
 					
 					if(confirm("선택하신 댓글을 삭제하시겠습니까?")){
 						$.ajax({
-							url : "/review/"+re_num,
+							url : "/review/reviewDelete?re_num="+re_num+"&re_score="+re_score+"&b_num="+b_num+"&re_imgurl="+re_imgurl,
 							type : "delete",
 							headers : {
 								"X-HTTP-Method-Override" : "DELETE"
@@ -198,6 +201,7 @@
 				wrapper_table.addClass("table review_table");
 				
 				var new_tr1 = $("<tr>");
+				new_tr1.addClass("tr1");
 				new_tr1.attr({"data-num": c_num, "data-reNum":re_num});
 				var td1 = $("<td>");
 
@@ -241,12 +245,14 @@
 				new_tr1.append(td1).append(td2);
 				
 				var new_tr2 = $("<tr>");
+				new_tr2.addClass("tr2");
 				var td3 = $("<td>");
 				td3.attr("colspan", "2");
 				td3.addClass("td_content");
 				
 				var img_span = $("<span>");
 				img_span.addClass("re_imgurl");
+				img_span.attr("data-url", re_imgurl);
 				if(re_imgurl != ""){
 					var img = $("<img>");
 					img.attr("src", "/uploadStorage/review/"+re_imgurl);

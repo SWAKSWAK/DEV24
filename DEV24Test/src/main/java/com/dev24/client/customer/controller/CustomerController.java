@@ -120,7 +120,7 @@ public class CustomerController {
 	 * 회원 수정 폼
 	 * @SessionAttribute: 메소드에 @SessionAttribute가 있을 경우 파라미터로 지정된 이름으로 등록된 세션 정보를 읽어와서 변수에 할당한다.
 	 **************************************************************/
-	@RequestMapping(value="/modify", method = RequestMethod.GET)	
+	/*@RequestMapping(value="/modify", method = RequestMethod.GET)	
 	public ModelAndView customerModify(@SessionAttribute("login") LoginVO login){
 		log.info("modify get 방식에 의한 메서드 호출 성공");
 		ModelAndView mav=new ModelAndView();
@@ -132,9 +132,9 @@ public class CustomerController {
 		
 		CustomerVO vo = customerService.customerSelect(login.getC_id());             
 		mav.addObject("customer", vo);
-		mav.setViewName("customer/modify");	
+		mav.setViewName("/mypage/modify");	
 		return mav;
-	} 
+	} */
 
 	/**************************************************************
 	 * 회원 수정 처리(AOP 예외 처리 전)

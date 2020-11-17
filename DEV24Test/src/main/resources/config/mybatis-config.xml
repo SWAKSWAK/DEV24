@@ -23,5 +23,6 @@
 		<typeAlias type="com.dev24.admin.refund.vo.AdminRefundViewVO" alias="adminRefund"/>
 		<typeAlias type="com.dev24.client.review.vo.ReviewVO" alias="review"/>
 		<typeAlias type="com.dev24.client.login.vo.LoginVO" alias="login"/>
+		<typeAlias type="com.dev24.admin.review.vo.AdminReviewViewVO" alias="adminReview"/>
 	</typeAliases>
 </configuration>
