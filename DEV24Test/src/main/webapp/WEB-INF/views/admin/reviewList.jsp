@@ -33,6 +33,13 @@
          </style>
 		<script type="text/javascript">
 			$(function(){
+				var successMsg = "${successMsg}";
+				if(successMsg!=""){
+					alert(successMsg);
+					successMsg = "";
+				}
+				
+				
 				/* 금액 콤마 찍기 */
 				var l = $(".listTable").find("tbody tr").length;
 				var sum = 0;
@@ -84,8 +91,8 @@
 					$("#keyword").val("${data.keyword}");
 					$("#search").val("${data.search}");
 				}
-				if("${data.refundCheck}" != ""){
-					$("input[value='${data.refundCheck}']").prop("checked", true);
+				if("${data.typeCheck}" != ""){
+					$("input[value='${data.typeCheck}']").prop("checked", true);
 				}
 				if("${data.date_start}" != ""){
 					$("input[name='date_start']").val("${data.date_start}");
@@ -122,15 +129,8 @@
 				$(".reviewDetailBtn").click(function(){
 					var re_num = $(this).parents("td").siblings(".td_renum").text();
 					var b_num = $(this).parents("td").siblings(".td_bnum").text();
-//					$("#p_num").val(p_num);
-					//console.log(p_num);
-					/*
-					$("#detailForm").attr({
-						"method": "get",
-						"action": "/admin/pdetailList"
-					});
-					$("#detailForm").submit();*/
 					
+					location.href="/admin/reviewDetail?re_num="+re_num+"&b_num="+b_num;
 				});
 				
 			}); // 최상위 종료
@@ -144,7 +144,7 @@
 				
 				$("#f_searchText").attr({
 					"method" : "get",
-					"action" : "/admin/purchaseList"
+					"action" : "/admin/reviewList"
 				});
 				$("#f_searchText").submit();
 			}
@@ -174,9 +174,15 @@
 	                            <input type="text" name="keyword" id="keyword" class="form-control" />
 	                        </div>
 	                        <div class="form-group">
-	                            <label>승인날짜</label>
+	                            <label>등록날짜</label>
 	                            <input type="date" name="date_start" id="date_start" class="form-control" /> ~ 
 	                            <input type="date" name="date_end" id="date_end" class="form-control" />
+	                        </div>
+	                        <div class="form-group">
+	                            <label>리뷰종류</label>
+	                            <input type="radio" name="typeCheck" value="image" />image
+	                            <input type="radio" name="typeCheck" value="text" />text
+	                            <input type="radio" name="typeCheck" value="ALL" checked="checked" />ALL
 	                        </div>
 	                        <input type="button" id="searchTextBtn" value="검색" class="btn btn-default" />
 	                    </form>
@@ -194,11 +200,11 @@
 	            	<colgroup>
 	                   <col width="7%" />
 	                   <col width="7%" />
-	                   <col width="21%" /> 
-	                   <col width="7%" />
-	                   <col width="8%" />
-	                   <col width="20%" />
-	                   <col width="8%" />
+	                   <col width="25%" /> 
+	                   <col width="10%" />
+	                   <col width="9%" />
+	                   <col width="10%" />
+	                   <col width="10%" />
 	                   <col width="10%" />
 	                   <col width="10%" />
 	               </colgroup>
@@ -210,6 +216,7 @@
 	                        <th>작성자</th>
 	                        <th>구매번호</th>
 	                        <th>등록일</th>
+	                        <th>리뷰종류</th>
 	                        <th></th>
 	                    </tr>
 	                </thead>
@@ -224,6 +231,7 @@
 				                        <td>${list.c_nickname}</td>
 				                        <td>${list.p_num}</td>
 				                        <td>${list.re_writedate}</td>
+				                        <td>${list.re_type}</td>
 				                        <td>
 				                        	<input type="button" value="자세히" class="btn btn-primary reviewDetailBtn" />
 				                        </td>
@@ -232,7 +240,7 @@
 	                		</c:when>
 	                		<c:otherwise>
 	                			<tr>
-	                				<td colspan="7">내역이 없습니다.</td>
+	                				<td colspan="8">내역이 없습니다.</td>
 	                			</tr>
 	                		</c:otherwise>
 	                	</c:choose>

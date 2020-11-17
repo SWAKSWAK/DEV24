@@ -30,6 +30,7 @@
     <![endif]-->
     
     <script type="text/javascript" src="/resources/include/js/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="/resources/include/js/jquery-3.5.1.min.js"></script>
     <script type="text/javascript" src="/resources/include/js/holder.js"></script>
     <style type="text/css">
     	div.sidebar{
@@ -71,8 +72,15 @@
        $(function(){
           var date = new Date();
            $(".date").text(date);   
-           $("#today").text(date);   
+           $("#today").text(date);  
+           
+           $(".nav-sidebar > li").click(function(){
+         	  $(this).siblings("li").removeClass("active");
+         	  $(this).addClass("active");
+            });
+            
        });
+       
        
     </script>
     

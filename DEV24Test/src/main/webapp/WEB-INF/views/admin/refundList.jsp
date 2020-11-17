@@ -132,7 +132,7 @@
 				
 				$("#f_searchText").attr({
 					"method" : "get",
-					"action" : "/admin/reviewList"
+					"action" : "/admin/refundList"
 				});
 				$("#f_searchText").submit();
 			}

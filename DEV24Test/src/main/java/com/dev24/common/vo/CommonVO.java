@@ -18,6 +18,7 @@ public class CommonVO {
 	private String date_end = ""; // default sysdate
 	
 	private String refundCheck = ""; // is refund or not => for adminPage
+	private String typeCheck = ""; // is refund or not => for adminPage
 	
 	private String orderby_when = ""; // orderby
 	private String orderby_state = ""; // orderstate
