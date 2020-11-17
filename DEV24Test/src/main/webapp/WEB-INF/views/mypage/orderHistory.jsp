@@ -28,9 +28,9 @@
 		<script src="https://kit.fontawesome.com/a333e3670c.js" crossorigin="anonymous"></script>
 		<script>
 			var stateUpdateBtn = 0;
-		
+
 			$(function(){
-				
+								
 				/* 검색할 날짜 기본값 설정 */
 				var today = new Date(); // 오늘날짜
 				var year = today.getFullYear();

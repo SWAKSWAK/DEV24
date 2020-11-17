@@ -100,43 +100,41 @@
 			</c:if>		
 				<input type="button" id="qnaListBtn" class="btn btn-primary btn-sm" value="목록" />	
 			</div>
-		</div>	
+			
 			
 			<%-- ================= 상세정보 보여주기 시작=============== --%>
-			<div class="contentTB text-center">
-				<table class="table table-bordered">
-					<colgroup>
-						<col width="17%">
-						<col width="33%">
-						<col width="17%">
-						<col width="33%">
-					</colgroup>
-					<tbody>
-						<tr>
-							<td class="text-left">글번호</td>
-							<td>${detail.q_num} (조회수:${detail.q_readcnt})</td>
-							<td class="text-left">작성일</td>
-							<td>${detail.q_writedate}</td>
-						</tr>
-						<tr>
-							<td class="ac">글제목</td>
-							<td colspan="3">${detail.q_title }</td>
-						</tr>
-						<tr>
-							<td class="ac">작성자</td>
-							<td colspan="3">${detail.c_nickname }</td>
-						</tr>
-						<tr class="table-height">
-							<td class="text-left">글내용</td>
-							<td colspan="3">${detail.q_content }</td>
-						</tr>
-					
-						
-					</tbody>
-				</table>
-			</div>
+			<table class="table table-bordered">
+				<colgroup>
+					<col width="17%">
+					<col width="33%">
+					<col width="17%">
+					<col width="33%">
+				</colgroup>
+				<tbody>
+					<tr>
+						<td class="text-left">글번호</td>
+						<td>${detail.q_num} (조회수:${detail.q_readcnt})</td>
+						<td class="text-left">작성일</td>
+						<td>${detail.q_writedate}</td>
+					</tr>
+					<tr>
+						<td class="ac">글제목</td>
+						<td colspan="3">${detail.q_title }</td>
+					</tr>
+					<tr>
+						<td class="ac">작성자</td>
+						<td colspan="3">${detail.c_nickname }</td>
+					</tr>
+					<tr class="table-height">
+						<td class="text-left">글내용</td>
+						<td colspan="3">${detail.q_content }</td>
+					</tr>
 				
-		
+					
+				</tbody>
+			</table>
+				
+		</div>
 	</body>
 </html>
     

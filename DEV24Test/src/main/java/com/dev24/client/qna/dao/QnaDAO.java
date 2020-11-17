@@ -15,4 +15,6 @@ public interface QnaDAO {
 	public int qnaUpdate(QnaVO qvo);
 	public int qnaDelete(int q_num);
 	public void makeReply(QnaVO qvo);
+
+	public List<QnaVO> myQnaList(QnaVO qvo); // mypage
 }

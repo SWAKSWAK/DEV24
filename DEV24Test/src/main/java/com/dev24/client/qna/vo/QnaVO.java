@@ -19,5 +19,5 @@ public class QnaVO extends CommonVO{
 	private int     q_repIndent   =0;	//답변글 작성 시 사용(답변글의 순서 지정)
 	private int     q_repRoot     =0;	//답변글 작성 시 사용(원래글의 번호참도)
 	private int     q_repStep     =0;	//답변글 작성 시 사용(답변글의 들여쓰기 지정)
-	   
+		   
 }

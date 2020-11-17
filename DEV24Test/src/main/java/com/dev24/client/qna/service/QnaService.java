@@ -14,4 +14,6 @@ public interface QnaService {
 	public int qnaCount(int q_num);
 	public int qnaDelete(int q_num);
 	public int qnaUpdate(QnaVO qvo);
+
+	public List<QnaVO> myQnaList(QnaVO qvo); // mypage
 }

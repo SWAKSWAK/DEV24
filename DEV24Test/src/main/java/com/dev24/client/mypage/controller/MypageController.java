@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttribute;
@@ -18,6 +19,8 @@ import com.dev24.client.mypage.orderhistory.service.OrderhistoryService;
 import com.dev24.client.mypage.orderhistory.vo.OrderhistoryVO;
 import com.dev24.client.mypage.refundhistory.service.RefundhistoryService;
 import com.dev24.client.mypage.refundhistory.vo.RefundhistoryVO;
+import com.dev24.client.qna.service.QnaService;
+import com.dev24.client.qna.vo.QnaVO;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -31,12 +34,13 @@ public class MypageController {
 	private OrderhistoryService orderhistoryService;
 	private RefundhistoryService refundhistoryService;
 	private CustomerService customerService;
+	private QnaService qnaService;
 	
 	/************************************************
 	 *  mypage main print
 	 *  ****************/
 	@RequestMapping(value="/mypage", method= {RequestMethod.GET})
-	public String mypage(OrderhistoryVO ohvo, RefundhistoryVO rfhvo, Model model, @SessionAttribute("login") LoginVO lvo) {
+	public String mypage(OrderhistoryVO ohvo, RefundhistoryVO rfhvo, QnaVO qvo, Model model, @SessionAttribute("login") LoginVO lvo) {
 		log.info("mypage 호출 성공");
 			
 		if(lvo == null){
@@ -48,6 +52,7 @@ public class MypageController {
 		
 		ohvo.setC_num(c_num);
 		rfhvo.setC_num(c_num);
+		qvo.setC_num(c_num);
 		
 		// 주문내역 조회
 		List<OrderhistoryVO> ohlist = orderhistoryService.orderhistoryList(ohvo);
@@ -56,6 +61,10 @@ public class MypageController {
 		// 환불내역 조회
 		List<RefundhistoryVO> rfhlist = refundhistoryService.refundhistoryList(rfhvo);
 		model.addAttribute("rfhvo", rfhlist);
+		
+		// 나의 문의 조회
+		List<QnaVO> qnalist = qnaService.myQnaList(qvo);
+		model.addAttribute("qvo", qnalist);
 		
 		return "mypage/mypage";
 	}
@@ -80,5 +89,26 @@ public class MypageController {
 		mav.setViewName("mypage/modify");	
 		return mav;
 	} 
+	
+	
+	/****************************************************
+	 * my qna history page print
+	 * *******************/
+	@RequestMapping(value="/qnaHistory", method= {RequestMethod.GET})
+	public String qnaHistory(@ModelAttribute("data") QnaVO qvo, Model model, HttpSession session) {
+		log.info("qnaHistory 호출 성공");
+		
+		LoginVO lvo = (LoginVO) session.getAttribute("login");
+		int c_num = lvo.getC_num();
+		log.info(lvo);
+		log.info("c_num : "+c_num);
+		
+		qvo.setC_num(c_num);
+		
+		List<QnaVO> qnalist = qnaService.myQnaList(qvo);
+		model.addAttribute("qvo", qnalist);
+		
+		return "mypage/qnaHistory";
+	}
 
 }

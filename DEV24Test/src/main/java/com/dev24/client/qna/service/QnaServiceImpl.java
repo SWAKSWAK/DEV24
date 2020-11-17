@@ -86,6 +86,7 @@ public class QnaServiceImpl implements QnaService {
 		return result;
 	}
 	
+	
 	@Override
 	public int replyInsert(QnaVO qvo) {
 		int result =0;
@@ -95,7 +96,16 @@ public class QnaServiceImpl implements QnaService {
 		
 		return result;
 	}
-	
+
+	/* mypage */
+	@Override
+	public List<QnaVO> myQnaList(QnaVO qvo) {
+		List<QnaVO> list = null;
+		list = qnaDAO.myQnaList(qvo);
+		
+		return list;
+	}
+
 	
 	
 	

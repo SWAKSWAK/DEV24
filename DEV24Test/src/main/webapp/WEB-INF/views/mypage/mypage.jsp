@@ -149,23 +149,51 @@
             <div class="contentArea">
                 <div class="tit_mypage">
                     <h3>나의 문의</h3>
-                    <a href="#">&gt;&nbsp;더보기</a>
+                    <a href="/mypage/qnaHistory">&gt;&nbsp;더보기</a>
                 </div>
 
                 <table class="table" border="1">
+                	<colgroup>
+	                   <col width="20%" />
+	                   <col width="20%" />
+	                   <col width="50%" />
+	                   <col width="10%" /> 
+	               </colgroup>
                     <thead>
                         <tr>
+                            <th>카테고리</th>
                             <th>문의일자</th>
-                            <th>문의제목</th>
+                            <th>문의내역</th>
                             <th>답변상태</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>2020-10-10</td>
-                            <td class="td_title td_num">배송관련 질문</td>
-                            <td>답변완료</td>
-                        </tr>
+                        <c:choose>
+                    		<c:when test="${not empty qvo}">
+                    			<c:forEach var="qvo" items="${qvo}">
+                    				<tr data-num="${qvo.q_num}">
+                    					<td>${qvo.q_category}</td>
+			                            <td>${qvo.q_writedate}</td>
+			                            <td class="td_title">${qvo.q_title}</td>
+			                            <td class="td_state">
+			                            	<c:choose>
+				                           	<c:when test="${qvo.q_repRoot == 0}">
+				                           		답변대기
+				                           	</c:when>
+				                           	<c:otherwise>
+				                           		답변완료
+				                           	</c:otherwise>
+				                           	</c:choose>
+			                            </td>
+			                        </tr>
+                    			</c:forEach>
+                    		</c:when>
+                    		<c:otherwise>
+                    			<tr>
+                    				<td colspan="4">최근 문의내역이 없습니다.</td>
+                    			</tr>
+                    		</c:otherwise>
+                    	</c:choose>
                     </tbody>
                 </table>
             </div> <!-- contentArea -->

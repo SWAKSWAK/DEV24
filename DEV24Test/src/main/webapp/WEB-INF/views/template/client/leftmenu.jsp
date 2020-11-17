@@ -28,7 +28,7 @@
                </div>
 
                 <div id="info2">
-                   <a href="#"><span>나의 문의</span></a>
+                   <a href="/mypage/qnaHistory"><span>나의 문의</span></a>
                    <!-- <a href="#"><span>나의 리뷰</span></a> -->
                </div>
                

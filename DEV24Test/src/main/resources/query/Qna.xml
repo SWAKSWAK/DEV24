@@ -97,4 +97,49 @@
 	</insert>
 
 
+	<!-- 마이페잊 => QNA 게시판 리스트 기본 조회 -->
+	<select id="myQnaList" parameterType="qna" resultType="qna">
+			SELECT q_num, c_num, q_category, c_nickname, q_title, q_content,
+			 to_char(q_writedate, 'YYYY/MM/DD') q_writedate, q_readCnt, q_repRoot, q_repStep, q_repIndent
+			FROM qna
+		<where>
+			c_num = #{c_num}
+			
+			<if test="date_start != ''">
+				<![CDATA[AND (to_char(q_writedate, 'YYYY-MM-DD') between #{date_start} and #{date_end}) ]]>
+			
+				<if test="search=='q_category'">
+					<![CDATA[AND (q_category LIKE '%'||#{keyword}||'%')]]>
+					
+					<if test="orderby_state=='replied'">
+						<![CDATA[AND q_repRoot > 0]]>
+					</if>
+					<if test="orderby_state=='waiting'">
+						<![CDATA[AND q_repRoot = 0]]>
+					</if>
+				</if>
+				<if test="search=='q_title'">
+					<![CDATA[AND (q_title LIKE '%'||#{keyword}||'%')]]>
+					
+					<if test="orderby_state=='replied'">
+						<![CDATA[AND q_repRoot > 0]]>
+					</if>
+					<if test="orderby_state=='waiting'">
+						<![CDATA[AND q_repRoot = 0]]>
+					</if>
+				</if>
+				
+			</if>
+
+		</where>
+		
+		<if test="orderby_when=='past'">
+			ORDER BY q_num
+		</if>
+		<if test="orderby_when=='last'">
+			ORDER BY q_num desc
+		</if>
+
+	</select>
+
 </mapper>

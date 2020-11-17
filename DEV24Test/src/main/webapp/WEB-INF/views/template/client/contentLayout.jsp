@@ -49,6 +49,18 @@
                 $("#gnb > li > ul").removeClass("on");
            });
           
+            var c_num = "${login.c_num}";
+            $("#util > li").click(function(){
+            	var id = $(this).attr("id");
+            	if(id != "toJoin"){
+            		if(c_num == ""){
+            			alert("로그인 후 이용해주세요.");
+            			location.href="/customer/login";
+            		}
+            	}
+                
+             });
+            
         });
     </script> 
 	</head>
