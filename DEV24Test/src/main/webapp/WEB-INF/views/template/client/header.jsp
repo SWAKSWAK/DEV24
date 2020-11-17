@@ -37,7 +37,7 @@
 		        	<span>커뮤니티</span>
 		        	<ul class="dropmenu">
 		        		<li><a href="/freeboard/freeboardList">자유게시판</a></li>
-		        		<li><a href="/noticeEvent">공지사항/이벤트</a></li>
+		        		<li><a href="/ne/neList">공지사항/이벤트</a></li>
 		        	</ul>
 		        </li> <!-- 자유게시판, 공지사항/이벤트 -->
 		        <li><a href="/faq/faqMain">고객지원</a></li> <!-- 주문내역/배송조회, QnA, FAQ -->

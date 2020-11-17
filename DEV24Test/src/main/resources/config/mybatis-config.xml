@@ -26,6 +26,7 @@
 		<typeAlias type="com.dev24.admin.review.vo.AdminReviewViewVO" alias="adminReview"/>
 		<typeAlias type="com.dev24.client.qna.vo.QnaVO" alias="qna"/>
 		<typeAlias type="com.dev24.client.faq.vo.FaqVO" alias="faq"/>
-		
+		<typeAlias type="com.dev24.client.ne.vo.NeVO" alias="ne"/>
+		<typeAlias type="com.dev24.client.necmt.vo.NecmtVO" alias="necmt"/>
 	</typeAliases>
 </configuration>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dev24.client.ne.dao.NeDAO">
+	<select id="neList" resultType="ne">
+		SELECT
+			ne_num, ne_readcnt, ne_title, 
+			ne_date, ne_cate,
+			(select count(*) from necmt c where c.ne_num = n.ne_num) as ne_rcnt
+		FROM
+			neboard n
+	</select>
+	
+	<select id="neDetail" resultType="ne">
+		SELECT
+			ne_num, ne_readcnt, ne_title, ne_imgurl,
+			ne_date, ne_cate
+		FROM
+			neboard
+	</select>
+</mapper>

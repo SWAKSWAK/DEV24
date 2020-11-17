@@ -482,8 +482,8 @@
 										<span class="b_price_hidden"  style="display: none" >${ bl.b_price }</span>
 										<fmt:formatNumber value="${ bl.b_price }"/>
 									</td>
-									<td class="b_salesRate text-center">
-										<span class="b_salesRate">${ bl.b_salesRate }</span>
+									<td class="salescnt text-center">
+										<span class="salescnt">${ bl.salescnt }</span>
 									</td>
 									<td class="b_state text-center">
 											<c:if test="${ empty bl.b_state }">

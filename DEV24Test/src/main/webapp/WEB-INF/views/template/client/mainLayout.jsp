@@ -22,6 +22,8 @@
 		<link rel="stylesheet" href="/resources/include/css/style_boot.css" />
 		<link rel="stylesheet" href="/resources/include/css/style_headerfooter.css" />
 		<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+		<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+		<!-- <link rel="stylesheet" href="/resources/include/css/contents.css"> -->
 		
 		<script src="/resources/include/js/jquery-1.12.4.min.js"></script>
     	<script src="/resources/include/js/jquery-3.5.1.min.js"></script>
@@ -58,8 +60,8 @@
 	<body>
 		<tiles:insertAttribute name="header" />
 		
-		<div id="content_wrap">
-        
+		<div id="content_wrap">s
+        	<tiles:insertAttribute name="body" />
     	</div> <!-- content_wrap -->
 		
 		

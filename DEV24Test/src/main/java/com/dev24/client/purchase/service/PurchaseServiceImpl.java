@@ -1,9 +1,9 @@
 package com.dev24.client.purchase.service;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dev24.client.cart.dao.CartDAO;
 import com.dev24.client.cart.vo.CartVO;
@@ -13,6 +13,7 @@ import com.dev24.client.pdetail.dao.PdetailDAO;
 import com.dev24.client.pdetail.vo.PdetailVO;
 import com.dev24.client.purchase.dao.PurchaseDAO;
 import com.dev24.client.purchase.vo.PurchaseVO;
+import com.dev24.client.rating.dao.RatingDAO;
 
 import lombok.AllArgsConstructor;
 
@@ -24,6 +25,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 	private CustomerDAO customerDAO;
 	private PdetailDAO pdetailDAO;
 	private CartDAO cartDAO;
+	private RatingDAO ratingDAO;
 
 	// 구매화면 출력(체크 상품 가져오기)
 	@Override
@@ -51,9 +53,15 @@ public class PurchaseServiceImpl implements PurchaseService {
 
 	// 구매 상세 자동 삽입
 	@Override
+	@Transactional
 	public int pdetailInsert(List<PdetailVO> pdvoList) {
+		//pdetail
 		int result = 0;
 		result= pdetailDAO.pdetailInsert(pdvoList);
+		
+		//update Rating.salesCnt
+		ratingDAO.updateSalesCnt(pdvoList);
+		
 		return result;
 	}
 

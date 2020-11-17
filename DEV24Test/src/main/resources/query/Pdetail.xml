@@ -12,7 +12,4 @@
 		from dual
 		</foreach>) p
 	</insert>
-
-	
-
 </mapper>

@@ -54,7 +54,7 @@ public class BookVO {
 	
 	//b_salesRate : b_num 별로 가지는 sum(pd_qty)
 	//판매량을 조회할 수 있다.
-	private int b_salesRate;
+	private int salescnt;
 	
 	/*************************************************************
 	 * 등록/미등록/절판 여부를 판단하기 위한 필드
