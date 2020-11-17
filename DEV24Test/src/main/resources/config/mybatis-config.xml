@@ -24,5 +24,8 @@
 		<typeAlias type="com.dev24.client.review.vo.ReviewVO" alias="review"/>
 		<typeAlias type="com.dev24.client.login.vo.LoginVO" alias="login"/>
 		<typeAlias type="com.dev24.admin.review.vo.AdminReviewViewVO" alias="adminReview"/>
+		<typeAlias type="com.dev24.client.qna.vo.QnaVO" alias="qna"/>
+		<typeAlias type="com.dev24.client.faq.vo.FaqVO" alias="faq"/>
+		
 	</typeAliases>
 </configuration>

@@ -53,8 +53,17 @@
 		<definition name="customer/*" extends="content" >
   		<put-attribute name="title" value="로그인 및 회원가입" />
   		<put-attribute name="body" value="/WEB-INF/views/customer/{1}.jsp"/>
-  	
+  		</definition>
+  		
+  	<definition name="qna/*" extends="content" >
+  		<put-attribute name="title" value="qna 게시판" />
+  		<put-attribute name="body" value="/WEB-INF/views/qna/{1}.jsp"/>
   	</definition>
+  	
+  	<definition name="faq/*" extends="content">
+		<put-attribute name="title" value="고객센터" />
+		<put-attribute name="body" value="/WEB-INF/views/faq/{1}.jsp" />
+	</definition>
 		
 	
 	<!-- 일반페이지(사이드메뉴 있는 페이지) -->

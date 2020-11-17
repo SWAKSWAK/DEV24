@@ -40,7 +40,7 @@
 		        		<li><a href="/noticeEvent">공지사항/이벤트</a></li>
 		        	</ul>
 		        </li> <!-- 자유게시판, 공지사항/이벤트 -->
-		        <li><a href="#">고객지원</a></li> <!-- 주문내역/배송조회, QnA, FAQ -->
+		        <li><a href="/faq/faqMain">고객지원</a></li> <!-- 주문내역/배송조회, QnA, FAQ -->
 		      </ul> <!-- gnb -->
 		      
 		      <ul id="util">
