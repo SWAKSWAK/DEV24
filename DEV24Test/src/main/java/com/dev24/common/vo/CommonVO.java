@@ -22,4 +22,17 @@ public class CommonVO {
 	
 	private String orderby_when = ""; // orderby
 	private String orderby_state = ""; // orderstate
+	
+	private int pageNum=0;
+	private int amount=0;
+	
+	public CommonVO() {
+		this(1,10);
+	}
+	
+	public CommonVO (int pageNum, int amount) {
+		this.pageNum = pageNum;
+		this.amount = amount;
+	}
+
 }

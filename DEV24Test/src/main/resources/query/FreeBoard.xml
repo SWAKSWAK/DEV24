@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dev24.client.freeboard.dao.FreeBoardDAO">
-	<select id="freeboardList" parameterType="freeboard" resultType="freeboard">
-		<!-- select fb_num, fb_author, fb_title, fb_readcnt, fb_content, 
-		fb_writeday, c_num, fb_img_url, fb_readcnt from freeboard -->
+	
+	
+<!-- 	<select id="freeboardList" parameterType="freeboard" resultType="freeboard">
+		select fb_num, fb_author, fb_title, fb_readcnt, fb_content, 
+		fb_writeday, c_num, fb_img_url, fb_readcnt from freeboard
 		
 		select fb_num, fb_author, fb_title, fb_readcnt, fb_content, 
 		fb_writeday, c_num, fb_img_url, fb_readcnt, 
 		(select count(fb_num) from freecmt where fb_num=freeboard.fb_num) as r_cnt        
 		from freeboard 
 		
-		<!-- 검색 기능 추가 -->
+		검색 기능 추가
 		
 		<where>
 			<if test="search=='fb_title'">
@@ -32,7 +34,22 @@
 		</where>
 		
 		order by fb_num desc
+	</select> -->
+	
+	
+	<select id="freeboardList"  parameterType="freeboard" resultType="freeboard">
+		select 
+		
+		fb_num, fb_author, fb_title, fb_readcnt, fb_content, 
+		fb_writeday, c_num, fb_img_url, fb_readcnt from freeboard
+		
+		select fb_num, fb_author, fb_title, fb_readcnt, fb_content, 
+		fb_writeday, c_num, fb_img_url, fb_readcnt, 
+		(select count(fb_num) from freecmt where fb_num=freeboard.fb_num) as r_cnt        
+		from freeboard 
 	</select>
+	
+	
 	
 	<update id="updateFBReadCount" parameterType="int">
 		update freeboard set fb_readcnt = fb_readcnt+1 where fb_num=#{fb_num}
