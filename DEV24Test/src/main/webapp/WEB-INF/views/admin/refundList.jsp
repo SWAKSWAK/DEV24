@@ -34,8 +34,32 @@
 		<script>
     
 	        $(function(){
-	            var rows = $(".listTable > tbody > tr").length;
+	        	var rows = $(".listTable > tbody > tr").length;
 	            console.log(rows);
+	            
+	            // 환불승인대기 건 식별하기
+	            for(var i=0; i<rows; i++){
+	                var orderstate = $("tbody td.td_orderstate").eq(i);
+	                if(orderstate.text()=="reRequest"){
+	                    orderstate.css({
+	                        "color":"red",
+	                        "font-weight":"bold"
+	                    });
+	                };
+	            };
+	            
+	            
+	            /* 금액 콤마 찍기 */
+				var l = $(".listTable").find("tbody tr").length;
+				var sum = 0;
+				for(var i=0; i<l; i++){
+					var price = $(".listTable").find("tbody tr").eq(i).find("td.td_price").text();
+					sum += parseInt(price);
+					$(".listTable").find("tbody tr").eq(i).find("td.td_price").text(addComma(price));
+				}
+    			$("#total_count").text(addComma(l)); // 전체 구매 횟수
+				$("#total_price").text(addComma(sum)); // 전체 금액
+				
 				
 				/* 메인으로 이동 버튼 */
 				$("#goMainBtn").click(function(){
