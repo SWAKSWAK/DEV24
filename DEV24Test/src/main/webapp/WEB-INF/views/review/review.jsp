@@ -25,6 +25,10 @@
     	<script src="/resources/include/js/jquery-3.5.1.min.js"></script>
     	<script src="/resources/include/js/common.js"></script>
 		<script src="https://kit.fontawesome.com/a333e3670c.js" crossorigin="anonymous"></script>
+		
+		<!-- 페이지 네비게이션은 게시물의 총수를 이용하여 목록 수 만큼 페이지를 구현.  -->
+		<script type="text/javascript" src="/resources/include/js/pagenavigator.js"></script>		
+		
 		<style type="text/css">
 			.review_table{
 			    border: 2px solid #ccc;
@@ -70,16 +74,52 @@
 			.reviewUpdateBtn, .reviewDeleteBtn{
 				margin-left : 30px;
 			}
+			.pagination > li{
+				display : inline-block;
+				margin-right : 10px;
+			}
+			.pagination > li:first-child:before{
+				content:'**  ';
+				
+			}
+			.pagination > li:last-child:after{
+				content:'  **';
+				
+			}
+			.pagination li.active > a{
+				text-decoration : underline;
+			}
 			    
 		</style>
 		
 		<script type="text/javascript">
 			$(function(){
-				/* 리뷰 리스트 출력 */
 				var b_num = ${vo.b_num};
 				var reviewType_sort = "";
 				var orderby_when = $("#orderby_when").val();
-				listAll(b_num, reviewType_sort, orderby_when);
+				var pageNum = 1;
+				var paging = $(".paging");
+								
+				console.log("pageNum : "+pageNum);
+				
+				/* 리뷰 리스트 출력 (페이징) */
+				function pagenav(){
+					listAll(b_num, reviewType_sort, orderby_when, pageNum).then(function(count){ 
+						showPage(pageNum, count, paging);
+					});
+				}
+				pagenav();
+				
+				 paging.on("click",".pagination li a", function(e){
+					e.preventDefault();
+					var targetPageNum = $(this).attr("href");
+					console.log("targetPageNum: " + targetPageNum);
+					pageNum = targetPageNum;
+					$("#pageNum").val(targetPageNum);
+					pagenav();
+			     });
+				 
+
 				
 				/* 리뷰 메뉴 버튼 클래스 추가 제거 */
 				$("#review_tab > div").click(function(){
@@ -93,7 +133,9 @@
 					reviewType_sort = id;
 					orderby_when = $("#orderby_when").val();
 					console.log("id:"+reviewType_sort);
-					listAll(b_num, reviewType_sort, orderby_when);
+					listAll(b_num, reviewType_sort, orderby_when, 1).then(function(count){ 
+						showPage(1, count, $(".paging"));
+					});
 				});
 				
 				
@@ -101,11 +143,13 @@
 				if("${data.orderby_when}" != ""){
 					$("#orderby_when").val("${data.orderby_when}");
 				}
-				$("#orderby_when").change(function(){
+				$("#orderby_wh	en").change(function(){
 					var reviewType_sort = $("#review_tab > div.on").attr("id");
 					orderby_when = $("#orderby_when").val();
 					console.log("orderby_when : "+orderby_when);
-					listAll(b_num, reviewType_sort, orderby_when);
+					listAll(b_num, reviewType_sort, orderby_when, 1).then(function(count){ 
+						showPage(1, count, $(".paging"));
+					});
 				});
 				
 				
@@ -114,6 +158,7 @@
 					var re_num = $(this).parents("tr").attr("data-renum");
 					var re_score = $(this).siblings("span.re_score").text();
 					var re_imgurl = $(this).parents("tr.tr1").siblings("tr.tr2").find("span.re_imgurl").attr("data-url");
+					
 					console.log("re_imgurl : "+re_imgurl);
 					
 					orderby_when = $("#orderby_when").val();
@@ -134,7 +179,9 @@
 								console.log("result : "+result);
 								if(result=="SUCCESS"){
 									alert("리뷰 삭제가 완료되었습니다.");
-									listAll(b_num, reviewType_sort, orderby_when);
+									listAll(b_num, reviewType_sort, orderby_when, pageNum).then(function(count){ 
+										showPage(pageNum, count, $(".paging"));
+									});
 								}
 							}
 						});
@@ -149,24 +196,25 @@
 					location.href="/review/updateForm?re_num="+re_num+"&b_num="+b_num;					
 				});
 				
-				
-				
-				
+
 			}); // 최상위 종료
 			
 			
 			/* 리뷰 리스트 출력 함수 */
-			function listAll(b_num, reviewType_sort, orderby_when){
+			function listAll(b_num, reviewType_sort, orderby_when, pageNum){
 				$("#review_area").html("");
 				var url = "/review/all/"+b_num; //+".json"
 				console.log("reviewType_sort : "+ reviewType_sort);
-				var data = "reviewType_sort="+reviewType_sort+"&orderby_when="+orderby_when;
+				var data = "reviewType_sort="+reviewType_sort+"&orderby_when="+orderby_when+"&pageNum="+pageNum;
+				
+				var def = new $.Deferred();
+				var count = 0;
 				
 				// getJSON(요청url, 파라미터값, success fn, fail fn)
 				$.getJSON(url, data, function(data){ // success
 					console.log("list count : "+data.length); // 리뷰 개수
 					replyCnt = data.length;
-					$(data).each(function(){
+					$(data).each(function(index){
 						var re_num = this.re_num;
 						var re_score = this.re_score;
 						var c_num = this.c_num;
@@ -177,7 +225,9 @@
 						var pd_num = this.pd_num;
 						var re_imgurl = this.re_imgurl;
 						
-						//console.log("c_nickname : "+ c_nickname);
+						if(index==0){count = this.r_count;}
+						
+						console.log("count : "+ this.r_count);
 						//console.log("re_writedate : "+ re_writedate);
 						//console.log("re_score : "+ re_score);
 						//console.log("re_content : "+ re_content);
@@ -187,11 +237,12 @@
 						
 						addItem(re_num, c_nickname, re_score, re_content, re_writedate, re_imgurl, c_num)
 					});
+					def.resolve(count); 
 				
 				}).fail(function(){ // error
 					alert("리뷰 목록을 불러오는데 실패했습니다. 잠시 후에 다시 시도해 주세요.");
 				});
-					
+				return def.promise();
 			}
 			
 			/** 새로운 글을 화면에 추가하기(보여주기) 위한 함수 */
@@ -276,9 +327,6 @@
 	</head>
 	<body>
 		<div id="content_wrap">
-			<!-- <form name="f_data" id="f_data">
-				<input type="hidden" name="re_num" id="re_num" />
-			</form> -->
 		
 			<div id="review_wrap">
 	           <div id="review_tab" class="re_type">
@@ -288,18 +336,19 @@
 	           </div>
 	
 			<form name="f_search" id="f_search">
+				<input type="hidden" name="pageNum" id="pageNum" value="${data.pageNum}" />
+			    <input type="hidden" name="amount" id="amount" value="5" />
+			
 				<select name="orderby_when" id="orderby_when">
                    <option value="last">최신글순</option>
                    <option value="high">평점높은순</option>
                    <option value="low">평점낮은순</option>
                </select>
-	            <!-- <ul id="ordeBy">
-	                <li id="last">최신글순</li>
-	                <li id="high">평점높은순</li>
-	                <li id="low">평점낮은순</li>
-	            </ul> -->
-	         </form>   
-	            <div id="paging">페이징 처리부분</div>
+
+	            <nav class="paging text-center"> <!-- 페이징 처리 부분 -->
+				</nav> 
+	          </form> 
+	            
 	            
 	            <div id="review_area">
 	            	등록된 리뷰가 없습니다.

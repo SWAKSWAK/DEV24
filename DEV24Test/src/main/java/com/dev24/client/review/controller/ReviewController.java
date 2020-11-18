@@ -24,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.dev24.client.login.vo.LoginVO;
 import com.dev24.client.review.service.ReviewService;
 import com.dev24.client.review.vo.ReviewVO;
+import com.dev24.common.vo.PageDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -40,21 +41,21 @@ public class ReviewController {
 	 * *****************/
 	@RequestMapping(value="/all/{b_num}", method = {RequestMethod.GET, RequestMethod.POST}, produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
 	@ResponseBody
-	public ResponseEntity<List<ReviewVO>> reviewList(@PathVariable("b_num") Integer b_num, @ModelAttribute("data") ReviewVO revo, Model model){
+	public String reviewList(@PathVariable("b_num") Integer b_num, @ModelAttribute("data") ReviewVO revo, Model model){
 		log.info("reviewList 호출 성공");
 		
 		b_num = revo.getB_num();
 		log.info("b_num : "+b_num);
+		log.info("revo.getPageNum() > "+revo.getPageNum());
 		
-		ResponseEntity<List<ReviewVO>> entity = null;
-		List<ReviewVO> list = null;
+		String listData = null;
 		
 		revo.setRe_type(revo.getReviewType_sort());
 		log.info("reviewType_sort : "+revo.getReviewType_sort());
+		log.info("r_count : "+revo.getR_count());
 		
-		list = reviewService.reviewList(revo);
-		entity = new ResponseEntity<List<ReviewVO>>(list, HttpStatus.OK);
-		return entity;
+		listData = reviewService.reviewList(revo);
+		return listData;
 	}
 
 	

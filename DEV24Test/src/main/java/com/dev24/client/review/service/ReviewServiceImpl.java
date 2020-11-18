@@ -8,21 +8,53 @@ import org.springframework.transaction.annotation.Transactional;
 import com.dev24.client.review.dao.ReviewDAO;
 import com.dev24.client.review.vo.ReviewVO;
 import com.dev24.common.file.FileUploadUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
 
 @Service("client.reviewService")
 @AllArgsConstructor
+@Log4j
 public class ReviewServiceImpl implements ReviewService {
 	private ReviewDAO reviewDAO;
 
 	// review list print on book detail page
+	// for paging
 	@Override
-	public List<ReviewVO> reviewList(ReviewVO revo) {
+	public String reviewList(ReviewVO revo) {
 		List<ReviewVO> list = null;
-		list = reviewDAO.reviewList(revo);
-		return list;
+		ObjectMapper mapper = new ObjectMapper();
+		String listData = "";
+		
+		try {
+			int r_count = reviewDAO.reviewListCnt(revo);
+			revo.setAmount(5);
+			int pageNum = (revo.getPageNum()==0? 1: revo.getPageNum());
+			int amount = (revo.getAmount()==0? 0 : revo.getAmount());
+		
+			log.info("r_count = " + r_count + " / pageNum = "+pageNum +" / amount = "+ amount);
+			list = reviewDAO.reviewList(revo);
+
+			if(!list.isEmpty()) {
+				for(int i=0; i<list.size(); i++) {
+					list.get(i).setR_count(r_count);
+					list.get(i).setPageNum(pageNum);
+					list.get(i).setAmount(amount);
+				}
+			}
+
+			listData = mapper.writeValueAsString(list);
+			
+			log.info("listData : "+listData);
+		}catch(JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		
+		return listData;
 	}
+	
 
 	// at review form page, book info print
 	@Override
@@ -120,7 +152,13 @@ public class ReviewServiceImpl implements ReviewService {
 
 		return result;
 	}
-	
+
+	@Override
+	public int reviewListCnt(ReviewVO revo) {
+		int result = reviewDAO.reviewListCnt(revo);
+		return result;
+	}
+
 	
 	
 }

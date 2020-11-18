@@ -14,4 +14,6 @@ public interface ReviewDAO {
 	public int reviewDelete(ReviewVO revo);
 	public ReviewVO reviewUpdateForm(int re_num);
 	public int reviewUpdate(ReviewVO revo);
+	
+	public int reviewListCnt(ReviewVO revo);
 }
