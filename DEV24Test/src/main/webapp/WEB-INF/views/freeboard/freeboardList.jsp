@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="tag" tagdir="/WEB-INF/tags/" %>  
 <!DOCTYPE html>
 <html>
 	<head>
@@ -37,6 +39,13 @@
 				goPage();
     		});
     		
+    		//페이징 처리를 위한 구문. 
+			$(".paginate_button a").click(function(e){
+				e.preventDefault();
+				$("#f_search").find("input[name='pageNum']").val($(this).attr("href"));
+				goPage();
+			});
+    		
     	});
     	
     	function goPage(){
@@ -54,6 +63,13 @@
     
     <style>
     	.cnt{margin:5px;}
+    	
+    	.pagination{
+    		text-align: center;
+    	}
+    	.pagination>li{
+    		display:inline-block;
+    	}
     </style>
     
 	</head>
@@ -72,6 +88,8 @@
         <div id="content">
             <div id="board_search">
                 <form name="f_search" id="f_search">
+                	<input type="hidden" name="pageNum" value="${pageMarker.cvo.pageNum}"/>
+			    	<input type="hidden" name="amount" value="${pageMarker.cvo.amount}"/>
                     <div class="form-group">
                         <label>검색조건</label>
                         <select name="search" id="search">
@@ -131,7 +149,13 @@
                 	<input type="button" id="boardInsertFormBtn" value="글쓰기" class="btn btn-success" />
                 </c:if>
             </div> <!-- button_wrap -->
-        
+ 			
+ 			<div class="text-center">
+ 				<tag:pagination pageNum="${pageMarker.cvo.pageNum}" amount="${pageMarker.cvo.amount}" 
+				startPage="${pageMarker.startPage}" endPage="${pageMarker.endPage}" prev="${pageMarker.prev}" next="${pageMarker.next}" />
+ 			</div>
+ 			
+ 			       
         </div> <!-- content (width : 1200px) -->
     </div> <!-- content_wrap -->
     

@@ -75,4 +75,9 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 		return updateData;
 	}
 
+	@Override
+	public int freeboardListCnt(FreeBoardVO fbvo) {
+		return freeboardDAO.freeboardListCnt(fbvo);
+	}
+
 }
