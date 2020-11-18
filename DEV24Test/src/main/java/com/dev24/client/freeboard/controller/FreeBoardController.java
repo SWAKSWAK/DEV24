@@ -12,6 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dev24.client.freeboard.service.FreeBoardService;
 import com.dev24.client.freeboard.vo.FreeBoardVO;
+import com.dev24.common.vo.PageDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -35,6 +36,9 @@ public class FreeBoardController {
 		
 		List<FreeBoardVO> freeboardList = freeboardService.freeboardList(fbvo);
 		model.addAttribute("freeboardList", freeboardList);
+		
+		int total = freeboardService.freeboardListCnt(fbvo);
+		model.addAttribute("pageMarker" , new PageDTO(fbvo, total));
 		
 		return "freeboard/freeboardList";
 	}

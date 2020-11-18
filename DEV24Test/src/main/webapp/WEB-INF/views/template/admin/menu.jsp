@@ -9,8 +9,8 @@
 				class="sr-only">(current)</span></a></li>
 		<li><a href="/admin/stockList">재고관리 페이지 </a></li>
 		<li><a href="/admin/book/00">도서목록 페이지</a></li>
-		<li><a href="">FAQ 게시판 관리페이지</a></li>
-		<li><a href="">QnA 게시판 관리페이지</a></li>
+		<li><a href="/admin/faqList">FAQ 게시판 관리페이지</a></li>
+		<li><a href="/admin/qnaList">QnA 게시판 관리페이지</a></li>
 		<li><a href="/admin/freeboardAdmin">자유게시판 관리페이지</a></li>
 		<li><a href="/admin/purchaseList">구매관리 페이지</a></li>
 		<li><a href="/admin/reviewList">리뷰관리 페이지</a></li>
