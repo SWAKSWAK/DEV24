@@ -106,17 +106,48 @@
 				});
 				
 				
-				/* 자세히 버튼 눌렀을 때 해당 구매의 구매상세 페이지로 이동 */
-				$(".adminPdetailBtn").click(function(){
-					var p_num = $(this).parents("tr").attr("data-num");
-					$("#p_num").val(p_num);
-					//console.log(p_num);
+				/* 승인처리 버튼 처리 */
+				$(".refundConfirmBtn").click(function(){
+					var rf_num = $(this).parents("td").siblings(".td_rfnum").text();
+					var rf_orderstate = "rfConfirm";
+					console.log(rf_num);
 					
-					$("#detailForm").attr({
-						"method": "get",
-						"action": "/admin/pdetailList"
+					$.ajax({
+						url:"/admin/refundStateUpdate",
+						type:"get",
+						data : "rf_num="+rf_num+"&rf_orderstate="+rf_orderstate,
+						dataType:"text",
+						error:function(){
+							alert("시스템 오류. 관리자에게 문의하세요.");
+						},
+						success:function(result){
+							console.log("result => "+result);
+							location.href="/admin/refundList";
+						}
 					});
-					$("#detailForm").submit();
+					
+				});
+				
+				
+				/* 주문취소완료 버튼 처리 */
+				$(".orderCancelBtn").click(function(){
+					var rf_num = $(this).parents("td").siblings(".td_rfnum").text();
+					var rf_orderstate = "cancel";
+					console.log(rf_num);
+					
+					$.ajax({
+						url:"/admin/refundStateUpdate",
+						type:"get",
+						data : "rf_num="+rf_num+"&rf_orderstate="+rf_orderstate,
+						dataType:"text",
+						error:function(){
+							alert("시스템 오류. 관리자에게 문의하세요.");
+						},
+						success:function(result){
+							console.log("result => "+result);
+							location.href="/admin/refundList";
+						}
+					});
 					
 				});
 				
