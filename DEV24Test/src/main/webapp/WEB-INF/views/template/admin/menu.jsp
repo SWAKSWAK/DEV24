@@ -16,5 +16,6 @@
 		<li><a href="/admin/reviewList">리뷰관리 페이지</a></li>
 		<li><a href="">공지사항/이벤트 관리 페이지</a></li>
 		<li><a href="/admin/refundList">환불처리 페이지</a></li>
+		<li><a href="/admin/logout">로그아웃</a></li>
 	</ul>
 </div>
