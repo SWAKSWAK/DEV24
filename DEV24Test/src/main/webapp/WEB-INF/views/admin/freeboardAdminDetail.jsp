@@ -106,6 +106,10 @@
     </script>
     
     <style type="text/css">
+    	#content_wrap{
+    		float:right;
+    		width:1300px;
+    	}
     </style>
     
 </head>
@@ -114,25 +118,13 @@
     
     
     <div id="content_wrap">
+    
     	<c:set var="adetail" value="${adminfreeDetail}"/>
     	<form name="f_data" id="f_data" method="post">
     		<input type="hidden" id="fb_num" name="fb_num" value="${adetail.fb_num}"/>
  		</form>
         
- 		<%-- <div id="pwdChk" class="authArea">
-			<form name="f_pwd" id="f_pwd">
-				<!--<input type="hidden" name="num" id="num" value="${detail.num}" />-->
-				<label for="passwd" id="l_pwd">비밀번호 : &nbsp;</label>
-				<input type="password" name="passwd" id="passwd" />
-				
-				<button type="button" class="btn btn-default" id="pwdBtn">확인</button>
-				<button type="button" class="btn btn-default" id="pwdCancelBtn">취소</button>
-				<span id="msg"></span>
-			</form>
-		</div> --%>
-		
 	        <input type="button" id="boardDeleteBtn" value="글삭제" class="btn btn-success" />
-		</div>
 	
 		<form id="detail">
 			<table summary="게시판 상세 페이지" class="table" border="0">
@@ -167,6 +159,8 @@
 				</tr> --%>
 			</table>
 		</form>
+		
+		
     </div> <!-- content_wrap -->
     
     <!--*************************************************************-->

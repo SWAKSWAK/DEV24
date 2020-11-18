@@ -173,7 +173,7 @@
 				</tr> --%>
 			</table>
 		</form>
-		<jsp:include page="adminNecmt.jsp"/>
+		<!--<jsp:include page="adminNecmt.jsp"/> -->
     </div> <!-- content_wrap -->
     
     <!--*************************************************************-->
