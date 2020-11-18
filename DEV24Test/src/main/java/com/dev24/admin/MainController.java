@@ -26,7 +26,7 @@ public class MainController {
 	@RequestMapping(value="/", method=RequestMethod.GET)
 	public String index(Model model) {
 		
-		Pagination pagination = new Pagination(0, 1, 1, 1, 1, 10, "best", "reg");
+		Pagination pagination = new Pagination(0, 0, 1, 1, 1, 18, "best", "reg");
 		List<BookVO> bvoList = bookService.bookList(pagination);
 
 		model.addAttribute("bvoList", bvoList);

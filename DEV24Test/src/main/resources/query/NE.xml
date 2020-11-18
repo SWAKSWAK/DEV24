@@ -10,11 +10,13 @@
 			neboard n
 	</select>
 	
-	<select id="neDetail" resultType="ne">
+	<select id="neDetail" parameterType="int" resultType="ne">
 		SELECT
 			ne_num, ne_readcnt, ne_title, ne_imgurl,
 			ne_date, ne_cate
 		FROM
 			neboard
+		WHERE 
+			ne_num = #{ne_num}
 	</select>
 </mapper>

@@ -7,8 +7,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.dev24.client.login.vo.LoginVO;
 import com.dev24.client.qna.service.QnaService;
 import com.dev24.client.qna.vo.QnaVO;
 
@@ -53,12 +55,14 @@ public class QnaController { //서비스의 참조값을 담을 수 있는 필드를 생성
 	 ******************************************************/
 	@RequestMapping(value="/qnaInsert", method=RequestMethod.POST)
 	//@PostMapping("/qnaInsert")
-	public String qnaInsert(QnaVO qvo,Model model) {
+	public String qnaInsert(QnaVO qvo,Model model, @SessionAttribute("login")LoginVO lvo) {
 		log.info("qnaInsert 호출 성공");
 		
 		int result = 0; //호출여부 확인용도
 		String url = "";
-		
+//		log.info(qvo.getC_num());
+		log.info(lvo.getC_id());
+		qvo.setC_num(lvo.getC_num());
 		result = qnaService.qnaInsert(qvo); //서비스에서 전달받은 결과 값을 저장
 		if(result==1) {
 			url = "/qna/qnaList";

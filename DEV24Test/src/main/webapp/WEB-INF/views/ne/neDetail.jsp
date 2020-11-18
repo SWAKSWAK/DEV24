@@ -91,7 +91,7 @@
 				</tr>
 				
 				<tr>
-					<th>조회수:</th>
+					<th>조회수</th>
 					<td>${nvo.ne_readcnt}</td>
 				</tr>
 				

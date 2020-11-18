@@ -17,7 +17,11 @@
   font-style: normal;
 }
 :root {
-  --swiper-theme-color: #007aff;
+	/* 기본값 */
+  /* --swiper-theme-color: #007aff; */
+  
+  /*수정*/
+  --swiper-theme-color: #a6b1e1;
 }
 .swiper-container {
   margin-left: auto;
@@ -167,6 +171,9 @@
   text-transform: none;
   font-variant: initial;
   line-height: 1;
+  
+  /*수정*/
+  opacity : 0.8;
 }
 .swiper-button-prev,
 .swiper-container-rtl .swiper-button-next {
@@ -305,7 +312,11 @@ button.swiper-pagination-bullet {
 }
 /* Progress */
 .swiper-pagination-progressbar {
-  background: rgba(0, 0, 0, 0.25);
+  /* 원본 */
+  /* background: rgba(0, 0, 0, 0.25); */
+  
+  /* 수정 */
+  background:#f4eeff;
   position: absolute;
 }
 .swiper-pagination-progressbar .swiper-pagination-progressbar-fill {
