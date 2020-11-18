@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.dev24.client.freeboard.service.FreeBoardService;
 import com.dev24.client.freeboard.vo.FreeBoardVO;
+import com.dev24.common.vo.PageDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -26,6 +27,10 @@ public class AdminFreeBoardController {
 	public String freeboardAdmin(@ModelAttribute("data") FreeBoardVO fbvo, Model model) {
 		List<FreeBoardVO> adminfbList = freeboardService.freeboardList(fbvo);
 		model.addAttribute("adminfbList", adminfbList);
+		
+		int total = freeboardService.freeboardListCnt(fbvo);
+		model.addAttribute("pageMarker" , new PageDTO(fbvo, total));
+		
 		return"admin/freeboardAdmin";
 	}
 	
