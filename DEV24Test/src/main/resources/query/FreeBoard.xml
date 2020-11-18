@@ -75,6 +75,8 @@
 			) boardlist
 			where rnum > (#{pageNum}-1) * #{amount}
 			]]>
+			
+			order by fb_num desc
 		
 	</select>
 	

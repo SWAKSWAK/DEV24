@@ -105,6 +105,9 @@
 		 			//console.log("아이디="+ $("#adm_id").val()+ "adm_passwd="+ $("#adm_passwd").val());
 		 		});
 		 		
+		 		$("#cancel").click(function(){
+		 			$("#f_pwd").trigger("reset");
+		 		});
 		 		
 		 		
 		 		$(document).ready(function() {
