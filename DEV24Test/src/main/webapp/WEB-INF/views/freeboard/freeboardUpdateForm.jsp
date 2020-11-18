@@ -63,6 +63,9 @@
 			#boardUpdateFormBtn, #boardCancelBtn{float:right; margin:10px;}
 			
 			br{display:none;}
+			
+			#fb_title{ width:600px;}
+			
 		</style>
 		
 	</head>
