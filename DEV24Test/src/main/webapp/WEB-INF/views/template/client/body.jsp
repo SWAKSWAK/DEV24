@@ -16,9 +16,6 @@
 
   <!-- Demo styles -->
   <style>
-  	body * {
-  		/* border: 1px solid; */
-  	}
   	#content-wrap {
   		width: 100%;
   		text-align: center;
@@ -37,6 +34,10 @@
       width: 950px;
       height: 255px;
       float: right;
+    }
+    
+    .swiper-container * {
+    	z-index: 9999;
     }
 
     .swiper-slide {
@@ -67,6 +68,11 @@
     .swiperImage {
     	width: 170px;
     	box-shadow: 6px 6px 5px -4px grey;
+		transition: all ease 0.2s;
+    }
+    
+    .swiperImage:hover {
+		transform: scale(1.05);
     }
     
     .swiper-left{
@@ -192,24 +198,24 @@
 					  <!-- Swiper -->
 				  <div class="swiper-container pull-right">
 				    <div class="swiper-wrapper">
-				      <div class="swiper-slide"><img class="swiperImage" alt="" src="${ bvoList[0].listcover_imgurl }"></div>
-				      <div class="swiper-slide"><img class="swiperImage" alt="" src="${ bvoList[1].listcover_imgurl }"></div>
-				      <div class="swiper-slide"><img class="swiperImage" alt="" src="${ bvoList[2].listcover_imgurl }"></div>
-				      <div class="swiper-slide"><img class="swiperImage" alt="" src="${ bvoList[3].listcover_imgurl }"></div>
-				      <div class="swiper-slide"><img class="swiperImage" alt="" src="${ bvoList[4].listcover_imgurl }"></div>
-				      <div class="swiper-slide"><img class="swiperImage" alt="" src="${ bvoList[5].listcover_imgurl }"></div>
-				      <div class="swiper-slide"><img class="swiperImage" alt="" src="${ bvoList[6].listcover_imgurl }"></div>
-				      <div class="swiper-slide"><img class="swiperImage" alt="" src="${ bvoList[7].listcover_imgurl }"></div>
-				      <div class="swiper-slide"><img class="swiperImage" alt="" src="${ bvoList[8].listcover_imgurl }"></div>
-				      <div class="swiper-slide"><img class="swiperImage" alt="" src="${ bvoList[9].listcover_imgurl }"></div>
-				      <div class="swiper-slide"><img class="swiperImage" alt="" src="${ bvoList[10].listcover_imgurl }"></div>
-				      <div class="swiper-slide"><img class="swiperImage" alt="" src="${ bvoList[11].listcover_imgurl }"></div>
-				      <div class="swiper-slide"><img class="swiperImage" alt="" src="${ bvoList[12].listcover_imgurl }"></div>
-				      <div class="swiper-slide"><img class="swiperImage" alt="" src="${ bvoList[13].listcover_imgurl }"></div>
-				      <div class="swiper-slide"><img class="swiperImage" alt="" src="${ bvoList[14].listcover_imgurl }"></div>
-				      <div class="swiper-slide"><img class="swiperImage" alt="" src="${ bvoList[15].listcover_imgurl }"></div>
-				      <div class="swiper-slide"><img class="swiperImage" alt="" src="${ bvoList[16].listcover_imgurl }"></div>
-				      <div class="swiper-slide"><img class="swiperImage" alt="" src="${ bvoList[17].listcover_imgurl }"></div>
+				      <div class="swiper-slide"><a href="/book/detail/${bvoList[0].b_num}"><img class="swiperImage" alt="" src="${ bvoList[0].listcover_imgurl }" /></a></div>
+				      <div class="swiper-slide"><a href="/book/detail/${bvoList[1].b_num}"><img class="swiperImage" alt="" src="${ bvoList[1].listcover_imgurl }" /></a></div>
+				      <div class="swiper-slide"><a href="/book/detail/${bvoList[2].b_num}"><img class="swiperImage" alt="" src="${ bvoList[2].listcover_imgurl }" /></a></div>
+				      <div class="swiper-slide"><a href="/book/detail/${bvoList[3].b_num}"><img class="swiperImage" alt="" src="${ bvoList[3].listcover_imgurl }" /></a></div>
+				      <div class="swiper-slide"><a href="/book/detail/${bvoList[4].b_num}"><img class="swiperImage" alt="" src="${ bvoList[4].listcover_imgurl }" /></a></div>
+				      <div class="swiper-slide"><a href="/book/detail/${bvoList[5].b_num}"><img class="swiperImage" alt="" src="${ bvoList[5].listcover_imgurl }" /></a></div>
+				      <div class="swiper-slide"><a href="/book/detail/${bvoList[6].b_num}"><img class="swiperImage" alt="" src="${ bvoList[6].listcover_imgurl }" /></a></div>
+				      <div class="swiper-slide"><a href="/book/detail/${bvoList[7].b_num}"><img class="swiperImage" alt="" src="${ bvoList[7].listcover_imgurl }" /></a></div>
+				      <div class="swiper-slide"><a href="/book/detail/${bvoList[8].b_num}"><img class="swiperImage" alt="" src="${ bvoList[8].listcover_imgurl }" /></a></div>
+				      <div class="swiper-slide"><a href="/book/detail/${bvoList[9].b_num}"><img class="swiperImage" alt="" src="${ bvoList[9].listcover_imgurl }" /></a></div>
+				      <div class="swiper-slide"><a href="/book/detail/${bvoList[10].b_num}"><img class="swiperImage" alt="" src="${ bvoList[10].listcover_imgurl }" /></a></div>
+				      <div class="swiper-slide"><a href="/book/detail/${bvoList[11].b_num}"><img class="swiperImage" alt="" src="${ bvoList[11].listcover_imgurl }" /></a></div>
+				      <div class="swiper-slide"><a href="/book/detail/${bvoList[12].b_num}"><img class="swiperImage" alt="" src="${ bvoList[12].listcover_imgurl }" /></a></div>
+				      <div class="swiper-slide"><a href="/book/detail/${bvoList[13].b_num}"><img class="swiperImage" alt="" src="${ bvoList[13].listcover_imgurl }" /></a></div>
+				      <div class="swiper-slide"><a href="/book/detail/${bvoList[14].b_num}"><img class="swiperImage" alt="" src="${ bvoList[14].listcover_imgurl }" /></a></div>
+				      <div class="swiper-slide"><a href="/book/detail/${bvoList[15].b_num}"><img class="swiperImage" alt="" src="${ bvoList[15].listcover_imgurl }" /></a></div>
+				      <div class="swiper-slide"><a href="/book/detail/${bvoList[16].b_num}"><img class="swiperImage" alt="" src="${ bvoList[16].listcover_imgurl }" /></a></div>
+				      <div class="swiper-slide"><a href="/book/detail/${bvoList[17].b_num}"><img class="swiperImage" alt="" src="${ bvoList[17].listcover_imgurl }" /></a></div>
 				    </div>
 				    <!-- Add Arrows -->
 				    <div class="swiper-button-next"></div>
