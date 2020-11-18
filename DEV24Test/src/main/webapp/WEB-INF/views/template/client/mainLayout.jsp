@@ -60,7 +60,7 @@
 	<body>
 		<tiles:insertAttribute name="header" />
 		
-		<div id="content_wrap">s
+		<div id="content_wrap">
         	<tiles:insertAttribute name="body" />
     	</div> <!-- content_wrap -->
 		
