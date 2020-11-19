@@ -40,4 +40,7 @@ public class ReviewVO extends CommonVO {
 	private int ra_num = 0; // sum of re_score
 	private int ra_count = 0; // count of reviews
 	
+	// review count for paging
+	private int r_count = 0;
+	
 }

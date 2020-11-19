@@ -74,7 +74,7 @@
 						data:$("#f_pwd").serialize(), 
 						dataTyp:"text", 
 						error:function(){
-							alert("시스템 오류라서 관리자에게 문의를 하셔야 합니다...");
+							alert("비밀번호 또는 아이디가 일치하지 않습니다. 다시한번 확인해주세요.");
 						}, 
 						success: function(resultData){
 							var goUrl="";
@@ -103,9 +103,22 @@
 		 		$("#login").click(function(){
 		 			boardPwdConfirm();
 		 			//console.log("아이디="+ $("#adm_id").val()+ "adm_passwd="+ $("#adm_passwd").val());
-		 			
-		 			
 		 		});
+		 		
+		 		$("#cancel").click(function(){
+		 			$("#f_pwd").trigger("reset");
+		 		});
+		 		
+		 		
+		 		$(document).ready(function() {
+		 	        window.history.pushState(null, "", window.location.href);        
+		 	        window.onpopstate = function() {
+		 	            window.history.pushState(null, "", window.location.href);
+		 	        };
+		 	    });
+		 		
+		 		
+		 		
 		 	});
 		 </script>
 		 

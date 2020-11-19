@@ -22,7 +22,7 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 @RequestMapping("/admin/*")
 @AllArgsConstructor
-//@SessionAttributes({"adm_id", "adm_num", "adm_name"})
+
 
 public class AdminController {
 	
@@ -54,6 +54,12 @@ public class AdminController {
 			result="fail";
 		}
 		return result;
+	}
+	
+	@RequestMapping("/logout")
+	public String adminLogout() {
+	
+		return "redirect:/admin";
 	}
 	
 	@RequestMapping(value="/adminIndex", method=RequestMethod.GET)

@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="tag" tagdir="/WEB-INF/tags/" %>  
 <!DOCTYPE html>
 <html>
 	<head>
@@ -66,6 +68,15 @@
 					$("#detailForm").submit();
 				});
 				
+				
+				//페이징 처리를 위한 구문. 
+				$(".paginate_button a").click(function(e){
+					e.preventDefault();
+					$("#searchForm").find("input[name='pageNum']").val($(this).attr("href"));
+					goPage();
+				});
+				
+				
 			});
 			
 			 function goPage(){
@@ -86,6 +97,8 @@
 					<h2 id="tit">자유 게시판 관리자 페이지</h2>
 					
 					<form id="searchForm">
+					<input type="hidden" name="pageNum" value="${pageMarker.cvo.pageNum}"/>
+			    	<input type="hidden" name="amount" value="${pageMarker.cvo.amount}"/>
 						<div class="form-inline" id="searchCategory">
 							<select id="search" name="search">
 								<option value="all">전체</option>
@@ -143,6 +156,11 @@
 				</table>
 			</div> <!-- table -->
 			
+			<div class="text-center">
+ 				 <tag:pagination pageNum="${pageMarker.cvo.pageNum}" amount="${pageMarker.cvo.amount}" 
+				startPage="${pageMarker.startPage}" endPage="${pageMarker.endPage}" prev="${pageMarker.prev}" next="${pageMarker.next}" />
+ 			</div>
+ 			
 		</div> <!-- cotent_wrap -->
 	</body>
 </html>

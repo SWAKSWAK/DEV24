@@ -29,7 +29,7 @@
 					console.log($("#c_num").val());
 					
 					if(!chkSubmit("#fbc_content", "댓글 내용을")) return;
-					else if(!chkSubmit("#c_num", "로그인 후 댓글을"))  return;
+					else if(!chkSubmit("#fbc_author", "로그인 후 댓글을"))  return;
 					var insertUrl="/freecmt/freecmtInsert";
 					var value = JSON.stringify({
 						fb_num: fb_num,
@@ -63,6 +63,7 @@
 							if(result == "SUCCESS"){
 								alert("댓글 등록 성공!");
 								//dataReset();
+								$("#commentContent").trigger("reset");
 								listAll(fb_num);
 							}
 						}

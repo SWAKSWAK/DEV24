@@ -160,7 +160,8 @@
 			</table>
 		</form>
 		
-		
+		<%-- <jsp:include page="/WEB-INF/views/freeboard/freecmt.jsp"/>
+		 --%>
     </div> <!-- content_wrap -->
     
     <!--*************************************************************-->

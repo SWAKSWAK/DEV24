@@ -43,6 +43,11 @@
 			#fb_content{
 				height: 200px;
 			}
+			
+			#fb_title{
+				width:690px;
+			}
+			
 		</style>
 		
 		<title>freeboardWriteForm.jsp</title>
