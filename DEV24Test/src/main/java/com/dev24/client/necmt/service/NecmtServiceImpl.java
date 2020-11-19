@@ -21,4 +21,22 @@ public class NecmtServiceImpl implements NecmtService{
 		List<NecmtVO> necmtList = necmtDAO.necmtList(ne_num);
 		return necmtList;
 	}
+	
+	@Override
+	public int necmtInsert(NecmtVO nvo) {
+		int result = necmtDAO.necmtInsert(nvo);
+		return result;
+	}
+	
+	@Override
+	public int replyCheck(int ne_num) {
+		int result = necmtDAO.replyCheck(ne_num);
+		return result;
+	}
+	
+	@Override
+	public int necmtDeleteNecmtNum(int necmt_num) {
+		int result = necmtDAO.necmtDeleteNecmtNum(necmt_num);
+		return result;
+	}
 }

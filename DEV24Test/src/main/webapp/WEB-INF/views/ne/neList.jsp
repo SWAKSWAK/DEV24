@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
@@ -49,6 +50,10 @@
     
     <style>
     	.cnt{margin:5px;}
+    	.goDetail {
+    		cursor: pointer;
+    		text-align: left;
+    	}
     </style>
     
 	</head>
@@ -63,7 +68,6 @@
                 <h3>공지사항/이벤트</h3>
             </div>
         </div>
-        
         <div id="content">
             <div id="board_search">
                 <form name="f_search" id="f_search">
@@ -84,17 +88,17 @@
             <div id="table_wrap">
                 <table summary="게시판 리스트" class="table">
                 	<colgroup>
-	                      <col width="10%" />
-	                      <col width="40%" />
-	                      <col width="20%" /> 
+	                      <col width="5%" />
+	                      <col width="15%" />
+	                      <col width="50%" /> 
 	                      <col width="20%" />
-	                      <col width="10%" />
+	                      <col width="5%" />
 	                  </colgroup>
                     <thead>
                         <tr>
                         	<th>번호</th>
-                           <th>분류</th>
-                            <th class="">제목</th>
+                          	 <th>분류</th>
+                            <th>제목</th>
                             <th>날짜</th>
                             <th>조회수</th>
                         </tr>                
@@ -105,13 +109,16 @@
                       	<c:forEach var="nevo" items="${neList}" varStatus="status">
                       		<tr class="text_center" data-num="${nevo.ne_num}">
                       			<td>${nevo.ne_num}</td>
-                      			<td>[${nevo.ne_cate}]</td>
+                      			<td class='text-center' style="text-align: center">
+                      				<c:if test="${nevo.ne_cate == 'notice'}"><span>[공지사항]</span></c:if>
+                      				<c:if test="${nevo.ne_cate == 'event'}"><span>[이벤트]</span></c:if>
+                      			</td>
                       			<td class="goDetail">
                       				${nevo.ne_title}
                       				<c:if test="${nevo.ne_rcnt>0}"><span class="cnt" style="color:red">[${nevo.ne_rcnt}]</span></c:if>
                       			</td>
                       			<td>${nevo.ne_date}</td>
-                      			<td>${nevo.ne_readcnt}</td>
+                      			<td >${nevo.ne_readcnt}</td>
                       		</tr>
                       	</c:forEach>
                       </c:when>  

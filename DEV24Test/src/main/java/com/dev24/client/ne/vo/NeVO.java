@@ -1,5 +1,7 @@
 package com.dev24.client.ne.vo;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 
 @Data
@@ -12,4 +14,7 @@ public class NeVO {
 	private String ne_content;
 	private String ne_cate;
 	private int ne_rcnt;
+	
+	//이미지 업로드 관련
+	MultipartFile imgFile;
 }

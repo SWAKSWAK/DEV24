@@ -14,27 +14,26 @@
     	$(function(){
     		/*제목 클릭시 상세 페이지 이동을 위한 처리 이벤트*/
 			$(".goDetail").click(function(){
-				var fb_num= $(this).parents("tr").attr("data-num");
-				$("#fb_num").val(fb_num);
-				console.log("글번호: "+fb_num);
+				var ne_num= $(this).parents("tr").attr("data-num");
+				$("#ne_num").val(ne_num);
 				//상세 페이지로 이동하기 위해 form 추가(id:detailForm)
 				
 				$("#detailForm").attr({
 					"method":"get", 
-					"action":"/freeboard/freeboardDetail"
+					"action":"/admin/neDetail/"
 				});
 				$("#detailForm").submit();
 			});
-    		
-    		$("#boardInsertFormBtn").click(function(){
-    			location.href="/freeboard/freeboardWriteForm";	
-    		});
     		
     		$("#boardSearchBtn").click(function(){
     			if($("#search").val()!="all"){
 					if(!chkSubmit("#keyword", "검색어를")) return;
 				}
 				goPage();
+    		});
+    		
+    		$(".neInsertFormBtn").click(function(){
+    			location.href="/admin/neInsertForm"
     		});
     		
     	});
@@ -45,7 +44,7 @@
 			}
 			$("#f_search").attr({
 				"method":"get", 
-				"action":"/freeboard/freeboardList"
+				"action":"/admin/neList"
 			});
 			$("#f_search").submit();
 		}
@@ -54,18 +53,22 @@
     
     <style>
     	.cnt{margin:5px;}
+    	.goDetail {
+    		cursor: pointer;
+    		text-align: left;
+    	}
     </style>
     
 	</head>
 	<body>
 	
 		<form id="detailForm" name="detailForm">
-			<input type="hidden" id="fb_num" name="fb_num"/>
+			<input type="hidden" id="ne_num" name="ne_num"/>
 		</form>
 		<div id="content_wrap">
         <div id="title">
             <div id="tit_content">
-                <h3>자유게시판</h3>
+                <h3>공지사항/이벤트</h3>
             </div>
         </div>
         
@@ -73,6 +76,7 @@
             <div id="board_search">
                 <form name="f_search" id="f_search">
                     <div class="form-group">
+                			<button type="button" class="neInsertFormBtn btn btn-primary pull-right">글쓰기</button>
                         <label>검색조건</label>
                         <select name="search" id="search">
                             <option value="all">전체</option>
@@ -87,36 +91,39 @@
             </div><!-- board_search -->
 		
             <div id="table_wrap">
-                <table summary="게시판 리스트" class="table" border="0">
+                <table summary="게시판 리스트" class="table">
                 	<colgroup>
-	                      <col width="10%" />
-	                      <col width="40%" />
-	                      <col width="20%" /> 
+	                      <col width="5%" />
+	                      <col width="15%" />
+	                      <col width="50%" /> 
 	                      <col width="20%" />
-	                      <col width="10%" />
+	                      <col width="5%" />
 	                  </colgroup>
                     <thead>
                         <tr>
-                           <th>번호</th>
+                        	<th>번호</th>
+                           <th>분류</th>
                             <th>제목</th>
-                            <th>작성자</th>
                             <th>날짜</th>
                             <th>조회수</th>
                         </tr>                
                     </thead>
                     <tbody>
                     <c:choose>       
-                      <c:when test="${not empty freeboardList}">
-                      	<c:forEach var="free" items="${freeboardList}" varStatus="status">
-                      		<tr class="text_center" data-num="${free.fb_num}">
-                      			<td>${free.fb_num}</td>
-                      			<td class="goDetail">
-                      				${free.fb_title}
-                      				<c:if test="${free.r_cnt>0}"><span class="cnt" style="color:red">[${free.r_cnt}]</span></c:if>
+                      <c:when test="${not empty neList}">
+                      	<c:forEach var="nevo" items="${neList}" varStatus="status">
+                      		<tr class="text_center" data-num="${nevo.ne_num}">
+                      			<td>${nevo.ne_num}</td>
+                      			<td class="text-center">
+                      				<c:if test="${nevo.ne_cate == 'notice'}">[공지사항]</c:if>
+                      				<c:if test="${nevo.ne_cate == 'event'}">[이벤트]</c:if>
                       			</td>
-                      			<td>${free.fb_author }</td>
-                      			<td>${free.fb_writeday}</td>
-                      			<td>${free.fb_readcnt}</td>
+                      			<td class="goDetail">
+                      				${nevo.ne_title}
+                      				<c:if test="${nevo.ne_rcnt>0}"><span class="cnt" style="color:red">[${nevo.ne_rcnt}]</span></c:if>
+                      			</td>
+                      			<td>${nevo.ne_date}</td>
+                      			<td >${nevo.ne_readcnt}</td>
                       		</tr>
                       	</c:forEach>
                       </c:when>  
@@ -124,14 +131,6 @@
                     </tbody>
                 </table>
             </div><!-- table_wrap -->
-			
-			
-            <div id="button_wrap">
-            	<c:if test="${login.c_num != null}">
-                	<input type="button" id="boardInsertFormBtn" value="글쓰기" class="btn btn-success" />
-                </c:if>
-            </div> <!-- button_wrap -->
-        
         </div> <!-- content (width : 1200px) -->
     </div> <!-- content_wrap -->
     

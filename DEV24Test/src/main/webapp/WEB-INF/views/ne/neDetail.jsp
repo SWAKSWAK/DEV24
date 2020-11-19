@@ -20,38 +20,17 @@
     <script type="text/javascript" src="/resources/include/dist/js/bootstrap.min.js"></script>
     
     <script>
-        $(function(){
-        	
-			// gnb 메뉴 클릭 시
-			$("#gnb > li").click(function(){
-			    var i = $(this).index();
-			    console.log(i);
-			    
-			    $(this).siblings("li").removeClass("on");
-			    $(this).addClass("on");
-			    
-			    $("#gnb > li > ul").removeClass("on");
-			    $("#gnb > li > ul").eq(i).addClass("on");
-			});
-			
-			 // 하위메뉴 마우스 커서 이동으로 메뉴 이동
-			 $(".dropmenu > li").mouseover(function(){
-			    $(this).siblings("li").removeClass("on");
-			    $(this).addClass("on");
-			});
-			 $(".dropmenu").mouseleave(function(){
-			    $(".dropmenu > li").removeClass("on");
-			     $("#gnb > li > ul").removeClass("on");
-			});
-			 
+     $(function(){
 			$("#boardListBtn").click(function(){
 				location.href="/ne/neList"
 			});
-            	
-           });
+        });
     </script>
     
     <style type="text/css">
+    	#neContent {
+    		height: 300px;
+    	}
     </style>
     
 </head>
@@ -105,7 +84,11 @@
 				</tr>
 				<tr>
 					<th>글 내 용</th>
-					<td colspan="3">${nvo.ne_content}</td>
+					<td colspan="3" id="neContent" >
+					<c:if test="${ not empty nvo.ne_imgurl }">
+						<img alt="" src="/uploadStorage/neboard/${ nvo.ne_imgurl }" style="height: 250px;"><br/>
+					</c:if>
+						${nvo.ne_content}</td>
 				</tr>
 				
 				<%-- <tr>

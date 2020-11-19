@@ -1,6 +1,6 @@
 package com.dev24.client.book.controller;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,7 +55,7 @@ public class BookController {
 		log.info(bookLength);
 		Pagination pagination = new Pagination(bookLength, startPage, page, cateOne_num, cateTwo_num, listRange, b_sort, "regOrOopOrSoldOut");
 		//얻어낸 pagination객체를 통해 bookList() 호출
-		ArrayList<BookVO> bookList = bookService.bookList(pagination);
+		List<BookVO> bookList = bookService.bookList(pagination);
 		
 		log.info(pagination.toString());
 		

@@ -20,92 +20,95 @@
     <script type="text/javascript" src="/resources/include/dist/js/bootstrap.min.js"></script>
     
     <script>
-        $(function(){
-        	
-           // gnb 메뉴 클릭 시
-	           $("#gnb > li").click(function(){
-	               var i = $(this).index();
-	               console.log(i);
-	               
-	               $(this).siblings("li").removeClass("on");
-	               $(this).addClass("on");
-	               
-	               $("#gnb > li > ul").removeClass("on");
-	               $("#gnb > li > ul").eq(i).addClass("on");
-	           });
-	
-	            // 하위메뉴 마우스 커서 이동으로 메뉴 이동
-	            $(".dropmenu > li").mouseover(function(){
-	               $(this).siblings("li").removeClass("on");
-	               $(this).addClass("on");
-	           });
-	            $(".dropmenu").mouseleave(function(){
-	               $(".dropmenu > li").removeClass("on");
-	                $("#gnb > li > ul").removeClass("on");
-	           });
-	            
-	            $("#boardListBtn").click(function(){
-	            	location.href="/freeboard/freeboardList"
-	            });
-	            
-	            
-	            $("#boardDeleteBtn").click(function(){
-	            	$.ajax({
-	            		url:"/freeboard/freeboardDelete", 
-	            		type:"post",
-	            		data:"fb_num="+$("#fb_num").val(),
-	            		//data:"fb_num="+fb_num,
-	            		dataType:"text", 
-	            		error: function(){
-	            			alert("시스템 오류, 관리자에게 문의해주세요");
-	            		},
-	            		success: function(){
-	            			alert("글 삭제 완료");
-	            			$("#fb_num").submit();
-	            			location.href="/freeboard/freeboardList";
-	            		}
-	            	});
-	            });
-	            
-	            $("#boardUpdateFormBtn").click(function(){
-	            	console.log($(fb_num).val());
-	            	/*$.ajax({
-	            		url:"/freeboard/freeboardUpdateForm",
-	            		type:"post",
-	            		data: "fb_num="+$(fb_num).val(),
-	            		dataType:"text",
-	            		error:function(){
-	            			alert("시스템 오류, 관리자에게 문의해주세요.");
-	            		}, 
-	            		success: function(){
-	            			console.log($(fb_num).val());
-	            			var abc = $(fb_num).val();
-	            			$(abc).submit();
-	            			location.href="/freeboard/freeboardUpdateForm";
-	            		}
-	            	});*/
-	            	
-					$.ajax({
-						url:"/freeboard/freeboardUpdateForm",
-						type:"post", 
-						data:$("#fb_num").val(), 
-						dataType:"text",
-						error: function(){
-							alert("시스템 오류, 관리자에게 문의하세요.");
-						}, 
-						success: function(){
-							var goUrl="/freeboard/freeboardUpdateForm";
-							$("#f_data").attr("action", goUrl);
-							$("#f_data").submit();
+
+		var ne_num;
+		var nevo;
+		var dataJSON;
+    
+		$(function(){
+			ne_num = $("#ne_num").val();
+			nevo = {
+				"ne_num" : ne_num
+			};
+			dataJSON = JSON.stringify(nevo);
+			
+			
+			console.log("ne_num: " + ne_num);
+			console.log("nevo: " + nevo);
+			console.log("dataJSON: " + dataJSON);
+			
+			$("#boardListBtn").click(function(){
+				location.href="/admin/neList"
+			});
+			
+			$("#neDeleteBtn").click(function(){
+				
+				//댓글개수 리턴해주는 함수 호출 후 replyCheckResult에 담기
+				replyCheck();
+				
+			});
+			
+		});
+     
+     
+     	//댓글 개수 체크 함수
+     	function replyCheck() {
+			var resultData;
+			if(confirm(ne_num + "번 게시글을 삭제하시겠습니까?")){
+				$.ajax({
+					url : "/admin/necmt/replyCheck",
+					async: "false",
+					type : "post",
+					data : "ne_num="+$("#ne_num").val(),
+					dataType : "text",
+					success : function(result) {
+						resultData = result;
+						console.log("data: " + result);
+						if (result > 0){
+							if(confirm("댓글이 존재하는 게시글입니다.\n삭제하시겠습니까?")){
+								neDelete(result);
+							} else {
+								return;
+							}
+						} else {
+							neDelete(result);
 						}
-					});
-	            	
-	            });
-            	
-           });
+					},
+					error : function(){
+						alert("오류\n관리자에게 문의하세요.");
+						resultData = -1;
+					}
+				});
+			}
+			console.log("resultData : " + resultData);
+		}
+     	 
+     	//게시글 삭제 함수
+     	function neDelete(replyCnt) {
+			$.ajax({
+				url : "/admin/neDelete",
+				type : "post",
+				data : "ne_num="+$("#ne_num").val()+"&replyCnt="+replyCnt,
+				dataType : "text",
+				success : function(data) {
+					alert("게시글이 삭제되었습니다.");
+					location.href="/admin/neList"
+				},
+				error : function(){
+					alert("오류\n관리자에게 문의하세요.");
+				}
+			});
+     	}
+     	
     </script>
     
     <style type="text/css">
+    	#neContent {
+    		height: 300px;
+    	}
+    	#content_wrap {
+    		margin: 0 0 0 18% !important;
+    	}
     </style>
     
 </head>
@@ -114,9 +117,8 @@
     
     
     <div id="content_wrap">
-    	<c:set var="detail" value="${freeDetail}"/>
-    	<form name="f_data" id="f_data" method="post">
-    		<input type="hidden" id="fb_num" name="fb_num" value="${detail.fb_num}"/>
+    	<form name="nevo" id="nevo" method="post">
+    		<input type="hidden" id="ne_num" name="ne_num" value="${nvo.ne_num}"/>
  		</form>
         
  		<%-- <div id="pwdChk" class="authArea">
@@ -132,11 +134,7 @@
 		</div> --%>
 		
 		<div class="text-right btnArea">
-			<c:if test="${login.c_num eq detail.c_num}">
-			    <input type="button" id="boardUpdateFormBtn" value="글수정" class="btn btn-success" />
-	            <input type="button" id="boardDeleteBtn" value="글삭제" class="btn btn-success" />
-	            <!-- <input type="button" id="boardReplyBtn" value="글답변" class="btn btn-success" /> -->
-            </c:if>
+            <input type="button" id="neDeleteBtn" value="삭제" class="btn btn-primary" />
             <input type="button" id="boardListBtn" value="글목록" class="btn btn-primary" />
 		</div>
 	
@@ -144,27 +142,32 @@
 			<table summary="게시판 상세 페이지" class="table" border="0">
 				<tr>
 					<th>글 번 호</th>
-					<td>${detail.fb_num}</td>
+					<td>${nvo.ne_num}</td>
 					<th class="th_date">작 성 일</th>
-					<td>${detail.fb_writeday}</td>
+					<td>${nvo.ne_date}</td>
 				</tr>
 				
 				<tr>
-					<th>조회수:</th>
-					<td>${detail.fb_readcnt}</td>
+					<th>조회수</th>
+					<td>${nvo.ne_readcnt}</td>
 				</tr>
 				
 				<tr>
 					<th>글 제 목</th>
-					<td colspan="3">${detail.fb_title}</td>
+					<td colspan="3">${nvo.ne_title}</td>
 				</tr>
 				<tr>
 					<th>작 성 자</th>
-					<td colspan="3">${detail.fb_author}</td>
+					<td colspan="3">DEV24</td>
 				</tr>
 				<tr>
 					<th>글 내 용</th>
-					<td colspan="3">${detail.fb_content}</td>
+					<td colspan="3" id="neContent" >
+					<c:if test="${ not empty nvo.ne_imgurl }">
+						<img alt="" src="/uploadStorage/neboard/${ nvo.ne_imgurl }" style="height: 250px;"><br/>
+					</c:if>
+					${nvo.ne_content}
+					</td>
 				</tr>
 				
 				<%-- <tr>
@@ -173,9 +176,7 @@
 				</tr> --%>
 			</table>
 		</form>
-
-		<%-- <jsp:include page="adminNecmt.jsp"/> --%>
-
+		<jsp:include page="adminNecmt.jsp"/>
     </div> <!-- content_wrap -->
     
     <!--*************************************************************-->

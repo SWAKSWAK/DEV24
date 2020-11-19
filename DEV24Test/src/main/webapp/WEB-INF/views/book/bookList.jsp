@@ -251,6 +251,12 @@
 				color: #dcd6f7;
 				width: 65px;
 			}
+			.goCartBtn {
+				color: white;
+			}
+			.noCartBtn{
+				color: black;
+			}
 			
 			.chkWrap {
 				display: inline-block;
@@ -864,7 +870,7 @@
 					바로 확인하시겠습니까?
 				</p>
 				<div class="contentHeaderCartBtnWrap">
-					<button type="button" class="btn btn-success goCartBtn">예</button>
+					<button type="button" class="btn btn-primary goCartBtn">예</button>
 					<button type="button" class="btn btn-default noCartBtn">아니오</button>
 				</div>	
 			</div>

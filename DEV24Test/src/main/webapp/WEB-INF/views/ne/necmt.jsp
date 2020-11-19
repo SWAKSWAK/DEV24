@@ -17,30 +17,26 @@
 			
 			$(function(){
 				
-				var fb_num = ${freeDetail.fb_num};
-				var fbc_author = $("#fbc_author").val();
+				var ne_num = ${nvo.ne_num};
+				var c_nickname = $("#c_nickname").val();
 			
-				listAll(fb_num);
+				listAll(ne_num); 
 				
 				$("#replyInsertFormBtn").click(function(){
-					console.log(fb_num);
-					console.log($("#fbc_content").val());
-					console.log($("#fbc_author").val());
+					console.log(ne_num);
+					console.log($("#necmt_content").val());
+					console.log($("#c_nickname").val());
 					console.log($("#c_num").val());
 					
-					if(!chkSubmit("#fbc_content", "댓글 내용을")) return;
+					if(!chkSubmit("#necmt_content", "댓글 내용을")) return;
 					else if(!chkSubmit("#c_num", "로그인 후 댓글을"))  return;
-					var insertUrl="/ne/necmtInsert";
+					var insertUrl="/necmt/necmtInsert";
 					var value = JSON.stringify({
-						fb_num: fb_num,
-						//fb_num:${freeDetail.fb_num},
-						fbc_content: $("#fbc_content").val(),
-						//fbc_author: $("#fbc_author").val(),
-						fbc_author: fbc_author,
+						ne_num: ne_num,
+						necmt_content: $("#necmt_content").val(),
+						c_nickname: c_nickname,
 						c_num:$("#c_num").val()
 					});
-					
-					
 					
 					$.ajax({
 						url:insertUrl, 
@@ -52,18 +48,14 @@
 						dataType:"text", 
 						data : value,
 						error: function(){
-							/*if(fbc_author != null){
-								alert("시스템 오류입니다. 관리자에게 문의하세요.");
-							}else if(fbc_author == null){
-								alert("로그인 후 댓글 등록을 해주세요.");
-							}*/
 							alert("시스템 오류입니다. 관리자에게 문의하세요.");
 						},
 						success: function(result){
 							if(result == "SUCCESS"){
+								$("#necmt_content").val("");
 								alert("댓글 등록 성공!");
 								//dataReset();
-								listAll(fb_num);
+								listAll(ne_num);
 							}
 						}
 					}); 
@@ -72,9 +64,9 @@
 			});
 			
 			
-			function listAll(fb_num){
+			function listAll(ne_num){
 				$("#reviewList").html("");
-				var url="/freecmt/all/"+fb_num+".json";
+				var url="/necmt/all/"+ne_num;
 				
 				$.getJSON(url, function(data){
 					console.log("list count: "+data.length);
@@ -82,12 +74,13 @@
 					
 					//$(data) 에 있는 원소만큼 each 레코드의 번호, 이름, 내용, 날짜를 가져오기.. 
 					$(data).each(function(){
-						var fbc_num = this.fbc_num;
-						var fbc_author = this.fbc_author;
-						var fbc_content = this.fbc_content;
-						var fbc_writeday = this.fbc_writeday;
-						fbc_content = fbc_content.replace(/(\r\n|\r|\n)/g, "<br>");
-						addItem(fbc_num, fbc_author, fbc_content, fbc_writeday);
+						var necmt_num = this.necmt_num;
+						var c_nickname = this.c_nickname;
+						var necmt_content = this.necmt_content;
+						var necmt_date = this.necmt_date;
+						console.log("necmt_content : "+ necmt_content);
+						necmt_content = necmt_content.replace(/(\r\n|\r|\n)/g, "<br>");
+						addItem(necmt_num, c_nickname, necmt_content, necmt_date);
 					});
 					
 				}).fail(function(){
@@ -97,10 +90,10 @@
 			
 			/*카페에서 받아온 함수의 소스..*/
 			/* 새로운 글을 화면에 추가하기(보여주기) 위한 함수*/
-			function addItem(fbc_num, fbc_author, fbc_content, fbc_writeday) {
+			function addItem(necmt_num, c_nickname, necmt_content, necmt_date) {
 				// 새로운 글이 추가될 div태그 객체
 				var wrapper_div = $("<div class='wrapper'>");
-				wrapper_div.attr("data-num", fbc_num);
+				wrapper_div.attr("data-num", necmt_num);
 				wrapper_div.addClass("panel panel-default");
 				
 				var new_div = $("<div>");
@@ -109,11 +102,11 @@
 				// 작성자 정보의 이름
 				var name_span = $("<span>");
 				name_span.addClass("name");
-				name_span.html(fbc_author + "님");
+				name_span.html(c_nickname + "님");
 			
 				// 작성일시
-				var date_span = $("<span class='fbc_writeday'>");
-				date_span.html(" / " + fbc_writeday + " ");
+				var date_span = $("<span class='necmt_date'>");
+				date_span.html(" / " + necmt_date + " ");
 			
 				// 수정하기 버튼
 				var upBtn = $("<button>");
@@ -132,7 +125,7 @@
  		
 				// 내용 
 				var content_div = $("<div>");
-				content_div.html(fbc_content);
+				content_div.html(necmt_content);
 				content_div.addClass("panel-body");
 				
 			
@@ -177,7 +170,10 @@
 		<div id="replyContainer">
 			<div class="text-right btnArea">
 				<form id="commentContent">
-					<textarea id="fbc_content" name="fbc_content" cols="130" style="resize:none"></textarea>
+					<input type="hidden" name="ne_num" id="ne_num"/>
+					<input type="hidden" name="c_num" id="c_num" value="${login.c_num}"/>
+					<input type="hidden" name="c_nickname" id="c_nickname" value="${login.c_nickname }"/>
+					<textarea id="necmt_content" name="necmt_content" cols="130" style="resize:none"></textarea>
 					<input type="button" class="btn btn-success" value="댓글등록" id="replyInsertFormBtn"/>
 				</form>
 			</div>

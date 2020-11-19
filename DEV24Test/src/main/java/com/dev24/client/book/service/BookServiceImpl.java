@@ -1,6 +1,6 @@
 package com.dev24.client.book.service;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,8 +30,8 @@ public class BookServiceImpl implements BookService {
 	private BookImgDAO bookimgDAO;
 
 	@Override
-	public ArrayList<BookVO> bookList(Pagination pagination) {
-		ArrayList<BookVO> list = bookDAO.bookList(pagination);
+	public List<BookVO> bookList(Pagination pagination) {
+		List<BookVO> list = bookDAO.bookList(pagination);
 		return list;
 	}
 

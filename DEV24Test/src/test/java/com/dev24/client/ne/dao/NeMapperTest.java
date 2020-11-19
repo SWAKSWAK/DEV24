@@ -21,23 +21,39 @@ public class NeMapperTest {
 	@Setter(onMethod_ = @Autowired)
 	private NeDAO neDAO;
 	
-	@Test
-	public void testNeList() {
-		log.info("testNeList() 시작");
-		
-		List<NeVO> neList = neDAO.neList();
-		
-		for(NeVO nevo : neList) {
-			log.info(nevo.toString());
-		}
-	}
+//	@Test
+//	public void testNeList() {
+//		log.info("testNeList() 시작");
+//		
+//		List<NeVO> neList = neDAO.neList();
+//		
+//		for(NeVO nevo : neList) {
+//			log.info(nevo.toString());
+//		}
+//	}
+//	
+//	@Test
+//	public void testNeDetail() {
+//		log.info("testNeDetail() 시작");
+//		
+//		NeVO nvo = neDAO.neDetail(2);
+//		
+//		log.info(nvo.toString());
+//	}
 	
 	@Test
-	public void testNeDetail() {
-		log.info("testNeDetail() 시작");
+	public void testNeInsert() {
+		log.info("testNeInsert 시작");
 		
-		NeVO nvo = neDAO.neDetail(2);
+		NeVO nevo = new NeVO();
 		
-		log.info(nvo.toString());
+		nevo.setNe_cate("공지사항");
+		nevo.setNe_content("공지사항 테스트입니다.");
+		nevo.setNe_imgurl(null);
+		nevo.setNe_title("공지사항 테스트");
+		
+		neDAO.neInsert(nevo);
+		
+		log.info(neDAO.neList());
 	}
 }

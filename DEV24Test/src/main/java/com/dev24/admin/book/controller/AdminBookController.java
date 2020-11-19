@@ -1,6 +1,5 @@
 package com.dev24.admin.book.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -79,7 +78,7 @@ public class AdminBookController {
 		pagination.setB_searchKeyword(b_searchKeyword);
 
 		// 얻어낸 pagination객체를 통해 bookList() 호출
-		ArrayList<BookVO> bList = bookService.bookList(pagination);
+		List<BookVO> bList = bookService.bookList(pagination);
 		log.info(pagination.toString());
 
 		model.addAttribute("pagination", pagination);
@@ -184,7 +183,7 @@ public class AdminBookController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/bookUpdate")
-	public ResponseEntity<String> bookUpdate(@ModelAttribute("data") BookVO bvo, Model model) throws Exception {
+	public String bookUpdate(@ModelAttribute("data") BookVO bvo, Model model) throws Exception {
 		log.info("bookUpdate 호출 성공");
 		log.info("bvo" + bvo);
 		
@@ -194,14 +193,7 @@ public class AdminBookController {
 		result = bookService.bookUpdate(bvo);
 		ResponseEntity<String> entity;
 		
-		if(result == 1) {
-			url = "/admin/book/detail/00";
-			entity = new ResponseEntity<String>("redirect:" + url, HttpStatus.OK);
-		} else {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-		}
-		
-		return entity;
+		return "/admin/book/detail/00";
 	}
 	
 }

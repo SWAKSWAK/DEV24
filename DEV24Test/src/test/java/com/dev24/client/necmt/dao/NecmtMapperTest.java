@@ -17,15 +17,30 @@ import lombok.extern.log4j.Log4j;
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
 @Log4j
 public class NecmtMapperTest {
-	
+
 	@Setter(onMethod_ = @Autowired)
 	private NecmtDAO necmtDAO;
+
 	
-	/*
-	 * @Test public void testNecmtList() { log.info("testNecmtList() ï¿½ï¿½ï¿½ï¿½");
-	 * 
-	 * //List<NecmtVO> list = necmtDAO.necmtList();
-	 * 
-	 * for (NecmtVO vo : list) { log.info(vo.toString()); } }
-	 */
+//	  @Test 
+//	  public void testNecmtList() { 
+//		  log.info("testNecmtList() ï¿½ï¿½ï¿½ï¿½");
+//	 
+//		  List<NecmtVO> list = necmtDAO.necmtList();
+//	  
+//		  for (NecmtVO vo : list) {
+//			  log.info(vo.toString()); 
+//		  }
+//	  }
+	
+	@Test
+	public void testReplyCheck() {
+		log.info("testReplyCheck ½ÃÀÛ");
+		
+		log.info("´ñ±Û°³¼ö Ã¼Å©: " + necmtDAO.replyCheck(2));
+		
+		
+	}
+	 
+
 }
