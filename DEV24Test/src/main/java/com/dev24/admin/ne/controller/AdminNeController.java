@@ -30,7 +30,7 @@ public class AdminNeController {
 
 	@RequestMapping(value="/neList", method=RequestMethod.GET)
 	public String adminNeList(Model model){
-		log.info("adminNeList È£Ãâ ¿Ï·á");
+		log.info("adminNeList È£ï¿½ï¿½ ï¿½Ï·ï¿½");
 		List<NeVO> neList = neService.neList();
 		
 		model.addAttribute("neList", neList);
@@ -40,7 +40,7 @@ public class AdminNeController {
 	
 	@RequestMapping(value="/neDetail")
 	public String neDetail (@RequestParam("ne_num") Integer ne_num, Model model) {
-		log.info("neDetail È£Ãâ ¿Ï·á");
+		log.info("neDetail È£ï¿½ï¿½ ï¿½Ï·ï¿½");
 		
 		NeVO nvo = neService.neDetail(ne_num);
 		
@@ -57,7 +57,7 @@ public class AdminNeController {
 	) throws Exception 
 	{
 		
-		log.info("neDelete È£Ãâ ¿Ï·á");
+		log.info("neDelete È£ï¿½ï¿½ ï¿½Ï·ï¿½");
 		
 		ResponseEntity<String> entity;
 		
@@ -75,13 +75,13 @@ public class AdminNeController {
 	
 	@RequestMapping("/neInsertForm")
 	public String neInsertForm() {
-		log.info("neInsertForm È£Ãâ ¼º°ø");
+		log.info("neInsertForm È£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
 		return "admin/adminNeInsertForm";
 	}
 	
 	@RequestMapping("/neInsert")
 	public String neInsert(@ModelAttribute("data") NeVO nevo, Model model) throws Exception{
-		log.info("neInsert È£Ãâ ¼º°ø");
+		log.info("neInsert È£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
 		
 		int result = neService.neInsert(nevo);
 		log.info("result: " + result);
